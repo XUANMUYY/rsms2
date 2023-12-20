@@ -52,6 +52,7 @@
     "sass": "^1.69.5",
     "typescript": "^5.3.3",
     "unplugin-fonts": "^1.0.3",
+    "unplugin-auto-import": "^0.17.2",
     "vite": "^5.0.10",
     "vite-plugin-vuetify": "^2.0.1",
     "vitest": "^1.0.4",

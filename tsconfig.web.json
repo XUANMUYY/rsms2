@@ -2,6 +2,7 @@
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "include": [
     "src/renderer/src/vite-env.d.ts",
+    "src/renderer/auto-imports.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.vue",
     "src/renderer/src/**/*.ts",
@@ -9,7 +10,7 @@
     "src/renderer/src/**/*.tsx",
     "src/renderer/src/**/*.vue",
     "src/preload/*.d.ts",
-    "electron.vite.config.ts"
+    "electron.vite.config.ts",
   ],
   "compilerOptions": {
     "composite": true,
