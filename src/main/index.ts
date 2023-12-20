@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, webContents } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -21,6 +21,7 @@ function createWindow(): void {
     mainWindow.show()
   })
 
+
   mainWindow.webContents.setWindowOpenHandler((_details) => {
     // shell.openExternal(_details.url)
     return { action: 'allow' }
@@ -29,7 +30,11 @@ function createWindow(): void {
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']).then(() => {
+      webContents.getAllWebContents().forEach((_wc) => {
+        _wc.reload()
+      })
+    })
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }

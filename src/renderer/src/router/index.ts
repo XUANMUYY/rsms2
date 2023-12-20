@@ -4,17 +4,17 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
-    children: [
-      {
-        path: '',
-        name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (Home-[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import('@/views/Home.vue')
-      }
-    ]
+    redirect: '/init',
+    meta: {}
+  } as any,
+  {
+    path: '/init',
+    name: 'init',
+    meta: {
+      requiresAuth: true,
+      layout: 'init'
+    },
+    component: () => import('@/views/pages/init.vue')
   }
 ]
 

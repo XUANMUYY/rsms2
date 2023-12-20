@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 import ViteFonts from 'unplugin-fonts/vite'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+import AutoImport from 'unplugin-auto-import/vite'
 
 // Utilities
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
@@ -42,6 +43,9 @@ export default defineConfig({
             }
           ]
         }
+      }),
+      AutoImport({
+        imports: ['vue', 'vue-router', 'pinia']
       })
     ],
     define: { 'process.env': {} },
