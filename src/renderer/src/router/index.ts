@@ -4,17 +4,26 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/init',
+    redirect: '/SourceList',
     meta: {}
   } as any,
   {
-    path: '/init',
-    name: 'init',
+    path: '/Init',
+    name: 'Init',
     meta: {
       requiresAuth: true,
-      layout: 'init'
+      layout: 'Init'
     },
-    component: () => import('@/views/pages/init.vue')
+    component: () => import('@/views/pages/InitPage.vue')
+  },
+  {
+    path: '/SourceList',
+    name: 'SourceList',
+    meta: {
+      requiresAuth: true,
+      layout: 'SourceList'
+    },
+    component: () => import('@/views/pages/SourceListPage.vue')
   }
 ]
 
