@@ -24,6 +24,51 @@ const routes = [
       layout: 'SourceList'
     },
     component: () => import('@/views/pages/SourceListPage.vue')
+  },
+  {
+    path: '/CardDemo',
+    name: 'CardDemo',
+    meta: {
+      requiresAuth: true,
+      layout: 'CardDemo'
+    },
+    component: () => import('@/views/pages/LotusCardDemo.vue')
+  },
+  {
+    path: '/CupBoard',
+    name: 'CupBoard',
+    meta: {
+      requiresAuth: true,
+      layout: 'CupBoard'
+    },
+    component: () => import('@/views/pages/CupBoardPage.vue')
+  },
+  {
+    path: '/CupBoardDemo',
+    name: 'CupBoardDemo',
+    meta: {
+      requiresAuth: true,
+      layout: 'CupBoardDemo'
+    },
+    component: () => import('@/views/pages/CupBoardDemo.vue')
+  },
+  {
+    path: '/DetectorInit',
+    name: 'DetectorInit',
+    meta: {
+      requiresAuth: true,
+      layout: 'DetectorInit'
+    },
+    component: () => import('@/views/pages/DetectorInit.vue')
+  },
+  {
+    path: '/ManageDemo',
+    name: 'ManageDemo',
+    meta: {
+      requiresAuth: true,
+      layout: 'ManageDemo'
+    },
+    component: () => import('@/views/pages/SourceListManageDemo.vue')
   }
 ]
 

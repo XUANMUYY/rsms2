@@ -7,12 +7,13 @@
 
       <h1 class="text-h2 font-weight-bold">Vuetify</h1>
 
+      <div class="text-body-2 font-weight-light mb-n1">{{pathA}}</div>
       <div class="py-14" />
 
       <v-row class="d-flex align-center justify-center">
         <v-col cols="auto">
           <v-btn
-            href="https://vuetifyjs.com/components/all/"
+            @click="Init"
             min-width="164"
             rel="noopener noreferrer"
             target="_blank"
@@ -27,7 +28,7 @@
         <v-col cols="auto">
           <v-btn
             color="primary"
-            href="https://vuetifyjs.com/introduction/why-vuetify/#feature-guides"
+            @click="Show"
             min-width="228"
             rel="noopener noreferrer"
             size="x-large"
@@ -42,7 +43,6 @@
 
         <v-col cols="auto">
           <v-btn
-            href="https://community.vuetifyjs.com/"
             min-width="164"
             rel="noopener noreferrer"
             target="_blank"
@@ -59,5 +59,21 @@
 </template>
 
 <script lang="ts" setup>
-//
+import { ref } from 'vue'
+import { useInitSQLStore } from '../store/useInitSQL'
+useInitSQLStore().InitSQL()
+useInitSQLStore().InitUser()
+
+let pathA = ref('')
+pathA.value = useInitSQLStore().callback[0] !=undefined ?useInitSQLStore().callback[0].toString():""
+
+window.api.onReadyToShowMain((_value) => {
+  console.log("OK")
+})
+function Init(){
+  window.api.initMain()
+}
+function Show(){
+  window.api.showMain()
+}
 </script>

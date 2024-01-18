@@ -1,20 +1,11 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { SourcesArray } from '../type'
+import { SourcesArray, SQLJson } from '../type'
+import SourceArrayStoreSQL from '../sql/SourceArrayStore.sql'
 
-const SQLPool = await require('mysql2/promise').createPool({
-  host: '192.1681.132.3',
-  user: 'xuanmuyy',
-  database: 'demo_source',
-  password: '23912345',
-  waitForConnections: true,
-  connectionLimit: 10,
-  maxIdle: 10,
-  idleTimeout: 60000,
-  queueLimit: 5,
-  enableKeepAlive: false,
-  keepAliveInitialDelay: 0
-})
+const path = await window.api.getPath()
+const PoolOptions:SQLJson = await window.api.readJSON(path + '/plugins/SQLSetting.json')
+const SQLPool = await require('mysql2/promise').createPool(PoolOptions.SQL)
 
 export const useSourceArrayStore = defineStore('SourceArray', {
   state: () => ({
@@ -23,12 +14,32 @@ export const useSourceArrayStore = defineStore('SourceArray', {
   actions: {
     async UpdateSourceArray() {
       try {
-        const [_SourceArray, _fields] = await SQLPool.execute('SELECT *,status AS SourceStatus FROM `source_list`', [])
+        const SourceArray = await SQLPool.execute(SourceArrayStoreSQL as string, [])
         //noinspection JSUnresolvedVariable
-        this.SourceArray = _SourceArray
+        this.SourceArray = SourceArray[0] as SourcesArray[]
       } catch (error) {
         console.error(error)
       }
     },
+    GetSourceArray(SSID:string){
+      //noinspection JSUnresolvedVariable
+      this.SourceArray.forEach((Source)=>{
+        if(Source.SSID == SSID){
+          return Source
+        }else {
+          return {
+            nuclide_index: '',
+            nuclide: '',
+            nuclide_name: '',
+            nuclide_quality: '',
+            nuclide_rate: '',
+            nuclide_type: '',
+            nuclide_energy: [[]],
+            SSID: '0000',
+            SourceStatus: '',
+          }
+        }
+      })
+    }
   },
 })

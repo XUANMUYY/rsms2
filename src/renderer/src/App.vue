@@ -18,14 +18,15 @@ const isRouterLoaded = computed(() => {
 const layouts = {
   default: defaultLayout,
   SourceList:defaultLayout,
-  Init: initLayout
+  Init: initLayout,
+  CardDemo:defaultLayout
 }
 
-type LayoutName = 'default' | 'init'
+type LayoutName = 'default' | 'init'|'SourceList'|'CardDemo'
 
 const currentLayout = computed(() => {
   const layoutName = route.meta.layout as LayoutName
-  if (!layoutName) {
+  if (!layoutName||!layouts[layoutName]) {
     return layouts['default']
   }
   return layouts[layoutName]

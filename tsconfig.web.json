@@ -13,6 +13,7 @@
     "src/renderer/src/**/*.vue",
     "src/preload/*.d.ts",
     "electron.vite.config.ts",
+    "src/renderer/init.html"
   ],
   "compilerOptions": {
     "composite": true,
