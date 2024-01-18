@@ -1,4 +1,10 @@
 // Utilities
 import { createPinia } from 'pinia'
+import { myPiniaPlugin } from './plugins'
 
-export default createPinia()
+const pinia = createPinia()
+
+//plugins
+pinia.use(myPiniaPlugin)
+
+export default pinia
