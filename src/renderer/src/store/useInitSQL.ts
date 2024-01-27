@@ -16,10 +16,10 @@ export const useInitSQLStore = defineStore('InitSQL', {
     callback:[] as object[]
   }),
   actions: {
-    async InitSQL(){
+    async InitSQL(sql_version){
       this.callback.push(pathAPP)
       try{
-        let SQLCallback = await InitSQLPool.query(MYSQL,[])
+        let SQLCallback = await InitSQLPool.query(MYSQL,[sql_version,sql_version])
         this.callback.push(SQLCallback)
       }catch(_error)
       {

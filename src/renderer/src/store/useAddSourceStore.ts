@@ -23,7 +23,7 @@ export const useAddSourceStore = defineStore('AddSource', {
     },
     async Add_sources_list() {
       //noinspection JSUnresolvedVariable
-      const result = await SQLPool.execute('update sources_list set nuclide = ?, nuclide_id = ?, nuclide_name = ?, nuclide_index = ?, nuclide_quality = ?, nuclide_rate = ?, nuclide_type = ?, nuclide_energy = NULL, status = \'READY\' where SSID = ?',
+      const result = await SQLPool.execute('update sources_list set nuclide = ?, nuclide_id = ?, nuclide_name = ?, nuclide_index = ?, nuclide_quality = ?, nuclide_rate = ?, nuclide_type = ?, nuclide_energy = NULL, SourceStatus = \'READY\' where SSID = ?',
         [this.sources_list_data.nuclide,
           this.sources_list_data.nuclide_id,
           this.sources_list_data.nuclide_name,

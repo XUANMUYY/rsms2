@@ -61,10 +61,10 @@
 
 <script lang="ts" setup>
 import Loading from "@/components/Loading.vue";
-
 import {useInitSQLStore} from '../../store/useInitSQL'
+import SystemVersionJson from '../../json/SystemVersion.json'
 
-useInitSQLStore().InitSQL()
+useInitSQLStore().InitSQL(SystemVersionJson.SQLVersion as string)
 
 window.api.onReadyToShowMain((_value) => {
   console.log("OK")

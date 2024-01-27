@@ -158,10 +158,12 @@
             <v-btn
               type="submit"
               block
+              :loading="loading"
               class="mb-1"
               color="blue"
               size="large"
               variant="tonal"
+              :disabled="useSourceListStatusStore().ChooseSource.SourceStatus!='READY'"
             >
               提交
             </v-btn>
@@ -181,6 +183,26 @@
       </form>
     </v-dialog>
   </div>
+  <template>
+    <div class="text-center">
+      <v-snackbar
+        v-model="snackbar.snackbar"
+        :timeout="snackbar.timeout"
+        location="center"
+      >
+        {{ snackbar.text }}
+        <template v-slot:actions>
+          <v-btn
+            color="pink"
+            variant="text"
+            @click="snackbar.snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
+  </template>
 </template>
 
 <script setup lang="ts">
@@ -188,6 +210,7 @@ import {useSourceListStatusStore} from '../store/useSourceListStatusStore'
 import {ref} from "vue";
 import {useField, useForm} from 'vee-validate'
 import { useUserDataStore } from '../store/useUserDataStore'
+import { useSourceArrayStore } from '../store/useSourceArrayStore'
 const moment = require('moment')
 
 const {handleSubmit, handleReset} = useForm({
@@ -204,7 +227,6 @@ const {handleSubmit, handleReset} = useForm({
     },
     reason (_value) {
       if (reason_item.value.includes(reason.value.value as string)) return true
-      console.log(reason)
       return '申请原因不能为空'
     },
   },
@@ -223,14 +245,14 @@ useSourceListStatusStore().$subscribe((_args,state)=>{
   if(state.OpenApplySheet == true){
     handleReset()
     SSID.value.value = state.ChooseSource.SSID
-    first_time.value.value = moment().format("MM-DD hh:mm")
-    last_time.value.value = moment().add({h:time.value,m:time.value}).format("MM-DD hh:mm")
+    first_time.value.value = moment().format("YYYY-MM-DD hh:mm:ss")
+    last_time.value.value = moment().add({h:time.value,m:time.value}).format("YYYY-MM-DD hh:mm:ss")
     user.value.value = useUserDataStore().UserData.user
     name.value.value = useUserDataStore().UserData.name
   }
 })
 watch(time, (_time, _prevtime) => {
-  last_time.value.value = moment().add({h:_time,m:_time}).format("MM-DD hh:mm")
+  last_time.value.value = moment().add({h:_time,m:_time}).format("YYYY-MM-DD hh:mm:ss")
 })
 
 const color = computed(() => {
@@ -248,14 +270,45 @@ const reason_item = ref(['实验使用','源库迁移','教学使用','其他'])
 function UpdateData(){
   handleReset()
   SSID.value.value = useSourceListStatusStore().ChooseSource.SSID
-  first_time.value.value = moment().format("MM-DD hh:mm")
-  last_time.value.value = moment().add({h:time.value,m:time.value}).format("MM-DD hh:mm")
+  first_time.value.value = moment().format("YYYY-MM-DD hh:mm:ss")
+  last_time.value.value = moment().add({h:time.value,m:time.value}).format("YYYY-MM-DD hh:mm:ss")
   user.value.value = useUserDataStore().UserData.user
   name.value.value = useUserDataStore().UserData.name
 }
 
+let loading = ref(false)
+
+let snackbar = ref({
+    snackbar: false,
+    text: '',
+    timeout: 5000,
+  })
+
 const submit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2))
+  useUserDataStore().UserApply = {
+    SSID: values.SSID,
+    user: values.user,
+    first_time: values.first_time,
+    last_time: values.last_time,
+    reason: values.reason,
+    apply_status: 'process',
+    user_status:'normal'
+  }
+  useUserDataStore().AddApply()
+  loading.value = true
+  setTimeout(()=>{
+    useSourceArrayStore().UpdateSourceArray()
+    setTimeout(()=>{
+      if(useSourceArrayStore().SourceArray.find((_source)=>{
+        return _source.SSID == useSourceListStatusStore().ChooseSource.SSID&&_source.SourceStatus == 'PROCESS';
+      })!=undefined){
+        loading.value = false
+        useSourceListStatusStore().OpenApplySheet = false
+        snackbar.value.text = "预约成功，您的预约编号为No." + useUserDataStore().apply_id + ";请妥善保管。"
+        snackbar.value.snackbar = true
+      }
+    },500)
+  },300)
 })
 </script>
 
