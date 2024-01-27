@@ -39,7 +39,7 @@ export const useUserDataStore = defineStore('UserData', {
             } as UserSource
           }
           else {
-            const _UserData = await SQLPool.execute('SELECT user,authority,name,card FROM `demo_source`.user_list where user=?',[_user])
+            const _UserData = await SQLPool.execute('SELECT user,authority,name,card FROM user_list where user=?',[_user])
             //noinspection JSUnresolvedVariable
             this.UserStatus = "Login"
             //noinspection JSUnresolvedVariable
