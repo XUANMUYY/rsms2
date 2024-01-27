@@ -18,9 +18,8 @@ export const useAddSourceStore = defineStore('AddSource', {
   actions: {
     async RefreshSSID() {
       await SQLPool.query(AddSourceStore)
-      const _SSID = await SQLPool.execute('SELECT SSID  FROM `sources_list` WHERE nuclide = \'tmp\'', [])
+      const _SSID = await SQLPool.execute('SELECT SSID  FROM `sources_list` WHERE nuclide_name = \'tmp\'', [])
       this.SSID = _SSID[0][0]['SSID']
-
     },
     async Add_sources_list() {
       //noinspection JSUnresolvedVariable

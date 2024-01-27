@@ -10,6 +10,7 @@ const SQLPool = await require('mysql2/promise').createPool(PoolOptions.SQL)
 export const useSourceArrayStore = defineStore('SourceArray', {
   state: () => ({
     SourceArray: [] as SourcesArray[],
+    GetSourceArray:[]  as SourcesArray[],
   }),
   actions: {
     async UpdateSourceArray() {
@@ -21,25 +22,8 @@ export const useSourceArrayStore = defineStore('SourceArray', {
         console.error(error)
       }
     },
-    GetSourceArray(SSID:string){
+    GetSourceArray(_SSID:string){
       //noinspection JSUnresolvedVariable
-      this.SourceArray.forEach((Source)=>{
-        if(Source.SSID == SSID){
-          return Source
-        }else {
-          return {
-            nuclide_index: '',
-            nuclide: '',
-            nuclide_name: '',
-            nuclide_quality: '',
-            nuclide_rate: '',
-            nuclide_type: '',
-            nuclide_energy: [[]],
-            SSID: '0000',
-            SourceStatus: '',
-          }
-        }
-      })
     }
   },
 })

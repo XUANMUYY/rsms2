@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-bottom-sheet v-model="useSourceListStatusStore().OpenApplySheet" width="800" inset >
+    <v-dialog v-model="useSourceListStatusStore().OpenApplySheet" width="800" inset >
       <form @submit.prevent="submit">
         <div>
           <v-card
@@ -12,11 +12,11 @@
           >
             <v-card-text>
               <v-btn variant="text" @click="useSourceListStatusStore().OpenApplySheet = !useSourceListStatusStore().OpenApplySheet"> close </v-btn>
-              <div>你正在预约{{useSourceListStatusStore().ChooseSourceSSID}}</div>
+              <div>你正在填写{{useUserDataStore().apply_id}}号申请,预约{{useSourceListStatusStore().ChooseSource.SSID}}号源。</div>
             </v-card-text>
             <v-container>
               <v-row>
-                <v-col cols="7">
+                <v-col cols="3">
                   <v-text-field
                     v-model="SSID.value.value"
                     :error-messages="SSID.errorMessage.value"
@@ -29,12 +29,35 @@
                     disabled
                   ></v-text-field>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="3">
                   <v-text-field
-                    v-model="user.value.value"
-                    :error-messages="user.errorMessage.value"
+                    v-model="useSourceListStatusStore().ChooseSource.nuclide"
                     density="compact"
-                    label="user"
+                    label="源"
+                    prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"
+                    required
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="3">
+                  <v-text-field
+                    v-model="useSourceListStatusStore().ChooseSource.nuclide_quality"
+                    density="compact"
+                    label="质量数"
+                    prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"
+                    required
+                    disabled
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="2">
+                  <v-text-field
+                    v-model="useUserDataStore().apply_id"
+                    density="compact"
+                    label="申请编号"
                     :placeholder="'Enter your user'"
                     prepend-inner-icon="mdi-account-outline"
                     variant="outlined"
@@ -42,12 +65,12 @@
                     disabled
                   ></v-text-field>
                 </v-col>
-                <v-col cols="6">
+                <v-col cols="4">
                   <v-text-field
                     v-model="name.value.value"
                     :error-messages="name.errorMessage.value"
                     density="compact"
-                    label="name"
+                    label="用户"
                     :placeholder="'Enter your name'"
                     prepend-inner-icon="mdi-account-outline"
                     variant="outlined"
@@ -55,36 +78,80 @@
                     disabled
                   ></v-text-field>
                 </v-col>
-                <v-col cols="9">
-                  <v-select
-                    :v-model="reason.value.value"
-                    :error-messages="reason.errorMessage.value"
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="user.value.value"
+                    :error-messages="user.errorMessage.value"
                     density="compact"
-                    label="reason"
+                    label="账号"
+                    :placeholder="'Enter your user'"
+                    prepend-inner-icon="mdi-account-outline"
                     variant="outlined"
                     required
-                    :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    hint="Pick your favorite states"
-                    persistent-hint
+                    disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-select
+                    v-model="reason.value.value as string"
+                    :items="reason_item"
+                    :error-messages="reason.errorMessage.value"
+                    label="申请原因"
+                    variant="outlined"
                   ></v-select>
                 </v-col>
-                <v-col cols="4">
-                  <VueDatePicker
+              </v-row>
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
                     v-model="first_time.value.value"
+                    :error-messages="first_time.errorMessage.value"
+                    density="compact"
+                    label="当前申请时间"
+                    prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"
+                    required
                     disabled
-                    vertical />
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="4">
-                  <VueDatePicker
+                <v-col cols="6">
+                  <v-text-field
                     v-model="last_time.value.value"
+                    :error-messages="last_time.errorMessage.value"
+                    density="compact"
+                    label="预计归还时间"
+                    prepend-inner-icon="mdi-account-outline"
+                    variant="outlined"
+                    required
                     disabled
-                    vertical />
+                  ></v-text-field>
                 </v-col>
-                <v-col cols="4">
-                  <VueDatePicker
-                    v-model="time"
-                    :max-time="{ hours: 11, minutes: 30 }"
-                    time-picker />
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-card-text>
+                    <span class="text-h2 font-weight-light" v-text="time"></span>
+                    <span class="subheading font-weight-light me-1">Hours</span>
+                    <v-fade-transition>
+                      <v-avatar
+                        :color="color"
+                        :style="{ animationDuration: animationDuration }"
+                        class="mb-1 v-avatar--metronome"
+                        size="12"
+                      ></v-avatar>
+                    </v-fade-transition>
+                    <v-slider
+                      v-model="time"
+                      :color="color"
+                      track-color="grey"
+                      min="1"
+                      max="24"
+                      :step="1"
+                      hint="预计使用时间"
+                      persistent-hint
+                    >
+                    </v-slider>
+                  </v-card-text>
                 </v-col>
               </v-row>
             </v-container>
@@ -96,7 +163,7 @@
               size="large"
               variant="tonal"
             >
-              Log In
+              提交
             </v-btn>
             <v-btn
               block
@@ -104,14 +171,15 @@
               color="green"
               size="large"
               variant="tonal"
+              @click="handleReset();UpdateData()"
             >
-              Swipe
+              清空
             </v-btn>
 
           </v-card>
         </div>
       </form>
-    </v-bottom-sheet>
+    </v-dialog>
   </div>
 </template>
 
@@ -119,17 +187,30 @@
 import {useSourceListStatusStore} from '../store/useSourceListStatusStore'
 import {ref} from "vue";
 import {useField, useForm} from 'vee-validate'
+import { useUserDataStore } from '../store/useUserDataStore'
+const moment = require('moment')
 
 const {handleSubmit, handleReset} = useForm({
   validationSchema: {
+    user (value) {
+      if (value?.length >= 1) return true
 
+      return '账户信息获取失败'
+    },
+    name (value) {
+      if (value?.length >= 1) return true
+
+      return '账户信息获取失败'
+    },
+    reason (_value) {
+      if (reason_item.value.includes(reason.value.value as string)) return true
+      console.log(reason)
+      return '申请原因不能为空'
+    },
   },
 })
 
-const time = ref({
-  hours: new Date().getHours(),
-  minutes: new Date().getMinutes()
-});
+const time = ref(24);
 
 const SSID = useField('SSID')
 const user = useField('user')
@@ -138,12 +219,60 @@ const first_time = useField('first_time')
 const last_time = useField('last_time')
 const reason = useField('reason')
 
+useSourceListStatusStore().$subscribe((_args,state)=>{
+  if(state.OpenApplySheet == true){
+    handleReset()
+    SSID.value.value = state.ChooseSource.SSID
+    first_time.value.value = moment().format("MM-DD hh:mm")
+    last_time.value.value = moment().add({h:time.value,m:time.value}).format("MM-DD hh:mm")
+    user.value.value = useUserDataStore().UserData.user
+    name.value.value = useUserDataStore().UserData.name
+  }
+})
+watch(time, (_time, _prevtime) => {
+  last_time.value.value = moment().add({h:_time,m:_time}).format("MM-DD hh:mm")
+})
+
+const color = computed(() => {
+  if (time.value < 5) return 'indigo'
+  if (time.value < 10) return 'teal'
+  if (time.value < 15) return 'green'
+  if (time.value < 20) return 'orange'
+  return 'red'
+})
+
+const animationDuration = computed(() => `${60 / time.value}s`)
+
+const reason_item = ref(['实验使用','源库迁移','教学使用','其他'])
+
+function UpdateData(){
+  handleReset()
+  SSID.value.value = useSourceListStatusStore().ChooseSource.SSID
+  first_time.value.value = moment().format("MM-DD hh:mm")
+  last_time.value.value = moment().add({h:time.value,m:time.value}).format("MM-DD hh:mm")
+  user.value.value = useUserDataStore().UserData.user
+  name.value.value = useUserDataStore().UserData.name
+}
+
 const submit = handleSubmit(values => {
   alert(JSON.stringify(values, null, 2))
-  handleReset()
 })
 </script>
 
 <style scoped>
+@keyframes metronome-example {
+  from {
+    transform: scale(0.5);
+  }
 
+  to {
+    transform: scale(1);
+  }
+}
+
+.v-avatar--metronome {
+  animation-name: metronome-example;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
 </style>

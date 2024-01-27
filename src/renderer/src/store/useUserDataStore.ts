@@ -1,11 +1,13 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { SQLJson, UserDataSources, UserSource } from '../type'
+import { SQLJson, UserApply, UserDataSources, UserSource } from '../type'
 import UserDataStoreSQL from '../sql/UserDataStore.sql'
+import AddApplyStoreSQL from '../sql/AddApplyStore.sql'
 
 const path = await window.api.getPath()
 const PoolOptions:SQLJson = await window.api.readJSON(path + '/plugins/SQLSetting.json')
 const SQLPool = await require('mysql2/promise').createPool(PoolOptions.SQL)
+const AddApplyStore = AddApplyStoreSQL as string
 
 export const useUserDataStore = defineStore('UserData', {
   state: () => ({
@@ -19,6 +21,15 @@ export const useUserDataStore = defineStore('UserData', {
     UserPass: {CupBoard:[],Sources:[]} as UserDataSources,
     UserOut: {CupBoard:[],Sources:[]} as UserDataSources,
     Login:false as boolean,
+    apply_id:0,
+    UserApply:{
+      SSID:"0",
+      first_time:"0000-00-00 00:00:00",
+      last_time:"0000-00-00 00:00:00",
+      reason:"tmp",
+      apply_status:"process-forbid",
+      user_status:"normal",
+    } as UserApply
   }),
   getters:{
   },
@@ -135,6 +146,25 @@ export const useUserDataStore = defineStore('UserData', {
       } catch (error) {
         console.error(error)
       }
+    },
+    async RefreshApply(){
+      await SQLPool.query(AddApplyStore)
+      const _apply_id = await SQLPool.execute('SELECT apply_id  FROM `apply_list` WHERE user = \'tmp\'', [])
+      this.apply_id = _apply_id[0][0]['apply_id']
+    },
+    async AddApply(){
+      //noinspection JSUnresolvedVariable
+      const result = await SQLPool.execute('update apply_list set SSID = ?, user = ?, first_time = ?, last_time = ?, reason = ?, apply_status = ?, user_status = ? where apply_id = ?',
+        [this.UserApply.SSID,
+          this.UserApply.user,
+          this.UserApply.first_time,
+          this.UserApply.last_time,
+          this.UserApply.reason,
+          this.UserApply.apply_status,
+          this.UserApply.user_status,
+          this.apply_id
+        ])
+      console.log(result)
     },
     ConsoleUserData(){
       console.log(this.UserData)

@@ -4,7 +4,7 @@
     :ripple="false"
     border
     max-width="400px"
-    v-on:click="useSourceListStatusStore().ChooseSourceSSID = source_item.SSID"
+    v-on:click="useSourceListStatusStore().ChooseSource = source_item"
   >
     <v-card-item>
       <template v-slot:subtitle>
@@ -94,7 +94,7 @@
         variant="plain"
         elevation="4"
         v-if="useUserDataStore().UserData.authority === 'root'||useUserDataStore().UserData.authority === 'normal'"
-        @click="useSourceListStatusStore().OpenApplySheet = true"
+        @click="useSourceListStatusStore().OpenApplySheet = true;useUserDataStore().RefreshApply();"
       >
         预约
       </v-btn>

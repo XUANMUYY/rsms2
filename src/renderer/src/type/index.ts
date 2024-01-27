@@ -81,3 +81,16 @@ export declare interface Source_List_Data{
   nuclide_energy?: number[][],
   Status?: 'READY'| 'OUT'| 'ALARM'|'PROCESS'| 'PROCESS-PASS',
 }
+
+export declare interface UserApply{
+  SSID:string,
+  user:string,
+  first_time:string,
+  last_time:string,
+  process_time:string,
+  back_time:string,
+  reason:string,
+  apply_status:'process'|'process-pass'|'process-forbid',
+  event_status:'wait'| 'out'| 'normal',
+  user_status:'overdue'| 'normal',
+}

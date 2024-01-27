@@ -1,5 +1,7 @@
 <template>
   <main-source-list :ShowPerPage=ShowPerPage :sources="sources"></main-source-list>
+  <apply-source></apply-source>
+  <AddSource></AddSource>
 </template>
 
 <script setup lang="ts">
@@ -7,6 +9,8 @@ import { Ref } from 'vue'
 import MainSourceList from '@/components/SourceList.vue'
 import { useSourceArrayStore } from '../../store/useSourceArrayStore'
 import { SourcesArray } from '../../type'
+import AddSource from '../../components/AddSource/AddSource.vue'
+import ApplySource from '../../components/ApplySource.vue'
 
 let sources:Ref<SourcesArray[]> = ref([])
 let ShowPerPage:Ref<number> = ref(12)

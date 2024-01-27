@@ -38,16 +38,12 @@
       </template>
     </v-data-iterator>
   </v-card>
-  <apply-source></apply-source>
-  <AddSource></AddSource>
 </template>
 
 <script setup lang="ts">
 import { SourcesArray, SourcesFilterArray } from '../type'
 import SourceCard from './SourceCard.vue'
-import ApplySource from './ApplySource.vue'
 // import {useAddSourceStore} from '../store/useAddSourceStore'
-import AddSource from './AddSource/AddSource.vue'
 import { ref } from 'vue'
 import { useSourceListStatusStore } from '../store/useSourceListStatusStore'
 import { useAddSourceStore } from '../store/useAddSourceStore'
