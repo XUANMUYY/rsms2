@@ -12,6 +12,8 @@ function createWindow(): void {
     height: 1080,
     minWidth: 400,
     minHeight: 700,
+    fullscreen:false,
+    resizable:false,
     show: false,
     frame: false,
     autoHideMenuBar: true,
@@ -144,7 +146,7 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 

@@ -24,7 +24,7 @@ export declare interface SourcesFilterArray {
 }
 export declare interface UserSource{
   user:string,
-  authority:string,
+  authority:'root'| 'normal'| 'guest',
   name:string,
   card:string,
   SSID:string,
@@ -93,4 +93,37 @@ export declare interface UserApply{
   apply_status?:'process'|'process-pass'|'process-forbid',
   event_status?:'wait'| 'out'| 'normal',
   user_status?:'overdue'| 'normal',
+}
+
+export declare interface CountRate {
+  CountRateStatus:boolean,
+  TimeStamp: number;
+  Count: number;
+  Sample_Count_Total: number;
+  CountRate: number;
+}
+
+export declare interface SocketInfo{
+  Address:{hostname:string,port:number},
+  ID:string,
+  Result:string,
+  ResultCMD:any
+}
+
+export declare interface ADCPulse{
+  ADCPulseStatus:boolean,
+  Index:number,
+  Ch:number,
+  Peak:number
+}
+
+export declare interface UserRegister{
+  CardResult:boolean,
+  UserResult:boolean,
+  Card:string,
+  User:string,
+  name:string,
+  password:string,
+  authority:'root'|'normal'|'guest',
+  Result:number
 }

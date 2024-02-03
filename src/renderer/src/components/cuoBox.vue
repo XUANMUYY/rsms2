@@ -66,6 +66,6 @@ let PROCESS:Ref<string[]> = ref([])
 let OUT:Ref<string[]> = ref([])
 </script>
 
-<style scoped>
+<style>
 
 </style>

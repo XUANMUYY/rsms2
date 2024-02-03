@@ -1,10 +1,7 @@
-/**
- * src/styles/settings.scss
- *
- * Configures SASS variables and Vuetify overwrites
- */
+html{
+  overflow-y: hidden;
+}
 
-// https://vuetifyjs.com/features/sass-variables/`
-// @use 'vuetify/settings' with (
-//   $color-pack: false
-// );
+*{
+   user-select:none;
+ }

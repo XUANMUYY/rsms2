@@ -4,7 +4,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/SourceList',
+    redirect: '/DashBoard',
     meta: {}
   } as any,
   {
@@ -69,6 +69,15 @@ const routes = [
       layout: 'ManageDemo'
     },
     component: () => import('@/views/pages/SourceListManageDemo.vue')
+  },
+  {
+    path: '/DashBoard',
+    name: 'DashBoard',
+    meta: {
+      requiresAuth: true,
+      layout: 'DashBoard'
+    },
+    component: () => import('@/views/pages/DashBoard.vue')
   }
 ]
 

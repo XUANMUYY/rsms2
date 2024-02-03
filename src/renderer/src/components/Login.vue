@@ -23,7 +23,6 @@
           prepend-inner-icon="mdi-account-outline"
           variant="outlined"
           clearable
-          required
         ></v-text-field>
 
         <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
@@ -49,7 +48,6 @@
           prepend-inner-icon="mdi-lock-outline"
           variant="outlined"
           clearable
-          required
           @click:append-inner="visible = !visible"
         ></v-text-field>
 
@@ -92,7 +90,7 @@
             class="text-blue text-decoration-none"
             href="#"
             rel="noopener noreferrer"
-            target="_blank"
+            @click="useUserDataStore().Register=true"
           >
             注册<v-icon icon="mdi-chevron-right"></v-icon>
           </a>
@@ -113,6 +111,10 @@ let loading = ref(false)
 let loadingSwipe = ref(false)
 
 let Tips = ref("提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n")
+
+useUserDataStore().$subscribe((_args,state)=>{
+  if(state.Login == true) Tips.value = "提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n"
+})
 
 const { handleSubmit, handleReset } = useForm({
   validationSchema: {
@@ -156,26 +158,34 @@ function swipe(){
   useLotusCardDriverStore().Clear()
   useUserDataStore().Clear()
   useLotusCardDriverStore().OpenDriver()
-  Tips.value = "请在‘哔’声后刷卡。"
   setTimeout(()=>{
-    useLotusCardDriverStore().UpdateCardNo()
-    setTimeout(()=>{
+    if(useLotusCardDriverStore().Result=='设备打开失败!'){
+      Tips.value = '读卡设备连接失败！请联系管理员。'
       loadingSwipe.value = false
-      useUserDataStore().GetUserData("","",useLotusCardDriverStore().CardNo)
+    }
+    else {
+      Tips.value = "请在‘哔’声后刷卡。"
       setTimeout(()=>{
-        if(useUserDataStore().UserStatus=="Login"){
-          Tips.value = "欢迎！ "+useUserDataStore().UserData.name
+        useLotusCardDriverStore().UpdateCardNo()
+        setTimeout(()=>{
           loadingSwipe.value = false
+          useUserDataStore().GetUserData("","",useLotusCardDriverStore().CardNo)
           setTimeout(()=>{
-            useUserDataStore().Login = false
-            handleReset()
-          },500)
-        }
-        else {
-          Tips.value = "无效卡"
-        }
-      },300)
-    },300)
-  },200)
+            if(useUserDataStore().UserStatus=="Login"){
+              Tips.value = "欢迎！ "+useUserDataStore().UserData.name
+              loadingSwipe.value = false
+              setTimeout(()=>{
+                useUserDataStore().Login = false
+                handleReset()
+              },500)
+            }
+            else {
+              Tips.value = "无效卡"
+            }
+          },300)
+        },300)
+      },200)
+    }
+  },500)
 }
 </script>

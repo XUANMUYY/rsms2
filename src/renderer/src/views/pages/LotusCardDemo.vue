@@ -76,6 +76,6 @@ function Clear(){
   Log.value = ""
 }
 </script>
-<style scoped>
+<style>
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-card style="margin: 10px; padding: 10px;height: 98%">
+  <v-card style="margin: 10px; padding: 10px;">
     <v-data-iterator :items="sources" :items-per-page=ShowPerPage :search="search">
       <template v-slot:header>
         <v-toolbar class="px-2">
@@ -23,18 +23,20 @@
       </template>
 
       <template v-slot:default="{ items }">
-        <v-container class="pa-2" fluid>
-          <v-row dense>
-            <v-col
-              v-for="source_item in items"
-              :key="source_item.raw.SSID"
-              cols="auto"
-              md="4"
-            >
-              <SourceCard :source_item="source_item.raw"></SourceCard>
-            </v-col>
-          </v-row>
-        </v-container>
+        <perfect-scrollbar>
+          <v-container class="pa-2" fluid>
+            <v-row dense >
+              <v-col
+                v-for="source_item in items"
+                :key="source_item.raw.SSID"
+                cols="auto"
+                md="4"
+              >
+                <SourceCard :source_item="source_item.raw"></SourceCard>
+              </v-col>
+            </v-row>
+          </v-container >
+        </perfect-scrollbar>
       </template>
     </v-data-iterator>
   </v-card>
@@ -74,7 +76,7 @@ console.log( Props.sources.find(_source=>{
 </script>
 
 <style scoped>
-*{
-  user-select:none;
+.ps {
+  height: 880px;
 }
 </style>

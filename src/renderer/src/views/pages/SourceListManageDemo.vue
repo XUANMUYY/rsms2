@@ -23,6 +23,6 @@ import { useAddSourceStore } from '../../store/useAddSourceStore'
 import AddSource from '../../components/AddSource/AddSource.vue'
 </script>
 
-<style scoped>
+<style>
 
 </style>

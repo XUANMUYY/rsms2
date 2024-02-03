@@ -28,6 +28,12 @@
     </v-row>
   </v-container>
   <v-dialog
+    v-model="useUserDataStore().Register"
+    width="auto"
+  >
+    <Register></Register>
+  </v-dialog>
+  <v-dialog
     v-model="useUserDataStore().Login"
     width="auto"
   >
@@ -37,5 +43,6 @@
 <script lang="ts" setup>
 import { useUserDataStore } from '../store/useUserDataStore'
 import Login from './Login.vue'
+import Register from './Register/Register.vue'
 
 </script>

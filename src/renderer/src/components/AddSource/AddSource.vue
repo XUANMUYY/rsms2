@@ -93,6 +93,6 @@ let currentTitle = computed(()=>{
 })
 </script>
 
-<style scoped>
+<style>
 
 </style>

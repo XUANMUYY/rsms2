@@ -10,6 +10,7 @@ import markdownRawPlugin from 'vite-raw-plugin'
 // Utilities
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import { fileURLToPath, URL } from 'node:url'
+
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()]

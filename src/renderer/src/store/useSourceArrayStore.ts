@@ -1,7 +1,7 @@
 // Utilities
 import { defineStore } from 'pinia'
 import { SourcesArray, SQLJson } from '../type'
-import SourceArrayStoreSQL from '../sql/SourceArrayStore.sql'
+import SourceArrayStoreSQL from '../sql/SourceArrayStore.sql?raw'
 
 const path = await window.api.getPath()
 const PoolOptions:SQLJson = await window.api.readJSON(path + '/plugins/SQLSetting.json')

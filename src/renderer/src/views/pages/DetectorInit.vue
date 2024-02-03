@@ -115,6 +115,6 @@ let DateTime:Ref<{
 
 </script>
 
-<style scoped>
+<style>
 
 </style>

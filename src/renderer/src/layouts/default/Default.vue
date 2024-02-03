@@ -12,3 +12,6 @@ import DefaultBar from '../init/AppBar.vue'
 import DefaultDrawer from './LeftDrawer.vue'
 import DefaultView from '../init/View.vue'
 </script>
+
+<style lang="scss">
+</style>

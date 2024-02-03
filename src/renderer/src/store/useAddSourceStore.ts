@@ -1,7 +1,7 @@
 // 修改 store.js
 import { defineStore } from 'pinia'
 import { Source_List_Data, SQLJson } from '../type'
-import AddSourceStoreSQL from '../sql/AddSourceStore.sql'
+import AddSourceStoreSQL from '../sql/AddSourceStore.sql?raw'
 
 const path = await window.api.getPath()
 const PoolOptions: SQLJson = await window.api.readJSON(path + '/plugins/SQLSetting.json')

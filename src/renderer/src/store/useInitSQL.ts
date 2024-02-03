@@ -1,7 +1,7 @@
 // Utilities
 import { defineStore } from 'pinia'
-import init_sql from '../sql/init-sql.sql'
-import init_user from '../sql/init-user.sql'
+import init_sql from '../sql/init-sql.sql?raw'
+import init_user from '../sql/init-user.sql?raw'
 
 const path = await window.api.getPath()
 const pathAPP = await window.api.getAppPath()

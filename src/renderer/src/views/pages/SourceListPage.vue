@@ -1,5 +1,5 @@
 <template>
-  <main-source-list :ShowPerPage=ShowPerPage :sources="sources"></main-source-list>
+  <main-source-list :ShowPerPage=ShowPerPage :sources="sources" class="main-source-list"></main-source-list>
   <apply-source></apply-source>
   <AddSource></AddSource>
 </template>
@@ -25,6 +25,6 @@ onMounted(async () => {
 
 </script>
 
-<style scoped>
+<style>
 
 </style>

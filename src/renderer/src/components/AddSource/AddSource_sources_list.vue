@@ -88,7 +88,8 @@
             type="submit"
             size="x-large"
             density="compact"
-            icon="mdi-check-circle-outline"
+            :loading="loading"
+            :icon="loading_done?'mdi-check-circle-outline':'mdi-arrow-up-circle-outline'"
     ></v-btn>
     <v-btn  class="me-4"
             density="compact"
@@ -103,6 +104,7 @@
 import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import { useAddSourceStore } from '../../store/useAddSourceStore'
+import { useSourceArrayStore } from '../../store/useSourceArrayStore'
 
 const { handleSubmit,handleReset } = useForm({
   validationSchema: {
@@ -123,15 +125,33 @@ const nuclide_type_select= ref([
   'β',
 ])
 
+let loading = ref(false)
+let loading_done = ref(false)
 const submit = handleSubmit(values => {
+  loading.value = true
   useAddSourceStore().sources_list_data = values
   setTimeout(()=>{
     useAddSourceStore().Add_sources_list()
-  },500)
+    setTimeout(()=>{
+      useSourceArrayStore().UpdateSourceArray()
+      setTimeout(()=>{
+        if(useSourceArrayStore().SourceArray.find((_source)=>{return _source.SSID==useAddSourceStore().SSID&&_source.nuclide_name!='tmp'})!=undefined){
+          loading.value = false
+          loading_done.value = true
+          setTimeout(()=>{
+            loading_done.value = false
+          },700)
+        }
+        setTimeout(()=>{
+          loading.value = false
+        },2000)
+      },500)
+    },300)
+  },100)
 })
 
 </script>
 
-<style scoped>
+<style>
 
 </style>
