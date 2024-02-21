@@ -78,6 +78,15 @@ const routes = [
       layout: 'DashBoard'
     },
     component: () => import('@/views/pages/DashBoard.vue')
+  },
+  {
+    path: '/ProcessApply',
+    name: 'ProcessApply',
+    meta: {
+      requiresAuth: true,
+      layout: 'ProcessApply'
+    },
+    component: () => import('@/views/pages/ProcessApplyPage.vue')
   }
 ]
 

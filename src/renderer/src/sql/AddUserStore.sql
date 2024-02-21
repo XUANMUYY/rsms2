@@ -1,5 +1,5 @@
 DELETE
 FROM user_list
-WHERE user = 'tmp';
+WHERE name = 'tmp';
 INSERT INTO user_list (user, password, authority,name,card)
-VALUES (100, 'tmp', 'guest', 'tmp', '00000');
+VALUES ('tmp', 'tmp', 'guest', 'tmp', '00000');

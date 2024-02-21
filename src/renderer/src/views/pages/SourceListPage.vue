@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue'
-import MainSourceList from '@/components/SourceList.vue'
+import MainSourceList from '../../components/SourceList.vue'
 import { useSourceArrayStore } from '../../store/useSourceArrayStore'
 import { SourcesArray } from '../../type'
 import AddSource from '../../components/AddSource/AddSource.vue'

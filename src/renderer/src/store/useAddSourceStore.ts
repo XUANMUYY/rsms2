@@ -1,6 +1,6 @@
 // 修改 store.js
 import { defineStore } from 'pinia'
-import { Source_List_Data, SQLJson } from '../type'
+import { Cupboard_List_Data, Device_List_Data, Source_List_Data, SQLJson } from '../type'
 import AddSourceStoreSQL from '../sql/AddSourceStore.sql?raw'
 
 const path = await window.api.getPath()
@@ -12,7 +12,9 @@ export const useAddSourceStore = defineStore('AddSource', {
   state: () => ({
     result:'' as string,
     SSID: '' as string,
-    sources_list_data: {} as Source_List_Data
+    sources_list_data: {} as Source_List_Data,
+    device_list_data: {} as Device_List_Data,
+    cupboard_list_data: {} as Cupboard_List_Data
   }),
   getters: {},
   actions: {

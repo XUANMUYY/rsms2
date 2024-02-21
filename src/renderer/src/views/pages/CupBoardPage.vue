@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import CupBoard from "@/components/cupBoard.vue";
+import CupBoard from "../../components/cupBoard.vue";
 import { CupBoardArray } from '../../type'
 import { Ref } from 'vue'
 import { useUserDataStore } from '../../store/useUserDataStore'

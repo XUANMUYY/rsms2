@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <v-card class="mx-auto"
-            elevation="8"
+            elevation="0"
             rounded="0">
       <v-card-text>
         <v-text-field

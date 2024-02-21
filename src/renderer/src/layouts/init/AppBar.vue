@@ -5,10 +5,31 @@
 
       {{ title }}
     </v-app-bar-title>
+
+    <div class="d-flex">
+      <v-btn  icon>
+        <v-badge dot color="success">
+          <v-icon>mdi-account-multiple-outline</v-icon>
+        </v-badge>
+      </v-btn>
+      <ToolbarNotifications />
+      <v-btn  icon to="/apps/todo">
+        <v-badge :content="`2 +`" color="error">
+          <v-icon>mdi-calendar-check</v-icon>
+        </v-badge>
+      </v-btn>
+      <v-divider vertical thickness="2" inset class="ml-5 mr-1"></v-divider>
+
+      <LanguageSwitcher />
+    </div>
+
   </v-app-bar>
 </template>
 
 <script lang="ts" setup>
+import ToolbarNotifications from '../../components/tmp/ToolbarNotifications.vue'
+import LanguageSwitcher from '../../components/tmp/LanguageSwitcher.vue'
+
 defineProps({
   title: String
 })

@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import cupBox from "@/components/cuoBox.vue";
+import cupBox from "../components/cuoBox.vue";
 import { CupBoardArray } from '../type'
 
 defineProps<{

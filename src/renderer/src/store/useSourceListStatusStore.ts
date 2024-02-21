@@ -7,7 +7,8 @@ export const useSourceListStatusStore = defineStore('SourceListStatus', {
     expand:"" as string,
     OpenApplySheet:false as boolean,
     OpenAddSource:false as boolean,
-    ChooseSource:{} as SourcesArray
+    ChooseSource:{} as SourcesArray,
+    Apply_expand:"" as string,
   }),
   actions: {
   }

@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <v-card class="mx-auto"
-            elevation="8"
+            elevation="0"
             rounded="0">
     <v-card-text>
       <v-select
@@ -24,6 +24,7 @@
   <v-divider></v-divider>
 
   <v-card-actions>
+    <v-btn variant="text" @click="useUserDataStore().Register=false">Back</v-btn>
     <v-spacer></v-spacer>
     <v-btn type="submit" color="primary" variant="flat">Next</v-btn>
   </v-card-actions>

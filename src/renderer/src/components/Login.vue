@@ -88,8 +88,6 @@
         <v-card-text class="text-center">
           <a
             class="text-blue text-decoration-none"
-            href="#"
-            rel="noopener noreferrer"
             @click="useUserDataStore().Register=true"
           >
             注册<v-icon icon="mdi-chevron-right"></v-icon>
@@ -106,11 +104,10 @@ import { useField, useForm } from 'vee-validate'
 import { useUserDataStore } from '../store/useUserDataStore'
 import { useLotusCardDriverStore } from '../store/useLotusCardDriverStore'
 
-let visible = ref(false)
-let loading = ref(false)
-let loadingSwipe = ref(false)
-
-let Tips = ref("提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n")
+const visible = ref(false)
+const loading = ref(false)
+const loadingSwipe = ref(false)
+const Tips = ref("提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n")
 
 useUserDataStore().$subscribe((_args,state)=>{
   if(state.Login == true) Tips.value = "提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n"
@@ -130,10 +127,8 @@ const { handleSubmit, handleReset } = useForm({
     },
   },
 })
-
 const UserAccount = useField('UserAccount')
 const PassWord = useField('PassWord')
-
 const submit = handleSubmit(values => {
   loading.value = true
   useUserDataStore().GetUserData(values.UserAccount,values.PassWord,"");

@@ -9,11 +9,6 @@
     >
       <v-card-title class="text-h6 font-weight-regular justify-space-between">
         <span>{{ currentTitle }}</span>
-        <v-avatar
-          color="primary"
-          size="24"
-          v-text="step"
-        ></v-avatar>
       </v-card-title>
 
       <v-window v-model="step">
@@ -22,22 +17,14 @@
         </v-window-item>
 
         <v-window-item :value="2">
-          <v-card-text>
-            <v-text-field
-              label="Password"
-              type="password"
-            ></v-text-field>
-            <v-text-field
-              label="Confirm Password"
-              type="password"
-            ></v-text-field>
-            <span class="text-caption text-grey-darken-1">
-            Please enter a password for your account
-          </span>
-          </v-card-text>
+          <AddSource_device_list></AddSource_device_list>
         </v-window-item>
 
         <v-window-item :value="3">
+          <AddSource_cupboard_list></AddSource_cupboard_list>
+        </v-window-item>
+
+        <v-window-item :value="4">
           <div class="pa-4 text-center">
             <v-img
               class="mb-4"
@@ -65,7 +52,7 @@
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          v-if="step < 3"
+          v-if="step < 4"
           color="primary"
           variant="flat"
           @click="step++"
@@ -79,15 +66,18 @@
 
 <script setup lang="ts">
 import {computed, ref} from "vue";
-import AddSource_sources_list from "@/components/AddSource/AddSource_sources_list.vue";
+import AddSource_sources_list from "../../components/AddSource/AddSource_sources_list.vue";
 import { useSourceListStatusStore } from '../../store/useSourceListStatusStore'
+import AddSource_cupboard_list from './AddSource_cupboard_list.vue'
+import AddSource_device_list from './AddSource_device_list.vue'
 
 let step = ref(1)
 
 let currentTitle = computed(()=>{
   switch (step.value) {
-    case 1: return '源库信息'
-    case 2: return 'Create a password'
+    case 1: return '源信息'
+    case 2: return '源设备'
+    case 3: return '源位置'
     default: return 'Account created'
   }
 })

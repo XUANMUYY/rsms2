@@ -82,6 +82,20 @@ export declare interface Source_List_Data{
   Status?: 'READY'| 'OUT'| 'ALARM'|'PROCESS'| 'PROCESS-PASS',
 }
 
+export declare interface Device_List_Data{
+  device_id?: string,
+  device_index?: number,
+  device_number?: number,
+  SSID?: string,
+  wiz_ip?: string,
+  wiz_port?: number,
+}
+
+export declare interface Cupboard_List_Data{
+  cupbox_id:string,
+  SSID:string,
+}
+
 export declare interface UserApply{
   SSID:string,
   user:string,
@@ -126,4 +140,42 @@ export declare interface UserRegister{
   password:string,
   authority:'root'|'normal'|'guest',
   Result:number
+}
+
+export declare interface ApplyArray{
+  apply_id:string,
+  SSID:string,
+  user:string,
+  name:string,
+  reason:string,
+  apply_status:'process'|'process-pass'|'process-forbid',
+  event_status:'wait'| 'out'| 'normal',
+  user_status:'overdue'| 'normal',
+  first_time:string,
+  last_time:string,
+  process_time:string,
+  out_time:string,
+  back_time:string,
+  nuclide?: string,
+  nuclide_id?: number,
+  nuclide_name?: string,
+  nuclide_index?: number,
+  nuclide_quality?: number,
+  nuclide_rate?: string,
+  nuclide_type?: string,
+  nuclide_energy?: number[][],
+  Status?: 'READY'| 'OUT'| 'ALARM'|'PROCESS'| 'PROCESS-PASS',
+}
+
+export declare interface CupBoxSource{
+  cupbox_id:string,
+  SSID:string,
+  nuclide:string,
+  nuclide_index: number,
+  nuclide_name: string,
+  nuclide_quality: number,
+  nuclide_rate: string,
+  nuclide_type: string,
+  nuclide_energy: number[][],
+  SourceStatus: 'READY'| 'OUT'| 'ALARM'| 'PROCESS'| 'PROCESS-PASS',
 }

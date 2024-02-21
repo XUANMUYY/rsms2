@@ -60,7 +60,7 @@
 </template>
 
 <script lang="ts" setup>
-import Loading from "@/components/Loading.vue";
+import Loading from "../../components/Loading.vue";
 import {useInitSQLStore} from '../../store/useInitSQL'
 import SystemVersionJson from '../../json/SystemVersion.json'
 

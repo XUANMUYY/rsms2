@@ -1,1 +1,1 @@
-SELECT * FROM `sources_list` where nuclide_name != 'tmp'
+SELECT * FROM `sources_list` where nuclide_name != 'tmp' order by SourceStatus

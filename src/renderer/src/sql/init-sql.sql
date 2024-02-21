@@ -72,6 +72,7 @@ BEGIN
             first_time   datetime                                           not null,
             last_time    datetime                                           not null,
             process_time datetime                                           null,
+            out_time     datetime                                           null,
             back_time    datetime                                           null,
             reason       text                                               null,
             apply_status enum ('process', 'process-pass', 'process-forbid') not null,

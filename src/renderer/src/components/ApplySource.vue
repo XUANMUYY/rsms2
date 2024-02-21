@@ -292,6 +292,7 @@ const submit = handleSubmit(values => {
     last_time: values.last_time,
     reason: values.reason,
     apply_status: 'process',
+    event_status: 'normal',
     user_status:'normal'
   }
   useUserDataStore().AddApply()

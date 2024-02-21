@@ -1,48 +1,46 @@
 <template>
-  <v-container fluid >
-    <v-row justify="center">
-      <v-menu min-width="200px" rounded>
-        <template v-slot:activator="{ props }">
-          <v-btn v-bind="props" size="large" >
-            <v-chip color="brown" size="large">
-              <span class="text-h5">{{ (useUserDataStore().UserData.name === "" ? "LOGIN" : useUserDataStore().UserData.name.substring(0, 1)) }}</span>
-            </v-chip>
-          </v-btn>
+  <v-list>
+    <v-list-item >
+      <template v-slot:prepend>
+        <v-icon :style="{ color: useUserDataStore().UserStatus=='Login' ? '#EF5350' : '#546E7A' }">mdi-account</v-icon>
+      </template>
+      <v-card
+        class="mx-auto"
+        max-width="344"
+        :title="useUserDataStore().UserData.name==''?'未登入':useUserDataStore().UserData.name"
+        :subtitle="authority_text[useUserDataStore().UserData.authority]"
+      >
+        <template v-slot:actions>
+          <v-btn v-if="useUserDataStore().UserStatus=='Login'" @click="useUserDataStore().Clear()">登出</v-btn>
+          <v-btn v-else @click="useUserDataStore().Login = true">登入</v-btn>
         </template>
-        <v-card>
-          <v-card-text>
-            <div class="mx-auto text-center">
-              <v-avatar color="brown">
-                <span class="text-h5">{{ (useUserDataStore().UserData.name === "" ? "" : useUserDataStore().UserData.name.substring(0, 1)) }}</span>
-              </v-avatar>
-              <h3>{{ useUserDataStore().UserData.name }}</h3>
-              <p class="text-caption mt-1">{{ useUserDataStore().UserData.user }}</p>
-              <v-divider class="my-3"></v-divider>
-              <v-btn rounded variant="text"> Edit Account </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn rounded variant="text" @click="useUserDataStore().Clear()"> Disconnect </v-btn>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-menu>
-    </v-row>
-  </v-container>
-  <v-dialog
-    v-model="useUserDataStore().Register"
-    width="auto"
-  >
-    <Register></Register>
-  </v-dialog>
+      </v-card>
+    </v-list-item>
+  </v-list>
   <v-dialog
     v-model="useUserDataStore().Login"
     width="auto"
   >
     <Login></Login>
   </v-dialog>
+  <v-dialog
+    v-model="useUserDataStore().Register"
+    width="auto"
+  >
+    <Register></Register>
+  </v-dialog>
 </template>
+
 <script lang="ts" setup>
 import { useUserDataStore } from '../store/useUserDataStore'
 import Login from './Login.vue'
 import Register from './Register/Register.vue'
+
+const authority_text = {
+  default:"访客",
+  root:"管理员",
+  normal: "普通用户",
+  guest:"访客"
+}
 
 </script>

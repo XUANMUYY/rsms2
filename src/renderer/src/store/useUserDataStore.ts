@@ -32,6 +32,7 @@ export const useUserDataStore = defineStore('UserData', {
       last_time:"0000-00-00 00:00:00",
       reason:"tmp",
       apply_status:"process-forbid",
+      event_status:"normal",
       user_status:"normal",
     } as UserApply,
     UserRegister:{
@@ -167,7 +168,7 @@ export const useUserDataStore = defineStore('UserData', {
     },
     async AddApply(){
       //noinspection JSUnresolvedVariable
-      const result = await SQLPool.execute('update apply_list set SSID = ?, user = ?, first_time = ?, last_time = ?, reason = ?, apply_status = ?, user_status = ? where apply_id = ?',
+      const result = await SQLPool.execute('update apply_list set SSID = ?, user = ?, first_time = ?, last_time = ?, reason = ?, apply_status = ?, user_status = ?,event_status=? where apply_id = ?',
         [this.UserApply.SSID,
           this.UserApply.user,
           this.UserApply.first_time,
@@ -175,6 +176,7 @@ export const useUserDataStore = defineStore('UserData', {
           this.UserApply.reason,
           this.UserApply.apply_status,
           this.UserApply.user_status,
+          this.UserApply.event_status,
           this.apply_id
         ])
       console.log(result)
