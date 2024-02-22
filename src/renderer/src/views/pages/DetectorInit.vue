@@ -1,56 +1,63 @@
 <template>
-<v-container>
-  <v-row>
-    <v-col cols="12">
-      <v-card title="IDDATA">
-        <v-container>
-          <v-row>
-            <v-col v-for="key in Object.keys(IDDATA)" cols="6">
-              <v-text-field :label="key.toString()" v-model = "IDDATA[key]"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-col>
-    <v-col cols="12">
-      <v-card title="Limit_Threshold">
-        <v-container>
-          <v-row>
-            <v-col v-for="key in Object.keys(Limit_Threshold)" cols="6">
-              <v-text-field :label="key.toString()" v-model = "Limit_Threshold[key]"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-col>
-    <v-col cols="12">
-      <v-card title="WIZ_NetInfo">
-        <v-container>
-          <v-row>
-            <v-col v-for="key in Object.keys(WIZ_NetInfo)" cols="6">
-              <v-text-field :label="key.toString()" v-model = "WIZ_NetInfo[key]"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-col>
-    <v-col cols="12">
-      <v-card title="DateTime">
-        <v-container>
-          <v-row>
-            <v-col v-for="key in Object.keys(DateTime)" cols="6">
-              <v-text-field :label="key.toString()" v-model = "DateTime[key]"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card>
-    </v-col>
-  </v-row>
-</v-container>
+  <perfect-scrollbar>
+    <v-btn @click="useTmpStore().CreatSocket()">1</v-btn>
+    <v-btn @click="useTmpStore().CheckBoard()">2</v-btn>
+    <v-btn @click="useTmpStore().InitBoard()">2</v-btn>
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-card title="IDDATA">
+            <v-container>
+              <v-row>
+                <v-col v-for="key in Object.keys(IDDATA)" cols="6">
+                  <v-text-field :label="key.toString()" v-model = "IDDATA[key]"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-card title="Limit_Threshold">
+            <v-container>
+              <v-row>
+                <v-col v-for="key in Object.keys(Limit_Threshold)" cols="6">
+                  <v-text-field :label="key.toString()" v-model = "Limit_Threshold[key]"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-card title="WIZ_NetInfo">
+            <v-container>
+              <v-row>
+                <v-col v-for="key in Object.keys(WIZ_NetInfo)" cols="6">
+                  <v-text-field :label="key.toString()" v-model = "WIZ_NetInfo[key]"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-card title="DateTime">
+            <v-container>
+              <v-row>
+                <v-col v-for="key in Object.keys(DateTime)" cols="6">
+                  <v-text-field :label="key.toString()" v-model = "DateTime[key]"></v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </perfect-scrollbar>
+
 </template>
 
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
+import { useTmpStore } from '../../store/useTmpStore'
 
 let IDDATA:Ref<{
   Nuclide:number
@@ -116,5 +123,7 @@ let DateTime:Ref<{
 </script>
 
 <style>
-
+.ps {
+  height: 1000px;
+}
 </style>

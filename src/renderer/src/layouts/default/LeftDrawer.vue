@@ -90,7 +90,7 @@ const Button = ref([
     to:"/DetectorInit",
     icon:"mdi-star",
     color:"#546E7A",
-    authority:"root",
+    authority:"root guest",
     type:"web"
   },
   {
