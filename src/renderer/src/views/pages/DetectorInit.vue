@@ -1,8 +1,6 @@
 <template>
   <perfect-scrollbar>
     <v-btn @click="useTmpStore().CreatSocket()">1</v-btn>
-    <v-btn @click="useTmpStore().CheckBoard()">2</v-btn>
-    <v-btn @click="useTmpStore().InitBoard()">2</v-btn>
     <v-container>
       <v-row>
         <v-col cols="12">
@@ -119,7 +117,6 @@ let DateTime:Ref<{
     m:30,
     s:0
   })
-
 </script>
 
 <style>

@@ -1,6 +1,7 @@
 <template>
   <v-dialog
     v-model="useSourceListStatusStore().OpenAddSource"
+    :persistent = "!useAddSourceStore().CanClose"
     width="auto"
   >
     <v-card
@@ -11,7 +12,7 @@
         <span>{{ currentTitle }}</span>
       </v-card-title>
 
-      <v-window v-model="step">
+      <v-window v-model="useAddSourceStore().step">
         <v-window-item :value="1">
           <AddSource_sources_list></AddSource_sources_list>
         </v-window-item>
@@ -39,42 +40,20 @@
           </div>
         </v-window-item>
       </v-window>
-
-      <v-divider></v-divider>
-
-      <v-card-actions>
-        <v-btn
-          v-if="step > 1"
-          variant="text"
-          @click="step--"
-        >
-          Back
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn
-          v-if="step < 4"
-          color="primary"
-          variant="flat"
-          @click="step++"
-        >
-          Next
-        </v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import AddSource_sources_list from "../../components/AddSource/AddSource_sources_list.vue";
 import { useSourceListStatusStore } from '../../store/useSourceListStatusStore'
 import AddSource_cupboard_list from './AddSource_cupboard_list.vue'
 import AddSource_device_list from './AddSource_device_list.vue'
-
-let step = ref(1)
+import { useAddSourceStore } from '../../store/useAddSourceStore'
 
 let currentTitle = computed(()=>{
-  switch (step.value) {
+  switch (useAddSourceStore().step) {
     case 1: return '源信息'
     case 2: return '源设备'
     case 3: return '源位置'

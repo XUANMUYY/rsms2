@@ -87,6 +87,15 @@ const routes = [
       layout: 'ProcessApply'
     },
     component: () => import('@/views/pages/ProcessApplyPage.vue')
+  },
+  {
+    path: '/Tmp',
+    name: 'Tmp',
+    meta: {
+      requiresAuth: true,
+      layout: 'ProcessApply'
+    },
+    component: () => import('@/views/pages/Tmp.vue')
   }
 ]
 

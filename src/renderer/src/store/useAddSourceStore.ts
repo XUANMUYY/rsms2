@@ -10,6 +10,8 @@ const AddSourceStore = AddSourceStoreSQL as string
 
 export const useAddSourceStore = defineStore('AddSource', {
   state: () => ({
+    step:1,
+    CanClose:true,
     result:'' as string,
     SSID: '' as string,
     sources_list_data: {} as Source_List_Data,
