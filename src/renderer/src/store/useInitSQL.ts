@@ -16,14 +16,14 @@ export const useInitSQLStore = defineStore('InitSQL', {
     callback:[] as object[]
   }),
   actions: {
-    async InitSQL(sql_version){
+    async InitSQL(sql_version,ip_field,ip_base,ip_range,port,cupboard_num){
       this.callback.push(pathAPP)
       try{
-        let SQLCallback = await InitSQLPool.query(MYSQL,[sql_version,sql_version])
+        let SQLCallback = await InitSQLPool.query(MYSQL,[sql_version,sql_version,ip_field,ip_base as number,ip_range as number,port as number,cupboard_num as number])
         this.callback.push(SQLCallback)
       }catch(_error)
       {
-        console.log(_error)
+        console.error(_error)
       }
     },
     async InitUser(){
@@ -32,7 +32,7 @@ export const useInitSQLStore = defineStore('InitSQL', {
         this.callback.push(SQLCallback)
       }catch(_error)
       {
-        console.log(_error)
+        console.error(_error)
       }
     },
     Clear() {

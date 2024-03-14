@@ -1,0 +1,274 @@
+{
+ "root": [
+  {
+   "title": "控制板",
+   "to": "/DashBoard",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 1
+  },
+  {
+   "title": "源库",
+   "to": "/SourceList",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 2
+  },
+  {
+   "title": "源库管理测试",
+   "to": "/ManageDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 3
+  },
+  {
+   "title": "审核",
+   "to": "/ProcessApply",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 4
+  },
+  {
+   "title": "读卡测试",
+   "to": "/CardDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 5
+  },
+  {
+   "title": "初始化",
+   "to": "/Init",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 6
+  },
+  {
+   "title": "源柜",
+   "to": "/CupBoard",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 7
+  },
+  {
+   "title": "源柜测试",
+   "to": "/CupBoardDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 8
+  },
+  {
+   "title": "探测器初始化",
+   "to": "/DetectorInit",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 9
+  },
+  {
+   "title": "设置",
+   "to": "/SystemSetting",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 10
+  },
+  {
+   "title": "测试",
+   "to": "/Tmp",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 11
+  },
+  {
+   "title": "退出",
+   "to": "window.api.windows_close()",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "function",
+   "index": 12
+  }
+ ],
+ "normal": [
+  {
+   "title": "控制板",
+   "to": "/DashBoard",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 1
+  },
+  {
+   "title": "源库",
+   "to": "/SourceList",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 2
+  },
+  {
+   "title": "源库管理测试",
+   "to": "/ManageDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 3
+  },
+  {
+   "title": "审核",
+   "to": "/ProcessApply",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 4
+  }
+ ],
+ "guest": [
+  {
+   "title": "控制板",
+   "to": "/DashBoard",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 1
+  },
+  {
+   "title": "源库",
+   "to": "/SourceList",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 2
+  },
+  {
+   "title": "设置",
+   "to": "/SystemSetting",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 10
+  },
+  {
+   "title": "测试",
+   "to": "/Tmp",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 11
+  },
+  {
+   "title": "退出",
+   "to": "window.api.windows_close()",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "function",
+   "index": 12
+  }
+ ],
+ "all": [
+  {
+   "title": "控制板",
+   "to": "/DashBoard",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 1
+  },
+  {
+   "title": "源库",
+   "to": "/SourceList",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 2
+  },
+  {
+   "title": "源库管理测试",
+   "to": "/ManageDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 3
+  },
+  {
+   "title": "审核",
+   "to": "/ProcessApply",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 4
+  },
+  {
+   "title": "读卡测试",
+   "to": "/CardDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 5
+  },
+  {
+   "title": "初始化",
+   "to": "/Init",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 6
+  },
+  {
+   "title": "源柜",
+   "to": "/CupBoard",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 7
+  },
+  {
+   "title": "源柜测试",
+   "to": "/CupBoardDemo",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 8
+  },
+  {
+   "title": "探测器初始化",
+   "to": "/DetectorInit",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 9
+  },
+  {
+   "title": "设置",
+   "to": "/SystemSetting",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 10
+  },
+  {
+   "title": "测试",
+   "to": "/Tmp",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 11
+  },
+  {
+   "title": "退出",
+   "to": "window.api.windows_close()",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "function",
+   "index": 12
+  }
+ ]
+}

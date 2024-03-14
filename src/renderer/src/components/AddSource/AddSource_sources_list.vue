@@ -93,7 +93,7 @@
       <v-divider></v-divider>
 
       <v-card-actions>
-        <v-btn variant="text" @click="useSourceListStatusStore().OpenAddSource = false">Close</v-btn>
+        <v-btn variant="text" @click="Close">Close</v-btn>
         <v-spacer></v-spacer>
         <v-btn type="submit" :loading="loading" :color="color" variant="flat">{{ tips }}</v-btn>
       </v-card-actions>
@@ -106,7 +106,6 @@ import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import { useAddSourceStore } from '../../store/useAddSourceStore'
 import { useSourceArrayStore } from '../../store/useSourceArrayStore'
-import { useSourceListStatusStore } from '../../store/useSourceListStatusStore'
 
 const { handleSubmit } = useForm({
   validationSchema: {
@@ -155,6 +154,10 @@ const submit = handleSubmit(values => {
     },300)
   },100)
 })
+
+function Close(){
+  useAddSourceStore().$reset()
+}
 
 </script>
 

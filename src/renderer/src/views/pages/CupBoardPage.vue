@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card :loading="loadingCupBoardNumber">
     <v-data-iterator
       :items="cupBoardArray"
       :items-per-page="2"
@@ -7,41 +7,51 @@
       show-select
     >
       <template v-slot:header>
-        <v-toolbar class="px-2" >
-          <v-text-field
-            v-model="search"
-            clearable
-            density="comfortable"
-            hide-details
-            placeholder="Search"
-            prepend-inner-icon="mdi-magnify"
-            style="max-width: 300px;"
-            variant="outlined"
-          ></v-text-field>
-          <v-toolbar-items style="height: 100%">
-            <v-select
-              chips
-              label="Select"
-              :items=UserPass
-              style="max-width: 300px;"
-              variant="outlined"
-              v-model="search"
-            ></v-select>
-          </v-toolbar-items>
-          <v-toolbar-items style="height: 100%">
-            <v-select
-              chips
-              label="Select"
-              :items=UserOut
-              style="max-width: 300px;"
-              variant="outlined"
-              v-model="search"
-            ></v-select>
-          </v-toolbar-items>
-          <v-btn variant="outlined" @click="LoadCardNo">
-            刷卡
-          </v-btn>
-        </v-toolbar>
+        <v-card class="px-2 bg-grey-lighten-3" elevation="0" height="90">
+          <v-container>
+            <v-row>
+              <v-col cols="2">
+                <v-text-field
+                  v-model="search"
+                  clearable
+                  density="comfortable"
+                  hide-details
+                  placeholder="Search"
+                  prepend-inner-icon="mdi-magnify"
+                  style="max-width: 300px;"
+                  variant="outlined"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2">
+                <v-select
+                  chips
+                  label="待取"
+                  clearable
+                  :items=UserPass
+                  style="max-width: 300px;"
+                  variant="outlined"
+                  v-model="UserPassSearch"
+                ></v-select>
+              </v-col>
+              <v-col cols="2">
+                <v-select
+                  chips
+                  label="待还"
+                  clearable
+                  :items=UserOut
+                  style="max-width: 300px;"
+                  variant="outlined"
+                  v-model="UserOutSearch"
+                ></v-select>
+              </v-col>
+              <v-col cols="1">
+                <v-btn variant="outlined" :loading="loading" @click="LoadCardNo">
+                  刷卡
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
       </template>
 
       <template v-slot:default="{ items }">
@@ -50,7 +60,7 @@
             <v-col cols="6"
                    v-for="item in items"
                    :key="item.raw.cupBoardIndex">
-              <cup-board :cupBoardArray="item.raw" :UserPass=UserPass :UserOut=UserOut style="margin-right: 10px"></cup-board>
+              <cup-board :cupBoardArray="item.raw" style="margin-right: 10px"></cup-board>
             </v-col>
           </v-row>
         </v-container>
@@ -83,6 +93,23 @@
       </template>
     </v-data-iterator>
   </v-card>
+  <v-dialog
+    v-model="useCupBoardStore().dialog"
+    width="auto"
+  >
+    <v-card
+      max-width="400"
+    >
+      <v-card-text>
+        <v-progress-circular
+          :width="4"
+          color="green"
+          indeterminate
+        ></v-progress-circular>
+        {{ useCupBoardStore().dialogTips }}
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script lang="ts" setup>
@@ -91,38 +118,51 @@ import { CupBoardArray } from '../../type'
 import { Ref } from 'vue'
 import { useUserDataStore } from '../../store/useUserDataStore'
 import { useLotusCardDriverStore } from '../../store/useLotusCardDriverStore'
+import { useSystemInfoStore } from '../../store/useSystemInfoStore'
+import { useCupBoardStore } from '../../store/useCupBoardStore'
 
-const props = defineProps({
-  CupBoardNumber: {
-    type:Number,
-    default:6,
-  },
+
+useSystemInfoStore().GetSystemInfo().then((info)=>{
+  CupBoardNumber.value = info.cupboard_num
+  cupBoardArray.value = []
+  for (let i = 1;i<=CupBoardNumber.value;i++){
+    let cupBoxLeftArray:string[] = []
+    let cupBoxRightArray:string[] = []
+    for (let j=1;j<=12;j++){
+      if(j<=6){
+        cupBoxLeftArray.push(i.toString().padStart(2, '0')+j.toString().padStart(2, '0'))
+      }else {
+        cupBoxRightArray.push(i.toString().padStart(2, '0')+j.toString().padStart(2, '0'))
+      }
+    }
+    cupBoardArray.value.push(
+      {
+        cupBoardIndex:i.toString(),
+        cupBoxLeftArray: cupBoxLeftArray,
+        cupBoxRightArray: cupBoxRightArray
+      }
+    )
+  }
+  loadingCupBoardNumber.value = false
 })
 
-let search = ref("")
-let UserPass:Ref<string[]> = ref([""])
-let UserOut:Ref<string[]> = ref([""])
-let cupBoardArray:Ref<CupBoardArray[]> = ref([])
+const search = ref("")
+const UserPass:Ref<string[]> = ref([""])
+const UserOut:Ref<string[]> = ref([""])
+const UserPassSearch:Ref<string|null> = ref(null)
+const UserOutSearch:Ref<string|null> = ref(null)
+const cupBoardArray:Ref<CupBoardArray[]> = ref([])
+const loading = ref(false)
+const CupBoardNumber = ref(6)
+const loadingCupBoardNumber = ref(true)
 let Interval:any;
 
-for (let i = 1;i<=props.CupBoardNumber;i++){
-  let cupBoxLeftArray:string[] = []
-  let cupBoxRightArray:string[] = []
-  for (let j=1;j<=12;j++){
-    if(j<=6){
-      cupBoxLeftArray.push(i.toString().padStart(2, '0')+j.toString().padStart(2, '0'))
-    }else {
-      cupBoxRightArray.push(i.toString().padStart(2, '0')+j.toString().padStart(2, '0'))
-    }
+watch(UserPassSearch,(state,_pre)=>{
+  if(state!=_pre && state != null){
+    UserOutSearch.value = null
+    search.value = state
   }
-  cupBoardArray.value.push(
-    {
-      cupBoardIndex:"柜"+i.toString(),
-      cupBoxLeftArray: cupBoxLeftArray,
-      cupBoxRightArray: cupBoxRightArray
-    }
-  )
-}
+})
 
 useUserDataStore().$subscribe((_args,state)=>{
   UserPass.value = state.UserPass.CupBoard
@@ -144,14 +184,22 @@ useLotusCardDriverStore().$subscribe((_args,state)=>{
 })
 
 function LoadCardNo(){
+  loading.value = true
   useLotusCardDriverStore().Clear()
   useUserDataStore().Clear()
+  useLotusCardDriverStore().OpenDriver()
   setTimeout(()=>{
-    useLotusCardDriverStore().UpdateCardNo()
-  },200)
-  Interval = setInterval(()=>{
-    useLotusCardDriverStore().UpdateCardNoSilence()
-  },5000)
+    if(useLotusCardDriverStore().Result=='设备打开失败!'){
+      loading.value = false
+    }
+    else {
+      loading.value = false
+      useLotusCardDriverStore().UpdateCardNo()
+      Interval = setInterval(()=>{
+        useLotusCardDriverStore().UpdateCardNoSilence()
+      },5000)
+    }
+  },500)
 }
 </script>
 

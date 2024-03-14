@@ -26,9 +26,15 @@ BEGIN
 
         CREATE TABLE if not exists system_info
         (
-            sql_version text NOT NULL
+            sql_version  text NOT null,
+            ip_field     text not null,
+            ip_base      int  not null,
+            ip_range     int  not null,
+            port         int  not null,
+            cupboard_num int  not null
         );
-        insert into system_info (sql_version) values (?);
+        insert into system_info (sql_version, ip_field, ip_base, ip_range, port, cupboard_num)
+        values (?, ?, ?, ?, ?, ?);
 
         create table if not exists sources_list
         (
@@ -52,7 +58,8 @@ BEGIN
             password  varchar(18)                      null,
             authority enum ('root', 'normal', 'guest') not null,
             name      text                             null,
-            card      varchar(16)                      null
+            card      varchar(16)                      null,
+            state     enum ('normal','freeze')         not null
         );
 
         create table if not exists cupboard_list
@@ -76,19 +83,18 @@ BEGIN
             back_time    datetime                                           null,
             reason       text                                               null,
             apply_status enum ('process', 'process-pass', 'process-forbid') not null,
-            event_status enum ('wait','out', 'normal')                      null,
-            user_status  enum ('overdue', 'normal')                         not null
+            event_status enum ('wait','out', 'normal' , 'back')             null,
+            user_status  enum ('overdue', 'normal')                         not null,
+            item_status  enum ('end' , 'run')                               not null
         );
 
         create table if not exists device_list
         (
-            device_id     int auto_increment not null
+            device_id int auto_increment not null
                 primary key,
-            device_index  int                not null,
-            device_number int                not null,
-            SSID          int                not null,
-            wiz_ip        varchar(14)        not null,
-            wiz_port      int                not null
+            SSID      int                not null,
+            wiz_ip    varchar(14)        not null,
+            wiz_port  int                not null
         );
     END IF;
 END;
@@ -109,7 +115,7 @@ BEGIN
         ELSE SET new_SourceStatus = NULL;
         END CASE;
 
-    IF new_SourceStatus IS NOT NULL THEN
+    IF new_SourceStatus IS NOT NULL AND NEW.item_status != 'end' THEN
         UPDATE sources_list
         SET SourceStatus = new_SourceStatus
         WHERE SSID = NEW.SSID;

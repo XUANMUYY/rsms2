@@ -64,12 +64,13 @@ useCupBoardStore().$subscribe((_args,state)=>{
 })
 
 function CupBoardsInit(){
-  useCupBoardStore().CupBoardsInit(CupBoxIndex.value.toString())
+  useCupBoardStore().CupBoardsInit(CupBoxIndex.value)
 }
 
 function OpenBox(){
   useCupBoardStore().OpenBox(CupBoxIndex.value.toString(),CupBoardIndex.value.toString())
 }
+
 function Clear(){
   useCupBoardStore().Clear()
   CallBack.value = ""

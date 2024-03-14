@@ -1,5 +1,10 @@
 {
-  "RSMSVersion":"0.2.2" ,
-  "SQLVersion":"0.2.3" ,
-  "ARMVersion":"0.2.2.B"
+  "RSMSVersion":"0.2.4" ,
+  "SQLVersion":"0.2.5" ,
+  "ARMVersion":"0.2.2.B",
+  "ip_field": "192.168.0.",
+  "ip_base": "100",
+  "ip_range": "100",
+  "port": "5000",
+  "cupboard_num": "1"
 }

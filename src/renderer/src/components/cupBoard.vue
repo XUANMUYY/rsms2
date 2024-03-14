@@ -5,17 +5,31 @@
         <v-row no-gutters>
           <v-col cols="5">
             <div v-for="(cupBoxIndex,i) in cupBoardArray.cupBoxLeftArray" :key="i" style="margin: 10px">
-              <cup-box :cupBoxIndex="cupBoxIndex" :UserPass=UserPass :UserOut=UserOut></cup-box>
+              <cup-box :cupBoxIndex="cupBoxIndex"></cup-box>
             </div>
           </v-col>
           <v-col cols="2">
-            <v-card style="margin-left: 10px; margin-right: 10px" height="100%">
-              {{ cupBoardArray.cupBoardIndex }}
-            </v-card>
+            <v-container class="fill-height" style="padding: 0">
+              <v-layout align-center align-content-center>
+                <v-container style="padding: 0">
+                  <v-row no-gutters>
+                    <v-col cols="12">
+                      <v-card elevation="0"
+                              flat
+                              class="bg-grey-lighten-3">
+                        <template v-slot:title>
+                          <h4 class="text-h4 align-content-center">{{ `柜 ` +  cupBoardArray.cupBoardIndex.toString() }}</h4>
+                        </template>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-layout>
+            </v-container>
           </v-col>
           <v-col cols="5">
             <div v-for="(cupBoxIndex,i) in cupBoardArray.cupBoxRightArray" :key="i" style="margin: 10px">
-              <cup-box :cupBoxIndex="cupBoxIndex" :UserPass=UserPass :UserOut=UserOut></cup-box>
+              <cup-box :cupBoxIndex="cupBoxIndex"></cup-box>
             </div>
           </v-col>
         </v-row>
@@ -25,13 +39,11 @@
 </template>
 
 <script setup lang="ts">
-import cupBox from "../components/cuoBox.vue";
+import cupBox from "./cupBox.vue";
 import { CupBoardArray } from '../type'
 
 defineProps<{
   cupBoardArray:CupBoardArray
-  UserPass:string[],
-  UserOut:string[],
 }>()
 </script>
 

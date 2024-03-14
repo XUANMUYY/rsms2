@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import initLayout from '@/layouts/init/Default.vue'
-import defaultLayout from '@/layouts/default/Default.vue'
+import initLayout from './layouts/init/Default.vue'
+import defaultLayout from './layouts/default/Default.vue'
 const route = useRoute()
 const isRouterLoaded = computed(() => {
   return route.name !== null

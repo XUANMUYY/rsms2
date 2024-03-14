@@ -96,6 +96,24 @@ const routes = [
       layout: 'ProcessApply'
     },
     component: () => import('@/views/pages/Tmp.vue')
+  },
+  {
+    path: '/SystemSetting',
+    name: 'SystemSetting',
+    meta: {
+      requiresAuth: true,
+      layout: 'SystemSetting'
+    },
+    component: () => import('@/views/pages/SystemSettingPage.vue')
+  },
+  {
+    path: '/UserListManage',
+    name: 'UserListManage',
+    meta: {
+      requiresAuth: true,
+      layout: 'UserListManage'
+    },
+    component: () => import('@/views/pages/UserListManage.vue')
   }
 ]
 

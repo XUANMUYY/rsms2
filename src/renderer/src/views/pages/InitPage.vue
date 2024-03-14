@@ -64,7 +64,7 @@ import Loading from "../../components/Loading.vue";
 import {useInitSQLStore} from '../../store/useInitSQL'
 import SystemVersionJson from '../../json/SystemVersion.json'
 
-useInitSQLStore().InitSQL(SystemVersionJson.SQLVersion as string)
+useInitSQLStore().InitSQL(SystemVersionJson.SQLVersion as string,SystemVersionJson.ip_field,SystemVersionJson.ip_base,SystemVersionJson.ip_range,SystemVersionJson.port,SystemVersionJson.cupboard_num)
 
 window.api.onReadyToShowMain((_value) => {
   console.log("OK")

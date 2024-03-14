@@ -1,29 +1,43 @@
 {
-  "INIT_SQL": {
-    "host": "localhost",
-    "user": "xuanmuyy",
-    "password": "23912345",
-    "waitForConnections": true,
-    "connectionLimit": 100,
-    "maxIdle": 10,
-    "idleTimeout": 60000,
-    "queueLimit": 5,
-    "enableKeepAlive": false,
-    "keepAliveInitialDelay": 0,
-    "multipleStatements": true
-  },
-  "SQL": {
-    "host": "localhost",
-    "user": "xuanmuyy",
-    "database": "sources_system",
-    "password": "23912345",
-    "waitForConnections": true,
-    "connectionLimit": 100,
-    "maxIdle": 10,
-    "idleTimeout": 60000,
-    "queueLimit": 5,
-    "enableKeepAlive": false,
-    "keepAliveInitialDelay": 0,
-    "multipleStatements": true
-  }
+ "INIT_SQL": {
+  "host": "localhost",
+  "user": "root",
+  "password": "23912345",
+  "waitForConnections": true,
+  "connectionLimit": 100,
+  "maxIdle": 10,
+  "idleTimeout": 60000,
+  "queueLimit": 5,
+  "enableKeepAlive": false,
+  "keepAliveInitialDelay": 0,
+  "multipleStatements": true
+ },
+ "SQL": {
+  "host": "localhost",
+  "user": "root",
+  "database": "sources_system",
+  "password": "23912345",
+  "waitForConnections": true,
+  "connectionLimit": 100,
+  "maxIdle": 10,
+  "idleTimeout": 60000,
+  "queueLimit": 5,
+  "enableKeepAlive": false,
+  "keepAliveInitialDelay": 0,
+  "multipleStatements": true
+ },
+ "SQLSetting": {
+  "host": "string",
+  "user": "string",
+  "database": "string",
+  "password": "string",
+  "waitForConnections": "bool",
+  "connectionLimit": "number",
+  "maxIdle": "number",
+  "idleTimeout": "number",
+  "queueLimit": "number",
+  "enableKeepAlive": "bool",
+  "keepAliveInitialDelay": "number",
+  "multipleStatements": "bool"
+ }
 }

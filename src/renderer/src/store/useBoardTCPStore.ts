@@ -19,7 +19,20 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
         CreatSocket({index:index,ipAddress:ipAddress,port:port}, function (_error,_CallBack) {
           CallBack = _CallBack
         })
-        console.log(CallBack)
+      })
+      return CallBack
+    },
+    DropSocket(this:any,index:number){
+      let CallBack:boolean = false
+      window.api.getPath().then((_path)=>{
+        let DropSocket = edge.func({
+          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+          methodName: 'DropSocket'
+        })
+        DropSocket({index:index}, function (_error,_CallBack) {
+          CallBack = _CallBack
+        })
       })
       return CallBack
     },
@@ -32,7 +45,7 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
           methodName: 'CheckBoard'
         })
         return new Promise((resolve, reject) => {
-          CheckBoard({ index: index, Address: "192.168.0.101:5000" }, function(_error, _CallBack) {
+          CheckBoard({ index: index }, function(_error, _CallBack) {
             if (_error) {
               reject(_error);
             } else {
@@ -44,12 +57,12 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
         console.error('Error:', error);
         return new Promise((resolve, _reject) => {
           setTimeout(() => {
-            resolve('error')
+            resolve(false)
           }, 1000);
         })
       }
     },
-    async InitBoard(this:any,index:number,Address:string,timeStamp:number){
+    async InitBoard(this:any,index:number,Ip:string,Port:number,timeStamp:number){
       try {
         const _path = await window.api.getPath();
         let InitBoard = edge.func({
@@ -58,7 +71,7 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
           methodName: 'InitBoard'
         })
         return new Promise((resolve, reject) => {
-          InitBoard({ index: index, Address: Address,TimeStamp:timeStamp }, function(_error, _CallBack) {
+          InitBoard({ index: index, Ip:Ip,Port:Port,TimeStamp:timeStamp }, function(_error, _CallBack) {
             if (_error) {
               reject(_error);
             } else {
@@ -70,7 +83,33 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
         console.error('Error:', error);
         return new Promise((resolve, _reject) => {
           setTimeout(() => {
-            resolve('error')
+            resolve(false)
+          }, 1000);
+        })
+      }
+    },
+    async FormatBoard(this:any,index:number){
+      try {
+        const _path = await window.api.getPath();
+        let FormatBoard = edge.func({
+          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+          methodName: 'Format'
+        })
+        return new Promise((resolve, reject) => {
+          FormatBoard({ index: index }, function(_error, _CallBack) {
+            if (_error) {
+              reject(_error);
+            } else {
+              resolve(_CallBack);
+            }
+          })
+        })
+      } catch (error) {
+        console.error('Error:', error);
+        return new Promise((resolve, _reject) => {
+          setTimeout(() => {
+            resolve(false)
           }, 1000);
         })
       }

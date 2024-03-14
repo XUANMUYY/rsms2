@@ -103,6 +103,7 @@ import {ref} from "vue";
 import { useField, useForm } from 'vee-validate'
 import { useUserDataStore } from '../store/useUserDataStore'
 import { useLotusCardDriverStore } from '../store/useLotusCardDriverStore'
+import router from '../router'
 
 const visible = ref(false)
 const loading = ref(false)
@@ -131,21 +132,32 @@ const UserAccount = useField('UserAccount')
 const PassWord = useField('PassWord')
 const submit = handleSubmit(values => {
   loading.value = true
-  useUserDataStore().GetUserData(values.UserAccount,values.PassWord,"");
-  setTimeout(()=>{
-    if(useUserDataStore().UserStatus=="Login"){
-      Tips.value = "欢迎！ "+useUserDataStore().UserData.name
-      loading.value = false
-      setTimeout(()=>{
-        useUserDataStore().Login = false
-        handleReset()
-      },500)
-    }
-    else {
-      Tips.value = "账号与密码不匹配"
-      loading.value = false
-    }
-  },500)
+  const User = useUserDataStore().GetUserData(values.UserAccount,values.PassWord,"");
+  User.then((User)=>{
+    setTimeout(()=>{
+      if(User.UserStatus=="Login"&&User.UserData.state!='freeze'){
+        Tips.value = "欢迎！ "+useUserDataStore().UserData.name
+        loading.value = false
+        setTimeout(()=>{
+          router.replace({ path: '/DashBoard' })
+          useUserDataStore().Login = false
+          handleReset()
+        },500)
+      }
+      else {
+        if(User.UserStatus=="Login"&&User.UserData.state=='freeze'){
+          Tips.value = "账户被冻结，请联系管理员。"
+          loading.value = false
+          setTimeout(()=>{
+            useUserDataStore().Clear()
+          },1000)
+        }else{
+          Tips.value = "账号与密码不匹配"
+          loading.value = false
+        }
+      }
+    },500)
+  })
 })
 
 function swipe(){

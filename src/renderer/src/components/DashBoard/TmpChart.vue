@@ -33,7 +33,6 @@ let data:Ref<any[]> = ref([])
 
 useTCPConnectStore().$subscribe((_arg,_state)=>{
   data.value.push([moment.unix(useTCPConnectStore().TCPGetResultCMD('1').TimeStamp).format("YYYY-MM-DD hh-mm-ss").toString(),useTCPConnectStore().TCPGetResultCMD('1').Count])
-  console.log(data.value)
 })
 declare interface CountRate {
   TimeStamp: number;

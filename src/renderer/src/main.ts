@@ -9,11 +9,10 @@ import { registerPlugins } from '@/plugins'
 
 // Components
 import App from './App.vue'
-import VueDatePicker from "@vuepic/vue-datepicker";
-import '@vuepic/vue-datepicker/dist/main.css'
 import EChart from 'vue-echarts'
 import "echarts"
-
+import { VCalendar } from 'vuetify/labs/VCalendar'
+import FullCalendar from '@fullcalendar/vue3'
 
 // Composables
 import { createApp } from 'vue'
@@ -22,6 +21,7 @@ const app = createApp(App)
 
 registerPlugins(app)
 
-app.component('VueDatePicker', VueDatePicker)
-   .component('v-chart', EChart)
+app.component('v-chart', EChart)
+   .component('VCalendar', VCalendar)
+   .component('FullCalendar', FullCalendar)
 app.mount('#app')

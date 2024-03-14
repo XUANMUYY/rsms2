@@ -7,6 +7,7 @@ const api = {
   getAppPath: () => ipcRenderer.invoke('fs:getAppPath'),
   openDev: () => ipcRenderer.invoke('fs:openDev'),
   readJSON: (path:string) => ipcRenderer.invoke('fs:readJSON',path),
+  writeJSON: (path:string,JSONData:any) => ipcRenderer.invoke('fs:writeJSON',path,JSONData),
   readTxt: (path:string) => ipcRenderer.invoke('fs:readTxt',path),
   windows_close:()=>ipcRenderer.invoke('windows:close'),
   showMain: () => ipcRenderer.invoke('mw:showMain'),

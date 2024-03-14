@@ -1,5 +1,5 @@
 <template>
-  <v-chart style="height: 400px;" :option="option" @click="console.log('OK')"></v-chart>
+  <v-chart style="height: 400px;" :option="option" @click=""></v-chart>
   <v-btn @click="EChart()">
     加载
   </v-btn>

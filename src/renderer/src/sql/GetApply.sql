@@ -15,5 +15,5 @@ select al.apply_id,
 from apply_list al
 join sources_list sl on al.SSID = sl.SSID
 join user_list ul on al.user = ul.user
-where al.user != 'tmp'
+where al.user != 'tmp' and al.item_status = 'run'
 order by al.apply_status

@@ -1,1 +1,1 @@
-INSERT IGNORE INTO sources_system.user_list VALUES (?,?,?,?,?);
+INSERT IGNORE INTO sources_system.user_list VALUES (?,?,?,?,?,'normal');

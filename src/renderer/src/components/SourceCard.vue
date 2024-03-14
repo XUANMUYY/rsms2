@@ -3,7 +3,7 @@
     class="pb-3 SourceCard"
     :ripple="false"
     border
-    max-width="400px"
+    max-width="500px"
     v-on:click="useSourceListStatusStore().ChooseSource = source_item"
   >
     <v-card-item>
@@ -67,13 +67,22 @@
     </div>
 
     <v-expand-transition>
-      <div v-if="useSourceListStatusStore().expand === source_item.SSID">
+      <div v-if="useSourceListStatusStore().expand === source_item.SSID+'info'">
         <v-list class="bg-transparent">
           <v-list-item
             v-for="energy_item in source_item.nuclide_energy"
             :key="energy_item[0]"
             :title="`${energy_item[1]}kev`"
             :subtitle="`${energy_item[2]}%`"
+          >
+          </v-list-item>
+        </v-list>
+      </div>
+      <div v-if="useSourceListStatusStore().expand === source_item.SSID+'bind'">
+        <v-list class="bg-transparent">
+          <v-list-item v-for="item in bindItems"
+            :title="item.title"
+            :subtitle="item.value"
           >
           </v-list-item>
         </v-list>
@@ -85,9 +94,17 @@
       <v-btn
         variant="plain"
         elevation="4"
-        @click="()=>{if(useSourceListStatusStore().expand !== source_item.SSID){useSourceListStatusStore().expand = source_item.SSID}else{useSourceListStatusStore().expand = ''}}"
+        @click="()=>{if(useSourceListStatusStore().expand !== source_item.SSID+'info'){useSourceListStatusStore().expand = source_item.SSID+'info'}else{useSourceListStatusStore().expand = ''}}"
       >
-        {{ useSourceListStatusStore().expand!== source_item.SSID ? '更多信息' :
+        {{ useSourceListStatusStore().expand!== source_item.SSID+'info' ? '更多信息' :
+        '隐藏信息' }}
+      </v-btn>
+      <v-btn
+        variant="plain"
+        elevation="4"
+        @click="()=>{if(useSourceListStatusStore().expand !== source_item.SSID+'bind'){useSourceListStatusStore().expand = source_item.SSID+'bind'}else{useSourceListStatusStore().expand = ''}}"
+      >
+        {{ useSourceListStatusStore().expand!== source_item.SSID+'bind' ? '绑定信息' :
         '隐藏信息' }}
       </v-btn>
       <v-btn
@@ -106,6 +123,7 @@
 import { SourcesArray } from '../type'
 import {useSourceListStatusStore} from '../store/useSourceListStatusStore'
 import { useUserDataStore } from '../store/useUserDataStore'
+import { Ref } from 'vue'
 
 defineProps<{
   source_item:SourcesArray,
@@ -132,6 +150,7 @@ const statusSubtitleColor:{ [KEY:string]: string} = {
   'PROCESS-PASS': 'text-light-blue',
   'OUT': '',
 }
+const bindItems:Ref<any[]> = ref([])
 </script>
 
 <style scoped>

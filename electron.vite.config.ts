@@ -5,7 +5,9 @@ import { resolve } from 'path'
 import ViteFonts from 'unplugin-fonts/vite'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
 import markdownRawPlugin from 'vite-raw-plugin'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // Utilities
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
@@ -47,11 +49,15 @@ export default defineConfig({
         }
       }),
       AutoImport({
-        imports: ['vue', 'vue-router', 'pinia']
+        imports: ['vue', 'vue-router', 'pinia'],
+        resolvers: [ElementPlusResolver()]
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()],
       }),
       markdownRawPlugin({
         fileRegex: /\.sql$/
-      })
+      }),
     ],
     define: { 'process.env': {} },
     test: {

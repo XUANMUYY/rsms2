@@ -1,17 +1,21 @@
 <template>
-<v-btn @click="tmp"></v-btn>
+<v-btn :loading="loading" @click="tmp"></v-btn>
+  <v-container class="fill-height background">
+    <v-responsive class="align-center text-center fill-height">
+      <v-img height="400" src="@/assets/scdx.svg" />
+    </v-responsive>
+  </v-container>
 </template>
 
 <script setup lang="ts">
+
+
+import router from '../../router'
+
+const loading = ref(false)
+
 function tmp(){
-  const tt = new Promise((resolve, _reject) => {
-    setTimeout(() => {
-      resolve('error')
-    }, 2000);
-  })
-  tt.then((resole)=>{
-    console.log(resole)
-  })
+  router.replace('/UserListManage')
 }
 </script>
 

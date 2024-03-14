@@ -1,0 +1,41 @@
+{
+ "SA": {
+  "ALA": {
+   "type": "switch",
+   "value": false
+  },
+  "ALB": {
+   "type": "switch",
+   "value": false
+  },
+  "ALS": {
+   "type": "select",
+   "value": "A",
+   "option": [
+    "A",
+    "B",
+    "C"
+   ]
+  }
+ },
+ "系统设置": {
+  "BLA": {
+   "type": "switch",
+   "value": true
+  },
+  "页面权限设置": {
+   "type": "Router_Array",
+   "value": true
+  }
+ },
+ "数据库设置": {
+  "数据库": {
+   "type": "SQLSetting",
+   "value": true
+  },
+  "CLB": {
+   "type": "switch",
+   "value": "true"
+  }
+ }
+}

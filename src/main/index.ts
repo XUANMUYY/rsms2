@@ -62,6 +62,9 @@ function createWindow(): void {
     pathJSON = _path
     return ReadJson(pathJSON)
   })
+  ipcMain.handle('fs:writeJSON', async (_event, _path,JsonData) => {
+    return WriteJson(_path,JsonData)
+  })
   ipcMain.handle('fs:readTxt', async (_event, _path) => {
     let pathTxt: string
     pathTxt = _path
@@ -195,4 +198,8 @@ async function ReadTxt(path: string) {
   }
   // @ts-ignore
   return CON
+}
+async function WriteJson(path:string,data:any){
+  fs.writeFileSync(path,data,'utf8')
+  return true
 }

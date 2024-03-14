@@ -183,26 +183,6 @@
       </form>
     </v-dialog>
   </div>
-  <template>
-    <div class="text-center">
-      <v-snackbar
-        v-model="snackbar.snackbar"
-        :timeout="snackbar.timeout"
-        location="center"
-      >
-        {{ snackbar.text }}
-        <template v-slot:actions>
-          <v-btn
-            color="pink"
-            variant="text"
-            @click="snackbar.snackbar = false"
-          >
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
-  </template>
 </template>
 
 <script setup lang="ts">
@@ -262,11 +242,14 @@ const color = computed(() => {
   if (time.value < 20) return 'orange'
   return 'red'
 })
-
+const Message = () => {
+  ElMessage({
+    message: "预约成功，您的预约编号为No." + useUserDataStore().apply_id + ";请妥善保管。",
+    type: 'success',
+  })
+}
 const animationDuration = computed(() => `${60 / time.value}s`)
-
 const reason_item = ref(['实验使用','源库迁移','教学使用','其他'])
-
 function UpdateData(){
   handleReset()
   SSID.value.value = useSourceListStatusStore().ChooseSource.SSID
@@ -277,12 +260,6 @@ function UpdateData(){
 }
 
 let loading = ref(false)
-
-let snackbar = ref({
-    snackbar: false,
-    text: '',
-    timeout: 5000,
-  })
 
 const submit = handleSubmit(values => {
   useUserDataStore().UserApply = {
@@ -305,8 +282,7 @@ const submit = handleSubmit(values => {
       })!=undefined){
         loading.value = false
         useSourceListStatusStore().OpenApplySheet = false
-        snackbar.value.text = "预约成功，您的预约编号为No." + useUserDataStore().apply_id + ";请妥善保管。"
-        snackbar.value.snackbar = true
+        Message()
       }
     },500)
   },300)

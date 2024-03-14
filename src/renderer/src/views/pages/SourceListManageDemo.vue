@@ -6,7 +6,7 @@
         <v-btn
           class="mx-4"
           variant="outlined"
-          @click="useSourceListStatusStore().OpenAddSource = true;useAddSourceStore().RefreshSSID()">
+          @click="useAddSourceStore().OpenAddSource = true;useAddSourceStore().RefreshSSID()">
           添加源
         </v-btn>
       </v-col>
@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-
-import { useSourceListStatusStore } from '../../store/useSourceListStatusStore'
 import { useAddSourceStore } from '../../store/useAddSourceStore'
 import AddSource from '../../components/AddSource/AddSource.vue'
 </script>

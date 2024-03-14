@@ -1,5 +1,5 @@
 <template>
-  <perfect-scrollbar>
+  <el-scrollbar>
     <v-btn @click="useTmpStore().CreatSocket()">1</v-btn>
     <v-container>
       <v-row>
@@ -49,8 +49,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </perfect-scrollbar>
-
+  </el-scrollbar>
 </template>
 
 <script setup lang="ts">
@@ -120,7 +119,4 @@ let DateTime:Ref<{
 </script>
 
 <style>
-.ps {
-  height: 1000px;
-}
 </style>

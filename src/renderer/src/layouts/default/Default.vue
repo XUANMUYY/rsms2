@@ -8,9 +8,9 @@
 
 <script lang="ts" setup>
 const title = "源库管理系统"
-import DefaultBar from '../init/AppBar.vue'
+import DefaultBar from './AppBar.vue'
 import DefaultDrawer from './LeftDrawer.vue'
-import DefaultView from '../init/View.vue'
+import DefaultView from './View.vue'
 </script>
 
 <style lang="scss">

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar flat :order="1">
+  <v-app-bar flat :order="1" style="height: 50px;" height="50">
     <v-app-bar-title>
       <v-icon icon="mdi-circle-slice-6" />
 
@@ -13,7 +13,7 @@
         </v-badge>
       </v-btn>
       <ToolbarNotifications />
-      <v-btn  icon to="/apps/todo">
+      <v-btn  icon >
         <v-badge :content="`2 +`" color="error">
           <v-icon>mdi-calendar-check</v-icon>
         </v-badge>
