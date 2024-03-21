@@ -114,6 +114,58 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
         })
       }
     },
+    async StartBoard(this:any,index:number){
+      try {
+        const _path = await window.api.getPath();
+        let StartBoard = edge.func({
+          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+          methodName: 'StartBoard'
+        })
+        return new Promise((resolve, reject) => {
+          StartBoard({ index: index }, function(_error, _CallBack) {
+            if (_error) {
+              reject(_error);
+            } else {
+              resolve(_CallBack);
+            }
+          })
+        })
+      } catch (error) {
+        console.error('Error:', error);
+        return new Promise((resolve, _reject) => {
+          setTimeout(() => {
+            resolve(false)
+          }, 1000);
+        })
+      }
+    },
+    async GetCount(this:any,index:number){
+      try {
+        const _path = await window.api.getPath();
+        let GetCount = edge.func({
+          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+          methodName: 'GetCount'
+        })
+        return new Promise((resolve, reject) => {
+          GetCount({ index: index }, function(_error, _CallBack) {
+            if (_error) {
+              reject(_error);
+            } else {
+              resolve(_CallBack);
+            }
+          })
+        })
+      } catch (error) {
+        console.error('Error:', error);
+        return new Promise((resolve, _reject) => {
+          setTimeout(() => {
+            resolve(false)
+          }, 1000);
+        })
+      }
+    },
     Clear(){
       this.CallBack = "none"
     }

@@ -18,11 +18,9 @@ export const useUserProcessStore = defineStore('UserProcess', {
     async GetApply(){
       const _result = await SQLPool.execute(GetApply,[])
       this.ApplyList = Array.from(_result[0])
-      console.log(_result[0])
     },
     async ApplyProcess(apply_status:'process-pass'|'process-forbid',process_time:string,event_status:string,apply_id:string){
-      const _result = await SQLPool.execute("update apply_list set `apply_status`=?,`process_time`=?,`event_status`=? where apply_id=?",[apply_status,process_time,event_status,apply_id])
-      console.log(_result)
+      await SQLPool.execute("update apply_list set `apply_status`=?,`process_time`=?,`event_status`=? where apply_id=?",[apply_status,process_time,event_status,apply_id])
     }
   }
 })
