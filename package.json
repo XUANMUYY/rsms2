@@ -39,6 +39,7 @@
     "mysql2": "^3.6.5",
     "pinia": "^2.1.7",
     "roboto-fontface": "*",
+    "shelljs": "^0.8.5",
     "vee-validate": "^4.12.4",
     "vite-raw-plugin": "^1.0.2",
     "vue-echarts": "^6.6.8",

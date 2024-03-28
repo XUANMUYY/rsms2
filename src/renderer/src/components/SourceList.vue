@@ -100,7 +100,6 @@ defineProps<{
   sources: SourcesArray[]
 }>()
 let CustomFilter:SourcesFilterArray = {
-  nuclide_rate: '3.7',
   nuclide_type: 'EC'
 }
 

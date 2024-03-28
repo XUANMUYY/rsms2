@@ -125,10 +125,10 @@ import {useSourceListStatusStore} from '../store/useSourceListStatusStore'
 import { useUserDataStore } from '../store/useUserDataStore'
 import { Ref } from 'vue'
 
-defineProps<{
+const prop = defineProps<{
   source_item:SourcesArray,
 }>()
-
+console.log(prop.source_item)
 const status:{ [KEY:string]: string} = {
   'READY': '#77ff8e',
   'ALARM': '#ff4d4d',
@@ -151,10 +151,13 @@ const statusSubtitleColor:{ [KEY:string]: string} = {
   'OUT': '',
 }
 const bindItems:Ref<any[]> = ref([])
+
 </script>
 
 <style scoped>
 .SourceCard{
   box-shadow: 6px 6px 9px #a4a4a4, -6px -6px 9px #ffffff;
 }
+
+
 </style>
