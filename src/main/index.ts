@@ -26,10 +26,10 @@ function createWindow(): void {
     }
   })
   const initWindow = new BrowserWindow({
-    width: 900,
-    height: 650,
-    minWidth: 700,
-    minHeight: 500,
+    width: 600,
+    height: 350,
+    minWidth: 600,
+    minHeight: 350,
     show: false,
     frame: false,
     autoHideMenuBar: true,

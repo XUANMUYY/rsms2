@@ -1,83 +1,91 @@
 <template>
-  <v-container class="fill-height">
-    <v-responsive class="align-center text-center fill-height">
-      <v-img height="250" src="@/assets/logo.svg" />
+  <v-card
+    class="mx-auto"
+    width="600"
+    height="350"
+  >
+    <v-card-item title="四川大学">
+      <template v-slot:subtitle>
+        <v-icon
+          class="me-1 pb-1"
+          color="error"
+          icon="mdi-alert"
+          size="18"
+        ></v-icon>
+        放射源库管理系统
+      </template>
+    </v-card-item>
 
-      <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
-
-      <h1 class="text-h2 font-weight-bold">RSMS</h1>
-      <Loading></Loading>
-      <div class="text-body-2 font-weight-light mb-n1"></div>
-      <div class="py-4" />
-
-      <v-row class="d-flex align-center justify-center">
-        <v-col cols="auto">
-          <v-btn
-            @click="Init"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon icon="mdi-view-dashboard" size="large" start />
-
-            初始化
-          </v-btn>
+    <v-card-text class="py-0">
+      <v-row align="center" no-gutters>
+        <v-col
+          class="text-h2"
+          cols="6"
+        >
+          RSMS2
         </v-col>
 
-        <v-col cols="auto">
-          <v-btn
-            color="primary"
-            @click="Show"
-            min-width="228"
-            rel="noopener noreferrer"
-            size="x-large"
-            target="_blank"
-            variant="flat"
-          >
-            <v-icon icon="mdi-speedometer" size="large" start />
-
-            启动
-          </v-btn>
-        </v-col>
-
-        <v-col cols="auto">
-          <v-btn
-            @click="User"
-            min-width="164"
-            rel="noopener noreferrer"
-            target="_blank"
-            variant="text"
-          >
-            <v-icon icon="mdi-account-group" size="large" start />
-
-            注册
-          </v-btn>
+        <v-col class="text-right" cols="6">
+          <v-img height="200" src="@/assets/scdx.svg" />
         </v-col>
       </v-row>
-    </v-responsive>
-  </v-container>
+    </v-card-text>
+
+    <div class="d-flex py-3 ">
+      <v-list-item
+        density="compact">
+        <template v-slot:prepend>
+          <v-progress-circular
+            :size="20"
+            :width="3"
+            color="red"
+            indeterminate
+          ></v-progress-circular>
+        </template>
+        <v-list-item-subtitle>加载中</v-list-item-subtitle>
+      </v-list-item>
+
+      <v-list-item
+        density="compact">
+        <v-list-item-subtitle>{{ progress_tips }}</v-list-item-subtitle>
+      </v-list-item>
+    </div>
+
+  </v-card>
 </template>
 
 <script lang="ts" setup>
-import Loading from "../../components/Loading.vue";
-import {useInitSQLStore} from '../../store/useInitSQL'
+import { useInitSQLStore } from '../../store/useInitSQL'
 import SystemVersionJson from '../../json/SystemVersion.json'
 
-useInitSQLStore().InitSQL(SystemVersionJson.SQLVersion as string,SystemVersionJson.ip_field,SystemVersionJson.ip_base,SystemVersionJson.ip_range,SystemVersionJson.port,SystemVersionJson.cupboard_num)
+const progress_tips = ref('初始设置')
+
+useInitSQLStore().InitSQL(SystemVersionJson.SQLVersion as string, SystemVersionJson.ip_field, SystemVersionJson.ip_base, SystemVersionJson.ip_range, SystemVersionJson.port, SystemVersionJson.cupboard_num)
 
 window.api.onReadyToShowMain((_value) => {
-  console.log("OK")
+  console.log('OK')
 })
-function Init(){
+
+setTimeout(() => {
+  progress_tips.value = "初始化界面中"
   window.api.initMain()
-}
-function Show(){
-  window.api.showMain()
-}
-function User(){
-  useInitSQLStore().InitUser()
-}
+
+
+  setTimeout(() => {
+    progress_tips.value = "检查数据库中"
+    useInitSQLStore().InitUser()
+
+
+    setTimeout(() => {
+      progress_tips.value = "加载界面中"
+      window.api.showMain()
+
+
+    }, 500)
+  }, 500)
+}, 500)
+
+
 </script>
 
 <style>
