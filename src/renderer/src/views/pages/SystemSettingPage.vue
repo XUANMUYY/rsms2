@@ -109,6 +109,15 @@
                               </v-col>
                               <v-col cols="3">
                                 <v-text-field
+                                  v-model="useSystemSettingStore().MySQL.INIT_SQL.port"
+                                  @change="useSystemSettingStore().updateText('port', $event)"
+                                  hide-details="auto"
+                                  label="HOST"
+                                  variant="outlined"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col cols="3">
+                                <v-text-field
                                   v-model="useSystemSettingStore().MySQL.INIT_SQL.user"
                                   @change="useSystemSettingStore().updateText('user', $event)"
                                   hide-details="auto"

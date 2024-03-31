@@ -263,6 +263,7 @@ export declare interface MySQLSetting{
   SQL: DatabaseConfig;
   SQLSetting: {
     host: string;
+    port: number;
     user: string;
     database: string;
     password: string;
@@ -279,6 +280,7 @@ export declare interface MySQLSetting{
 
 export declare interface DatabaseConfig {
   host: string;
+  port: number;
   user: string;
   database?: string;
   password: string;

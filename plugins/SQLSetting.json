@@ -1,6 +1,7 @@
 {
  "INIT_SQL": {
-  "host": "localhost",
+  "host": "b45345v443.zicp.fun",
+  "port": 59837,
   "user": "root",
   "password": "23912345",
   "waitForConnections": true,
@@ -13,7 +14,8 @@
   "multipleStatements": true
  },
  "SQL": {
-  "host": "localhost",
+  "host": "b45345v443.zicp.fun",
+  "port": 59837,
   "user": "root",
   "database": "sources_system",
   "password": "23912345",
@@ -28,6 +30,7 @@
  },
  "SQLSetting": {
   "host": "string",
+  "port": "number",
   "user": "string",
   "database": "string",
   "password": "string",
