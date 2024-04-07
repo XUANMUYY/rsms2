@@ -149,6 +149,14 @@
    "index": 2
   },
   {
+   "title": "审核",
+   "to": "/ProcessApply",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 4
+  },
+  {
    "title": "设置",
    "to": "/SystemSetting",
    "icon": "mdi-star",

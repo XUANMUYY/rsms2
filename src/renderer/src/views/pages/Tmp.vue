@@ -1,4 +1,5 @@
 <template>
+  <v-btn :loading="loading" @click="openDev">调试</v-btn>
   <v-btn :loading="loading" @click="tmp">跳转</v-btn>
   <v-btn :loading="loading" @click="tmpB">测试B</v-btn>
   <v-btn :loading="loading" @click="tmpC">测试C</v-btn>
@@ -6,8 +7,8 @@
   <v-btn :loading="loading" @click="tmpE">测试E</v-btn>
   <v-btn :loading="loading" @click="tmpF">调度器</v-btn>
   <v-btn :loading="loading" @click="tmpG">调度器抢占</v-btn>
-  <v-btn @click="console.log('HELLOWORLD')">
-    Button
+  <v-btn @click=" $i18n.locale=$i18n.locale=='en'?'zhHans':'en' ">
+    切换语言 {{ $t("tmp.hello") }}
   </v-btn>
   <v-container class="fill-height background">
     <v-responsive class="align-center text-center fill-height">
@@ -67,6 +68,10 @@ const Function = async (Value) => {
   return new Promise(resolve => setTimeout(resolve, Value.time)).then(() => console.log(Value.val))
 }
 const scheduler = new Scheduler(2)
+
+function openDev(){
+  window.api.openDev()
+}
 
 function tmp() {
   router.replace('/UserListManage')

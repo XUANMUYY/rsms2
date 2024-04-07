@@ -5,7 +5,7 @@
         <template v-slot:text>
           <v-card elevation="0" >
             <v-card-text>
-              <v-card style="background: #EEEEEE" elevation="0">
+              <v-card color="miniBG" elevation="0">
                 <v-row no-gutters>
                   <v-col
                     v-for="(subValue, subKey) in value"
@@ -13,76 +13,79 @@
                     cols="12">
                     <div v-if="subValue['type']==='Router_Array'" class="d-flex py-3 " style="min-height: 60px">
                       <v-expansion-panels>
-                        <v-expansion-panel bg-color="#EEEEEE" style="min-height: 60px" elevation="0">
+                        <v-expansion-panel bg-color="miniBG" style="min-height: 60px" elevation="0">
                           <template v-slot:title class="text-h7">
                             {{ subKey }}
                           </template>
                           <template v-slot:text>
-                            <v-row no-gutters>
-                              <v-col cols="2">
+                            <v-row >
+                              <v-col cols="3">
                                 <div class="m-4">
                                   <p>管理员可访问</p>
-                                  <el-select
+                                  <v-select
                                     v-model="useSystemSettingStore().Router_Array_Setting.root"
-                                    value-key="index"
-                                    multiple
-                                    collapse-tags
-                                    collapse-tags-tooltip
-                                    :max-collapse-tags="2"
-                                    placeholder="Select"
-                                    style="width: 240px"
-                                  >
-                                    <el-option
-                                      v-for="item in useSystemSettingStore().Router_Array.all"
-                                      :key="item.index"
-                                      :label="item.title"
-                                      :value="item"
-                                    />
-                                  </el-select>
+                                    :items="useSystemSettingStore().Router_Array.all"
+                                    variant="outlined"
+                                    return-object
+                                    single-line
+                                    multiple>
+                                    <template v-slot:selection="{ item, index }">
+                                      <v-chip v-if="index < 3">
+                                        <span>{{ item.title }}</span>
+                                      </v-chip>
+                                      <span
+                                        v-if="index === 3"
+                                        class="text-grey text-caption align-self-center">
+                                        (+{{ useSystemSettingStore().Router_Array_Setting.root.length - 3 }} others)
+                                      </span>
+                                    </template>
+                                  </v-select>
                                 </div>
                               </v-col>
-                              <v-col cols="2">
+                              <v-col cols="3">
                                 <div class="m-4">
                                   <p>普通用户可访问</p>
-                                  <el-select
+                                  <v-select
                                     v-model="useSystemSettingStore().Router_Array_Setting.normal"
-                                    value-key="index"
-                                    multiple
-                                    collapse-tags
-                                    collapse-tags-tooltip
-                                    :max-collapse-tags="2"
-                                    placeholder="Select"
-                                    style="width: 240px"
-                                  >
-                                    <el-option
-                                      v-for="item in useSystemSettingStore().Router_Array.all"
-                                      :key="item.index"
-                                      :label="item.title"
-                                      :value="item"
-                                    />
-                                  </el-select>
+                                    :items="useSystemSettingStore().Router_Array.all"
+                                    variant="outlined"
+                                    return-object
+                                    single-line
+                                    multiple>
+                                    <template v-slot:selection="{ item, index }">
+                                      <v-chip v-if="index < 3">
+                                        <span>{{ item.title }}</span>
+                                      </v-chip>
+                                      <span
+                                        v-if="index === 3"
+                                        class="text-grey text-caption align-self-center">
+                                        (+{{ useSystemSettingStore().Router_Array_Setting.normal.length - 3 }} others)
+                                      </span>
+                                    </template>
+                                  </v-select>
                                 </div>
                               </v-col>
-                              <v-col cols="2">
+                              <v-col cols="3">
                                 <div class="m-4">
                                   <p>访客可访问</p>
-                                  <el-select
+                                  <v-select
                                     v-model="useSystemSettingStore().Router_Array_Setting.guest"
-                                    value-key="index"
-                                    multiple
-                                    collapse-tags
-                                    collapse-tags-tooltip
-                                    :max-collapse-tags="2"
-                                    placeholder="Select"
-                                    style="width: 240px"
-                                  >
-                                    <el-option
-                                      v-for="item in useSystemSettingStore().Router_Array.all"
-                                      :key="item.index"
-                                      :label="item.title"
-                                      :value="item"
-                                    />
-                                  </el-select>
+                                    :items="useSystemSettingStore().Router_Array.all"
+                                    variant="outlined"
+                                    return-object
+                                    single-line
+                                    multiple>
+                                    <template v-slot:selection="{ item, index }">
+                                      <v-chip v-if="index < 3">
+                                        <span>{{ item.title }}</span>
+                                      </v-chip>
+                                      <span
+                                        v-if="index === 3"
+                                        class="text-grey text-caption align-self-center">
+                                        (+{{ useSystemSettingStore().Router_Array_Setting.guest.length - 3 }} others)
+                                      </span>
+                                    </template>
+                                  </v-select>
                                 </div>
                               </v-col>
                             </v-row>
@@ -92,7 +95,7 @@
                     </div>
                     <div v-else-if="subValue['type']==='SQLSetting'" class="d-flex py-3 " style="min-height: 60px">
                       <v-expansion-panels>
-                        <v-expansion-panel bg-color="#EEEEEE" style="min-height: 60px" elevation="0">
+                        <v-expansion-panel bg-color="miniBG" style="min-height: 60px" elevation="0">
                           <template v-slot:title class="text-h7">
                             {{ subKey }}
                           </template>

@@ -12,7 +12,7 @@ function createWindow(): void {
     height: 1080,
     minWidth: 400,
     minHeight: 700,
-    fullscreen:false,
+    fullscreen:true,
     resizable:false,
     show: false,
     frame: false,
@@ -42,7 +42,7 @@ function createWindow(): void {
     }
   })
 
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   ipcMain.handle('fs:getPath', async (_event) => {
     if (is.dev) {
@@ -151,7 +151,7 @@ function createWindow(): void {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('com.rsms2')
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -178,6 +178,9 @@ app.on('window-all-closed', () => {
   }
 })
 
+app.commandLine.appendSwitch('high-dpi-support', '1')
+app.commandLine.appendSwitch('force-device-scale-factor', '1')
+
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 async function ReadJson(path: string) {
@@ -186,7 +189,6 @@ async function ReadJson(path: string) {
   CON = JSON.parse(fs.readFileSync(path, { encoding: 'utf-8' }))
   return CON
 }
-
 async function ReadTxt(path: string) {
   let CON = 'NO'
   try {

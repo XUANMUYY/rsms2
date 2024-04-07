@@ -4,7 +4,7 @@
     width="600"
     height="350"
   >
-    <v-card-item title="四川大学">
+    <v-card-item :title="$t(`init.title`)">
       <template v-slot:subtitle>
         <v-icon
           class="me-1 pb-1"
@@ -12,7 +12,7 @@
           icon="mdi-alert"
           size="18"
         ></v-icon>
-        放射源库管理系统
+        {{$t(`init.subTitle`)}}
       </template>
     </v-card-item>
 

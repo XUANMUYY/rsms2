@@ -6,7 +6,7 @@
                      :custom-filter="customFilter"
                      :no-filter="filter">
       <template v-slot:header>
-        <v-card class="px-2" style="height: 80px;padding-top: 20px;background: #F5F5F5">
+        <v-card class="px-2" style="height: 80px;padding-top: 20px" color="miniBG">
           <v-row no-gutters>
             <v-col cols="2">
               <v-text-field

@@ -10,7 +10,7 @@
   },
   "ALS": {
    "type": "select",
-   "value": "A",
+   "value": "B",
    "option": [
     "A",
     "B",
@@ -22,6 +22,14 @@
   "BLA": {
    "type": "switch",
    "value": true
+  },
+  "主题设置": {
+   "type": "select",
+   "value": "light",
+   "option": [
+    "light",
+    "dark"
+   ]
   },
   "页面权限设置": {
    "type": "Router_Array",

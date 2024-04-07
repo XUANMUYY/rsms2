@@ -13,12 +13,16 @@ import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
 import VueApexCharts from "vue3-apexcharts"
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import i18n from './i18n'
 
 // Types
 import type { App } from 'vue'
 
+
+
 export function registerPlugins(app: App) {
   app
+    .use(i18n)
     .use(router)
     .use(PerfectScrollbar)
     .use(VueApexCharts)

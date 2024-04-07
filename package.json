@@ -1,6 +1,6 @@
 {
   "name": "rsms2",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "An Electron application with Vue and TypeScript",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -43,7 +43,7 @@
     "vee-validate": "^4.12.4",
     "vite-raw-plugin": "^1.0.2",
     "vue-echarts": "^6.6.8",
-    "vue-i18n": "^9.9.0",
+    "vue-i18n": "^9.11.0",
     "vue-router": "^4.2.5",
     "vue3-apexcharts": "^1.4.4",
     "vue3-perfect-scrollbar": "^1.6.1",
@@ -82,7 +82,7 @@
   },
   "build": {
     "productName": "RSMS2",
-    "appId": "scu.RSMS.app",
+    "appId": "scu.rsms2.app",
     "copyright": "Copyright [2023] by [College Of Physics,SiChuan University]",
     "compression": "store",
     "directories": {
@@ -100,6 +100,9 @@
       "!{.env,.env.*,.npmrc,pnpm-lock.yaml}",
       "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
     ],
+    "win": {
+      "requestedExecutionLevel": "highestAvailable"
+    },
     "asarUnpack": [],
     "extraResources": [
       {

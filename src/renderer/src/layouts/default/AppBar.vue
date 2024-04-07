@@ -20,7 +20,7 @@
       </v-btn>
       <v-divider vertical thickness="2" inset class="ml-5 mr-1"></v-divider>
 
-      <LanguageSwitcher />
+      <themeSwitcher @click="console.log('ok')"/>
     </div>
 
   </v-app-bar>
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import ToolbarNotifications from '../../components/tmp/ToolbarNotifications.vue'
-import LanguageSwitcher from '../../components/tmp/LanguageSwitcher.vue'
+import themeSwitcher from '../../components/themeSwitcher.vue'
 
 defineProps({
   title: String
