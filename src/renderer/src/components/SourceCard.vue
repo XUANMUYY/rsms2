@@ -15,13 +15,20 @@
           </h4>
         </div>
         <h4 class="text-h4">
-          <v-icon
-            icon="mdi-radioactive"
-            size="32"
-            color="black"
-            class="me-1 pb-1"
-          ></v-icon
-          >{{source_item.nuclide_name}}
+          <v-row no-gutters justify="space-between">
+            <v-col cols="2">
+              <v-icon
+                icon="mdi-radioactive"
+                size="32"
+                color="black"
+                class="me-1 pb-1"
+              ></v-icon
+              >{{source_item.nuclide_name}}
+            </v-col>
+            <v-col cols="2">
+              No.{{source_item.nuclide_id}}
+            </v-col>
+          </v-row>
         </h4>
       </template>
     </v-card-item>
@@ -79,13 +86,40 @@
         </v-list>
       </div>
       <div v-if="useSourceListStatusStore().expand === source_item.SSID+'bind'">
-        <v-list class="bg-transparent">
-          <v-list-item v-for="item in bindItems"
-            :title="item.title"
-            :subtitle="item.value"
-          >
-          </v-list-item>
-        </v-list>
+        <v-card elevation="0">
+          <v-expansion-panels variant="accordion">
+            <v-expansion-panel v-for="(value, key) in bindItems" :key="key" :title="key as unknown as string">
+              <template v-slot:text>
+                <v-card elevation="0" >
+                  <v-card-text>
+                    <v-card color="miniBG" elevation="0">
+                      <v-row no-gutters>
+                        <v-col
+                          v-for="(subValue, subKey) in value"
+                          :key="subKey"
+                          cols="12">
+                          <div class="d-flex py-3 justify-space-between" style="height: 60px">
+                            <v-list-item density="compact" class="text-h7">
+                              <v-list-item-title >
+                                {{ subKey }}
+                              </v-list-item-title>
+                            </v-list-item>
+
+                            <v-list-item density="compact">
+                              <v-list-item-title >
+                                {{ subValue }}
+                              </v-list-item-title>
+                            </v-list-item>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-card>
+                  </v-card-text>
+                </v-card>
+              </template>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-card>
       </div>
     </v-expand-transition>
     <v-divider></v-divider>
@@ -101,34 +135,43 @@
       </v-btn>
       <v-btn
         variant="plain"
+        :loading="bindLoading"
         elevation="4"
-        @click="()=>{if(useSourceListStatusStore().expand !== source_item.SSID+'bind'){useSourceListStatusStore().expand = source_item.SSID+'bind'}else{useSourceListStatusStore().expand = ''}}"
-      >
+        @click="getBindItem(source_item)">
         {{ useSourceListStatusStore().expand!== source_item.SSID+'bind' ? '绑定信息' :
         '隐藏信息' }}
       </v-btn>
       <v-btn
         variant="plain"
         elevation="4"
-        v-if="useUserDataStore().UserData.authority === 'root'||useUserDataStore().UserData.authority === 'normal'"
+        v-if="source_item.SourceStatus=='READY'&&(useUserDataStore().UserData.authority === 'root'||useUserDataStore().UserData.authority === 'normal')"
         @click="useSourceListStatusStore().OpenApplySheet = true;useUserDataStore().RefreshApply();"
       >
         预约
+      </v-btn>
+      <v-btn
+        variant="plain"
+        elevation="4"
+        v-if="source_item.SourceStatus!='READY'&&(useUserDataStore().UserData.authority === 'root'||useUserDataStore().UserData.authority === 'normal')"
+        @click="UseFindWhoUsingSourceStore().open=true;UseFindWhoUsingSourceStore().Find(source_item.SSID)"
+      >
+        查询
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script setup lang="ts">
-import { SourcesArray } from '../type'
-import {useSourceListStatusStore} from '../store/useSourceListStatusStore'
+import {SourcesArray } from '../type'
+import { useSourceListStatusStore } from '../store/useSourceListStatusStore'
 import { useUserDataStore } from '../store/useUserDataStore'
-import { Ref } from 'vue'
+import { useSourceArrayStore } from '../store/useSourceArrayStore'
+import { UseFindWhoUsingSourceStore } from '../store/UseFindWhoUsingSourceStore'
 
-const prop = defineProps<{
+defineProps<{
   source_item:SourcesArray,
 }>()
-console.log(prop.source_item)
+const bindLoading = ref(false)
 const status:{ [KEY:string]: string} = {
   'READY': '#77ff8e',
   'ALARM': '#ff4d4d',
@@ -150,8 +193,47 @@ const statusSubtitleColor:{ [KEY:string]: string} = {
   'PROCESS-PASS': 'text-light-blue',
   'OUT': '',
 }
-const bindItems:Ref<any[]> = ref([])
+const bindItems = ref({
+  "设备":{
+    "设备编号":"",
+    "IP":"",
+    "端口":""
+  },
+  "源柜":{
+    "编号":""
+  }
+})
 
+const getBindItem = (source_item) => {
+  if (useSourceListStatusStore().expand !== source_item.SSID + 'bind') {
+    bindLoading.value = true
+    setTimeout(()=>{
+      useSourceArrayStore().getBind(source_item.SSID).then((callBack)=>{
+        const object:object = callBack
+        if (object.hasOwnProperty('device_id')) {
+          bindItems.value = {
+            '设备': {
+              '设备编号': callBack.device_id,
+              'IP': callBack.wiz_ip,
+              '端口': callBack.wiz_port
+            },
+            '源柜': {
+              '编号': callBack.cupbox_id
+            }
+          }
+          bindLoading.value = false
+          useSourceListStatusStore().expand = source_item.SSID + 'bind'
+        }else{
+          bindLoading.value = false
+          useSourceListStatusStore().expand = ''
+        }
+      })
+    },100)
+  }
+  else {
+    useSourceListStatusStore().expand = ''
+  }
+}
 </script>
 
 <style scoped>

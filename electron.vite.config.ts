@@ -8,6 +8,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import markdownRawPlugin from 'vite-raw-plugin'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+// import VueDevTools from 'vite-plugin-vue-devtools'
 
 // Utilities
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
@@ -53,11 +54,12 @@ export default defineConfig({
         resolvers: [ElementPlusResolver()]
       }),
       Components({
-        resolvers: [ElementPlusResolver()],
+        resolvers: [ElementPlusResolver()]
       }),
       markdownRawPlugin({
         fileRegex: /\.sql$/
-      }),
+      })
+      // VueDevTools()
     ],
     define: { 'process.env': {} },
     test: {

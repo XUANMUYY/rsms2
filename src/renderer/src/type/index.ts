@@ -3,13 +3,29 @@ import { PoolOptions } from 'mysql2'
 export declare interface SourcesArray {
   nuclide_index: number,
   nuclide: string,
+  nuclide_id: number,
   nuclide_name: string,
   nuclide_quality: number,
   nuclide_rate: string,
   nuclide_type: string,
   nuclide_energy: number[][],
   SSID: string,
+  cupbox_id: string,
+  device_id: number,
   SourceStatus: 'READY' | 'OUT' | 'ALARM' | 'PROCESS' | 'PROCESS-PASS',
+}
+
+export declare interface DeviceArray {
+  nuclide: string,
+  nuclide_id: number,
+  nuclide_name: string,
+  nuclide_quality: number,
+  SSID: string,
+  SourceStatus: 'READY' | 'OUT' | 'ALARM' | 'PROCESS' | 'PROCESS-PASS'|'NONE',
+  device_id:string,
+  wiz_ip:string,
+  wiz_port:string,
+  cupbox_id:string,
 }
 
 export declare interface SourcesFilterArray {
@@ -41,6 +57,13 @@ export declare interface UserSource {
   SourceStatus: string,
 }
 
+export declare interface SourceBind {
+  device_id:string,
+  wiz_ip:string,
+  wiz_port:string,
+  cupbox_id:string,
+}
+
 export declare interface User {
   UserStatus:"Logout"|"Login",
   UserData:UserData
@@ -67,7 +90,6 @@ export declare interface CupBoardCallback {
 }
 
 export declare interface UserDataSourcesSource {
-
   SSID: string,
   cupbox_id: string,
   device_id: string,
@@ -105,7 +127,7 @@ export declare interface Source_List_Data {
 
 export declare interface Device_List_Data {
   device_id?: string,
-  SSID?: string,
+  SSID?: string|number,
   wiz_ip?: string,
   wiz_port?: number,
 }
@@ -189,7 +211,9 @@ export declare interface ApplyArray {
 export declare interface CupBoxSource {
   cupbox_id: string,
   SSID: string,
+  device_id: string,
   nuclide: string,
+  nuclide_id: number,
   nuclide_index: number,
   nuclide_name: string,
   nuclide_quality: number,
@@ -231,6 +255,22 @@ export declare interface SQLCallback {
   serverStatus: number;
   warningStatus: number;
   changedRows: number;
+}
+
+export declare interface FindUserSource {
+  apply_id: string,
+  SSID: string,
+  user: string,
+  name: string,
+  reason: string,
+  apply_status: 'process' | 'process-pass' | 'process-forbid',
+  event_status: 'wait' | 'out' | 'normal'|'back',
+  user_status: 'overdue' | 'normal',
+  first_time: string,
+  last_time: string,
+  process_time: string,
+  out_time: string,
+  back_time: string,
 }
 
 export declare interface system_info {

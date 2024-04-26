@@ -73,8 +73,7 @@ setTimeout(() => {
 
   setTimeout(() => {
     progress_tips.value = "检查数据库中"
-    useInitSQLStore().InitUser()
-
+    // useInitSQLStore().InitUser()
 
     setTimeout(() => {
       progress_tips.value = "加载界面中"

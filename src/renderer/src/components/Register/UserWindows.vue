@@ -11,6 +11,7 @@
           prepend-inner-icon="mdi-account-outline"
           variant="outlined"
           clearable
+          spellcheck ="false"
           label="账号"
           :loading="loading"
           v-model="user.value.value"
@@ -20,6 +21,7 @@
           :counter="16"
           density="compact"
           placeholder="请输入名称"
+          spellcheck ="false"
           prepend-inner-icon="mdi-account-outline"
           variant="outlined"
           clearable

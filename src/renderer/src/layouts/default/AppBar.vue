@@ -1,11 +1,13 @@
 <template>
   <v-app-bar flat :order="1" style="height: 50px;" height="50">
     <v-app-bar-title>
-      <v-icon icon="mdi-circle-slice-6" />
-
+      <v-icon
+        @click="useTmpSafeCodeStore().TmpSafeClick()"
+        icon="mdi-circle-slice-6"
+        :color="useTmpSafeCodeStore().SafeAuthority?'red':''"/>
       {{ title }}
     </v-app-bar-title>
-
+    <TmpSafeCode></TmpSafeCode>
     <div class="d-flex">
       <v-btn  icon>
         <v-badge dot color="success">
@@ -29,6 +31,8 @@
 <script lang="ts" setup>
 import ToolbarNotifications from '../../components/tmp/ToolbarNotifications.vue'
 import themeSwitcher from '../../components/themeSwitcher.vue'
+import { useTmpSafeCodeStore } from '../../store/useTmpSafeCodeStore'
+import TmpSafeCode from '../../components/TmpSafeCode.vue'
 
 defineProps({
   title: String

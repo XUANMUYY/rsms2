@@ -2,6 +2,7 @@
   <main-source-list :ShowPerPage=ShowPerPage :sources="sources" class="main-source-list"></main-source-list>
   <apply-source></apply-source>
   <AddSource></AddSource>
+  <FindWhoUsingSource></FindWhoUsingSource>
 </template>
 
 <script setup lang="ts">

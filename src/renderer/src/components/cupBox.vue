@@ -7,7 +7,11 @@
           <template v-slot:title>
             {{ cupBoxIndex }}
           </template>
-          <v-card-text>{{SourcesInfo.nuclide_name +` `+SourcesInfo.nuclide+` `+SourcesInfo.nuclide_quality }}
+          <v-card-text v-if="SourcesInfo.nuclide_quality!=0&&SourcesInfo.nuclide_quality!=undefined">{{SourcesInfo.nuclide_name +` `+SourcesInfo.nuclide+` `+SourcesInfo.nuclide_quality+` `+`No.`+SourcesInfo.nuclide_id }}
+          </v-card-text>
+          <v-card-text v-else-if="SourcesInfo.device_id!='0000'">{{`设备ID:`+` `+SourcesInfo.device_id }}
+          </v-card-text>
+          <v-card-text v-else>{{`未绑定` }}
           </v-card-text>
         </v-card>
       </v-col>
@@ -33,7 +37,11 @@
           <template v-slot:title>
             {{ cupBoxIndex }}
           </template>
-          <v-card-text>{{SourcesInfo.nuclide_name +` `+SourcesInfo.nuclide+` `+SourcesInfo.nuclide_quality }}
+          <v-card-text v-if="SourcesInfo.nuclide_quality!=0&&SourcesInfo.nuclide_quality!=undefined">{{SourcesInfo.nuclide_name +` `+SourcesInfo.nuclide+` `+SourcesInfo.nuclide_quality+` `+`No.`+SourcesInfo.nuclide_id }}
+          </v-card-text>
+          <v-card-text v-else-if="SourcesInfo.device_id!='0000'">{{`设备ID:`+` `+SourcesInfo.device_id }}
+          </v-card-text>
+          <v-card-text v-else>{{`未绑定` }}
           </v-card-text>
         </v-card>
       </v-col>
@@ -59,8 +67,11 @@
           <template v-slot:title>
             {{ cupBoxIndex }}
           </template>
-          <v-card-text>{{SourcesInfo.nuclide_name +` `+SourcesInfo.nuclide+` `+SourcesInfo.nuclide_quality }}
-
+          <v-card-text v-if="SourcesInfo.nuclide_quality!=0&&SourcesInfo.nuclide_quality!=undefined">{{SourcesInfo.nuclide_name +` `+SourcesInfo.nuclide+` `+SourcesInfo.nuclide_quality+` `+`No.`+SourcesInfo.nuclide_id }}
+          </v-card-text>
+          <v-card-text v-else-if="SourcesInfo.device_id!='0000'">{{`设备ID:`+` `+SourcesInfo.device_id }}
+          </v-card-text>
+          <v-card-text v-else>{{`未绑定` }}
           </v-card-text>
         </v-card>
       </v-col>
@@ -90,9 +101,11 @@ const empty:CupBoxSource = {
   nuclide_index: 0,
   nuclide_name: '',
   nuclide_quality: 0,
+  nuclide_id:0,
   nuclide_rate: '',
   nuclide_type: '',
   cupbox_id:'0',
+  device_id: "0000",
   SSID:'0',
   nuclide:'empty'
 }
@@ -109,12 +122,12 @@ const UserInfo:Ref<CupBoxUserInfo> = ref({} as CupBoxUserInfo)
 const BoxLoading = ref(true)
 
 useAsyncUpdateCupBoardStore().CupboardUpdateBox(Props.cupBoxIndex).then((resolve)=>{
-  if(resolve[1]){
-    SourcesInfo.value = resolve[0]
+  if(resolve.Status){
+    SourcesInfo.value = resolve.CallBack
     useAsyncUpdateCupBoardStore().CupboardUpdateBoxUserInfo(Props.cupBoxIndex).then((resolve)=>{
-      if(resolve[1]){
+      if(resolve.Status){
         BoxLoading.value = false
-        UserInfo.value = resolve[0]
+        UserInfo.value = resolve.CallBack
       }
     })
   }
@@ -122,12 +135,12 @@ useAsyncUpdateCupBoardStore().CupboardUpdateBox(Props.cupBoxIndex).then((resolve
 
 useUserDataStore().$subscribe((_args,_state)=>{
   useAsyncUpdateCupBoardStore().CupboardUpdateBox(Props.cupBoxIndex).then((resolve)=>{
-    if(resolve[1]){
-      SourcesInfo.value = resolve[0]
+    if(resolve.Status){
+      SourcesInfo.value = resolve.CallBack
       useAsyncUpdateCupBoardStore().CupboardUpdateBoxUserInfo(Props.cupBoxIndex).then((resolve)=>{
-        if(resolve[1]){
+        if(resolve.Status){
           BoxLoading.value = false
-          UserInfo.value = resolve[0]
+          UserInfo.value = resolve.CallBack
         }
       })
     }
@@ -146,8 +159,8 @@ function OpenBox(apply_id:string,SSID:string){
         if(resolve[0].affectedRows==1){
           useCupBoardStore().dialogTips = "更新源柜信息中..."
           useAsyncUpdateCupBoardStore().CupboardUpdateBox(Props.cupBoxIndex).then((resolve)=>{
-            if(resolve[1]){
-              SourcesInfo.value = resolve[0]
+            if(resolve.Status){
+              SourcesInfo.value = resolve.CallBack
               useCupBoardStore().dialogTips = "初始化源柜连接中..."
               useCupBoardStore().AsyncCupBoardsInit(SysInfo.cupboard_num).then((_resolve)=>{
                 if(_resolve){
@@ -156,33 +169,48 @@ function OpenBox(apply_id:string,SSID:string){
                     if(_resolve){
                       useCupBoardStore().dialogTips = "刷新源柜中..."
                       useAsyncUpdateCupBoardStore().CupboardUpdateBoxUserInfo(Props.cupBoxIndex).then((resolve)=>{
-                        if(resolve[1]){
+                        if(resolve.Status){
                           useCupBoardStore().dialogTips = "完成..."
                           useCupBoardStore().dialog = false
                           BoxLoading.value = false
-                          UserInfo.value = resolve[0]
+                          UserInfo.value = resolve.CallBack
                         }
                         else {
-                          useCupBoardStore().dialogTips = "出现错误..."
+                          useCupBoardStore().dialogTips = "刷新源柜出现错误..."
+                          setTimeout(()=>{
+                            useCupBoardStore().dialog = false
+                          },1000)
                         }
                       })
                     }
                     else {
-                      useCupBoardStore().dialogTips = "出现错误..."
+                      useCupBoardStore().dialogTips = "打开源柜出现错误..."
+                      setTimeout(()=>{
+                        useCupBoardStore().dialog = false
+                      },1000)
                     }
                   })
                 }else {
-                  useCupBoardStore().dialogTips = "出现错误..."
+                  useCupBoardStore().dialogTips = "初始化源柜连接出现错误..."
+                  setTimeout(()=>{
+                    useCupBoardStore().dialog = false
+                  },1000)
                 }
               })
             }
             else {
-              useCupBoardStore().dialogTips = "出现错误..."
+              useCupBoardStore().dialogTips = "更新源柜信息出现错误..."
+              setTimeout(()=>{
+                useCupBoardStore().dialog = false
+              },1000)
             }
           })
         }
         else {
-          useCupBoardStore().dialogTips = "出现错误..."
+          useCupBoardStore().dialogTips = "写入源柜信息出现错误..."
+          setTimeout(()=>{
+            useCupBoardStore().dialog = false
+          },1000)
         }
       })
     },500)
@@ -201,8 +229,8 @@ function BackOpenBox(apply_id:string,SSID:string){
         if(resolve[0].affectedRows==1){
           useCupBoardStore().dialogTips = "更新源柜信息中..."
           useAsyncUpdateCupBoardStore().CupboardUpdateBox(Props.cupBoxIndex).then((resolve)=>{
-            if(resolve[1]){
-              SourcesInfo.value = resolve[0]
+            if(resolve.Status){
+              SourcesInfo.value = resolve.CallBack
               useCupBoardStore().dialogTips = "初始化源柜连接中..."
               useCupBoardStore().AsyncCupBoardsInit(SysInfo.cupboard_num).then((_resolve)=>{
                 if(_resolve){
@@ -211,33 +239,48 @@ function BackOpenBox(apply_id:string,SSID:string){
                     if(_resolve){
                       useCupBoardStore().dialogTips = "刷新源柜中..."
                       useAsyncUpdateCupBoardStore().CupboardUpdateBoxUserInfo(Props.cupBoxIndex).then((resolve)=>{
-                        if(resolve[1]){
+                        if(resolve.Status){
                           useCupBoardStore().dialogTips = "完成..."
                           useCupBoardStore().dialog = false
                           BoxLoading.value = false
-                          UserInfo.value = resolve[0]
+                          UserInfo.value = resolve.CallBack
                         }
                         else {
-                          useCupBoardStore().dialogTips = "出现错误..."
+                          useCupBoardStore().dialogTips = "刷新源柜出现错误..."
+                          setTimeout(()=>{
+                            useCupBoardStore().dialog = false
+                          },1000)
                         }
                       })
                     }
                     else {
-                      useCupBoardStore().dialogTips = "出现错误..."
+                      useCupBoardStore().dialogTips = "打开源柜出现错误..."
+                      setTimeout(()=>{
+                        useCupBoardStore().dialog = false
+                      },1000)
                     }
                   })
                 }else {
-                  useCupBoardStore().dialogTips = "出现错误..."
+                  useCupBoardStore().dialogTips = "初始化源柜连接出现错误..."
+                  setTimeout(()=>{
+                    useCupBoardStore().dialog = false
+                  },1000)
                 }
               })
             }
             else {
-              useCupBoardStore().dialogTips = "出现错误..."
+              useCupBoardStore().dialogTips = "更新源柜信息出现错误..."
+              setTimeout(()=>{
+                useCupBoardStore().dialog = false
+              },1000)
             }
           })
         }
         else {
-          useCupBoardStore().dialogTips = "出现错误..."
+          useCupBoardStore().dialogTips = "写入源柜信息出现错误..."
+          setTimeout(()=>{
+            useCupBoardStore().dialog = false
+          },1000)
         }
       })
     },500)

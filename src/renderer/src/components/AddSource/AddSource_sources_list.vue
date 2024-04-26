@@ -18,17 +18,19 @@
             <v-col cols="3">
               <v-text-field
                 v-model="nuclide.value.value"
-                :counter="10"
+                :counter="5"
                 :error-messages="nuclide.errorMessage.value"
                 variant="outlined"
                 placeholder="Cs"
+                spellcheck ="false"
                 label="核素"
               ></v-text-field>
             </v-col>
             <v-col cols="3">
               <v-text-field
                 v-model="nuclide_index.value.value"
-                :counter="10"
+                :counter="5"
+                spellcheck ="false"
                 :error-messages="nuclide_index.errorMessage.value"
                 placeholder="67"
                 variant="outlined"
@@ -38,7 +40,8 @@
             <v-col cols="4">
               <v-text-field
                 v-model="nuclide_name.value.value"
-                :counter="10"
+                :counter="5"
+                spellcheck ="false"
                 :error-messages="nuclide_name.errorMessage.value"
                 variant="outlined"
                 placeholder="铯"
@@ -50,6 +53,7 @@
                 v-model="nuclide_quality.value.value"
                 :counter="10"
                 variant="outlined"
+                spellcheck ="false"
                 placeholder="137"
                 :error-messages="nuclide_quality.errorMessage.value"
                 label="质量数"
@@ -60,6 +64,7 @@
                 v-model="nuclide_id.value.value"
                 :counter="10"
                 variant="outlined"
+                spellcheck ="false"
                 placeholder="1"
                 :error-messages="nuclide_id.errorMessage.value"
                 label="ID"
@@ -71,6 +76,7 @@
               <v-text-field
                 v-model="nuclide_rate.value.value"
                 :counter="10"
+                spellcheck ="false"
                 variant="outlined"
                 placeholder="3.756E8"
                 :error-messages="nuclide_rate.errorMessage.value"
@@ -82,6 +88,7 @@
                 v-model="nuclide_type.value.value"
                 :items="nuclide_type_select"
                 variant="outlined"
+                required
                 :error-messages="nuclide_type.errorMessage.value"
                 label="衰变类型"
               ></v-select>
@@ -109,6 +116,30 @@ import { useSourceArrayStore } from '../../store/useSourceArrayStore'
 
 const { handleSubmit } = useForm({
   validationSchema: {
+    nuclide(value: any) {
+      if (value?.length >= 1 && /[A-Za-z]+/.test(value)) return true
+      return '只能为字母且长度大于等于1。'
+    },
+    nuclide_index(value: any) {
+      if (value?.length >= 1 && /[0-9]+/.test(value)) return true
+      return '只能为数字且长度大于等于1。'
+    },
+    nuclide_name(value: any) {
+      if (value?.length >= 1 && /[\u4e00-\u9fa5]+/.test(value)) return true
+      return '只能为中文且长度大于等于1。'
+    },
+    nuclide_quality(value: any) {
+      if (value?.length >= 1 && /[0-9]+/.test(value)) return true
+      return '只能为数字且长度大于等于1。'
+    },
+    nuclide_id(value: any) {
+      if (value?.length >= 1 && /[0-9]+/.test(value)) return true
+      return '只能为数字且长度大于等于1。'
+    },
+    nuclide_rate(value: any) {
+      if (value?.length >= 1 && /[0-9]+(.[0-9]+)?E[0-9]+/.test(value)) return true
+      return '格式错误 参考 3.29E8 或 2E4'
+    },
   },
 })
 

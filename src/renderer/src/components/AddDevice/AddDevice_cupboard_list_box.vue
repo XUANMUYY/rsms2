@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="useAddSourceStore().cupbox_id!=cupBoxIndex" :loading="UpdateLoading" class="mx-auto bg-grey-lighten-4" width="auto" height="100px" @click="ChooseBox()">
+  <v-card v-if="useAddDeviceStore().cupbox_id!=cupBoxIndex" :loading="UpdateLoading" class="mx-auto bg-grey-lighten-4" width="auto" height="100px" @click="ChooseBox()">
     <v-row no-gutters>
       <v-col cols="6">
         <v-card class="mx-auto bg-grey-lighten-4" width="auto" height="100px" prepend-icon="mdi-box"
@@ -39,12 +39,12 @@
 
 <script setup lang="ts">
 import { useAsyncUpdateCupBoardStore } from '../../store/useAsyncUpdateCupBoardStore'
-import { useAddSourceStore } from '../../store/useAddSourceStore'
+import { useAddDeviceStore } from '../../store/useAddDeviceStore'
 import { CupBoxSource } from '../../type'
 import { Ref } from 'vue'
 
 const Props = defineProps<{
-  cupBoxIndex:string
+  cupBoxIndex:string,
 }>()
 const empty:CupBoxSource = {
   SourceStatus: 'OUT',
@@ -82,7 +82,7 @@ watch(Props, (_new, _old) => {
 
 function ChooseBox() {
   if (SourcesInfo.value.nuclide == 'empty') {
-    useAddSourceStore().cupbox_id = Props.cupBoxIndex
+    useAddDeviceStore().cupbox_id = Props.cupBoxIndex
   } else {
   }
 }

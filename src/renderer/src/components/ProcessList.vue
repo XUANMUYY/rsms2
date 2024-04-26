@@ -1,6 +1,6 @@
 <template>
   <v-card style="margin: 10px; padding: 10px;">
-    <v-data-iterator :items="apply" :items-per-page=ShowPerPage :search="search">
+    <v-data-iterator :items="apply" :items-per-page=50 :search="search">
       <template v-slot:header>
         <v-toolbar class="px-2">
           <v-text-field
@@ -17,7 +17,7 @@
       </template>
 
       <template v-slot:default="{ items }">
-        <perfect-scrollbar>
+        <el-scrollbar height="860px" style="padding-left: 50px;" >
           <v-container class="pa-2" fluid>
             <v-row dense >
               <v-col
@@ -29,7 +29,33 @@
               </v-col>
             </v-row>
           </v-container >
-        </perfect-scrollbar>
+        </el-scrollbar>
+      </template>
+
+      <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <div class="d-flex align-center justify-center pa-4">
+          <v-btn
+            :disabled="page === 1"
+            density="comfortable"
+            icon="mdi-arrow-left"
+            variant="tonal"
+            rounded
+            @click="prevPage"
+          ></v-btn>
+
+          <div class="mx-2 text-caption">
+            Page {{ page }} of {{ pageCount }}
+          </div>
+
+          <v-btn
+            :disabled="page >= pageCount"
+            density="comfortable"
+            icon="mdi-arrow-right"
+            variant="tonal"
+            rounded
+            @click="nextPage"
+          ></v-btn>
+        </div>
       </template>
     </v-data-iterator>
   </v-card>
@@ -48,7 +74,4 @@ defineProps<{
 </script>
 
 <style scoped>
-.ps {
-  height: 880px;
-}
 </style>

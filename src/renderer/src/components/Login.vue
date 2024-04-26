@@ -19,6 +19,7 @@
           :counter="16"
           :error-messages="UserAccount.errorMessage.value"
           density="compact"
+          spellcheck ="false"
           placeholder="请输入账户"
           prepend-inner-icon="mdi-account-outline"
           variant="outlined"
@@ -40,6 +41,7 @@
         <v-text-field
           v-model="PassWord.value.value"
           :counter="18"
+          spellcheck ="false"
           :error-messages="PassWord.errorMessage.value"
           :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
           :type="visible ? 'text' : 'password'"
@@ -111,7 +113,9 @@ const loadingSwipe = ref(false)
 const Tips = ref("提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n")
 
 useUserDataStore().$subscribe((_args,state)=>{
-  if(state.Login == true) Tips.value = "提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n"
+  if(state.Login == true) setTimeout(()=>{
+    Tips.value = "提示: 连续三次尝试登录失败后，账户将被锁定三小时，需联系管理员解除锁定。\n"
+  },1000)
 })
 
 const { handleSubmit, handleReset } = useForm({
@@ -175,21 +179,21 @@ function swipe(){
       setTimeout(()=>{
         useLotusCardDriverStore().UpdateCardNo()
         setTimeout(()=>{
-          loadingSwipe.value = false
-          useUserDataStore().GetUserData("","",useLotusCardDriverStore().CardNo)
-          setTimeout(()=>{
-            if(useUserDataStore().UserStatus=="Login"){
+          const Callback = useUserDataStore().GetUserData("","",useLotusCardDriverStore().CardNo)
+          Callback.then((resolve)=>{
+            if(resolve.UserStatus=='Login'){
               Tips.value = "欢迎！ "+useUserDataStore().UserData.name
-              loadingSwipe.value = false
               setTimeout(()=>{
+                loadingSwipe.value = false
                 useUserDataStore().Login = false
                 handleReset()
-              },500)
+              },200)
             }
             else {
+              loadingSwipe.value = false
               Tips.value = "无效卡"
             }
-          },300)
+          })
         },300)
       },200)
     }

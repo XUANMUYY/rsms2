@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { SourcesArray, SQLJson } from '../type'
+import { SourceBind, SourcesArray, SQLJson } from '../type'
 import SourceArrayStoreSQL from '../sql/SourceArrayStore.sql?raw'
 
 const path = await window.api.getPath()
@@ -16,14 +16,20 @@ export const useSourceArrayStore = defineStore('SourceArray', {
     async UpdateSourceArray() {
       try {
         const SourceArray = await SQLPool.execute(SourceArrayStoreSQL as string, [])
-        //noinspection JSUnresolvedVariable
         this.SourceArray = SourceArray[0] as SourcesArray[]
       } catch (error) {
         console.error(error)
       }
     },
+    getBind(SSID:any){
+      return new Promise<SourceBind>((resolve, _reject) => {
+        SQLPool.execute("select dl.*,cl.* from device_list dl join cupboard_list cl on dl.device_id=cl.device_id where dl.SSID=?",[SSID])
+          .then((res:any)=>{
+            resolve (res[0][0] as SourceBind)
+          })
+      })
+    },
     GetSourceArray(_SSID:string){
-      //noinspection JSUnresolvedVariable
     }
   },
 })

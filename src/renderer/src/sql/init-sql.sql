@@ -26,15 +26,16 @@ BEGIN
 
         CREATE TABLE if not exists system_info
         (
-            sql_version  text NOT null,
-            ip_field     text not null,
-            ip_base      int  not null,
-            ip_range     int  not null,
-            port         int  not null,
-            cupboard_num int  not null
+            sql_version   text        NOT null,
+            ip_field      text        not null,
+            ip_base       int         not null,
+            ip_range      int         not null,
+            port          int         not null,
+            cupboard_num  int         not null,
+            tmp_safe_code varchar(18) not null
         );
-        insert into system_info (sql_version, ip_field, ip_base, ip_range, port, cupboard_num)
-        values (?, ?, ?, ?, ?, ?);
+        insert into system_info (sql_version, ip_field, ip_base, ip_range, port, cupboard_num, tmp_safe_code)
+        values (?, ?, ?, ?, ?, ?, 'GT1PTB14416G');
 
         create table if not exists sources_list
         (
@@ -66,8 +67,8 @@ BEGIN
         (
             cupbox_id varchar(8) not null
                 primary key,
-            SSID      int        null,
-            device_id int        null
+            device_id int        not null
+                key
         );
 
         create table if not exists apply_list

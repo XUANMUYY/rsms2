@@ -1,7 +1,7 @@
 {
  "INIT_SQL": {
   "host": "b45345v443.zicp.fun",
-  "port": 59837,
+  "port": "59837",
   "user": "root",
   "password": "23912345",
   "waitForConnections": true,
@@ -15,7 +15,7 @@
  },
  "SQL": {
   "host": "b45345v443.zicp.fun",
-  "port": 59837,
+  "port": "59837",
   "user": "root",
   "database": "sources_system",
   "password": "23912345",

@@ -49,8 +49,7 @@
 
 import { useBoardTCPStore } from '../../store/useBoardTCPStore'
 import { ref } from 'vue'
-import { useAddSourceStore } from '../../store/useAddSourceStore'
-import { useSourceArrayStore } from '../../store/useSourceArrayStore'
+import { useAddDeviceStore } from '../../store/useAddDeviceStore'
 import { useSystemInfoStore } from '../../store/useSystemInfoStore'
 const moment = require("moment")
 
@@ -107,9 +106,9 @@ function CheckBoard(){
   })
 }
 function Submit(){
-  useAddSourceStore().device_list_data = {
-    device_id: useAddSourceStore().device_id,
-    SSID: useAddSourceStore().SSID,
+  useAddDeviceStore().device_list_data = {
+    device_id: useAddDeviceStore().device_id,
+    SSID: useAddDeviceStore().SSID,
     wiz_ip: Ip.value,
     wiz_port: Port.value,
   }
@@ -118,14 +117,14 @@ function Submit(){
   const InitCallback = useBoardTCPStore().InitBoard(0,Ip.value,Port.value,timeStamp.value)
   InitCallback.then((resolve)=>{
     if(resolve){
-      const Callback = useAddSourceStore().Add_device_list()
+      const Callback = useAddDeviceStore().Add_device_list()
       Callback.then((resolve)=>{
         if(resolve[0].affectedRows==1){
           useSystemInfoStore().UpdateSystemInfoIpRange(1).then((resolve)=>{
             if (resolve[0].affectedRows==1){
               loading.value = false
               useBoardTCPStore().DropSocket(0)
-              useAddSourceStore().step = 3
+              useAddDeviceStore().step = 2
             }
             else {
               BtnTips.value = "failed"
@@ -162,13 +161,7 @@ function Submit(){
 }
 function Close(){
   useBoardTCPStore().DropSocket(0)
-  const Callback = useAddSourceStore().Remove_sources_list()
-  Callback.then((resolve)=>{
-    if(resolve[0].affectedRows==1){
-      useSourceArrayStore().UpdateSourceArray()
-      useAddSourceStore().$reset()
-    }
-  })
+  useAddDeviceStore().$reset()
 }
 </script>
 

@@ -13,18 +13,29 @@
         </h4>
       </div>
       <div class="d-flex py-3 justify-space-between">
-        <h4 class="text-h4">
-          <v-icon
-            icon="mdi-radioactive"
-            size="32"
-            color="black"
-            class="me-1 pb-1"
-          ></v-icon>
-          {{apply_item.nuclide_name}}
-        </h4>
-        <h4 class="text-h4">
-          {{apply_item.nuclide_quality}}
-        </h4>
+        <v-row no-gutters >
+          <v-col cols="4">
+            <h4 class="text-h4">
+              <v-icon
+                icon="mdi-radioactive"
+                size="32"
+                color="black"
+                class="me-1 pb-1"
+              ></v-icon
+              >{{apply_item.nuclide_name}}
+            </h4>
+          </v-col>
+          <v-col cols="5">
+            <h4 class="text-h6">
+              No.{{apply_item.nuclide_id}}
+            </h4>
+          </v-col>
+          <v-col cols="3">
+            <h4 class="text-h4">
+              {{apply_item.nuclide_quality}}
+            </h4>
+          </v-col>
+        </v-row>
       </div>
     </template>
   </v-card-item>

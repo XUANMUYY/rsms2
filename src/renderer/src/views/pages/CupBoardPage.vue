@@ -96,6 +96,7 @@
   <v-dialog
     v-model="useCupBoardStore().dialog"
     width="auto"
+    persistent
   >
     <v-card
       max-width="400"

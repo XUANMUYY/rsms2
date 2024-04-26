@@ -2,12 +2,14 @@
 import { defineStore } from 'pinia'
 import { Cupboard_List_Data, Device_List_Data, Source_List_Data, SQLCallback, SQLJson } from '../type'
 import AddSourceStoreSQL from '../sql/AddSourceStore.sql?raw'
+import AddDeviceStoreSQL from '../sql/AddDeviceStore.sql?raw'
 import { useSystemInfoStore } from './useSystemInfoStore'
 
 const path = await window.api.getPath()
 const PoolOptions: SQLJson = await window.api.readJSON(path + '/plugins/SQLSetting.json')
 const SQLPool = await require('mysql2/promise').createPool(PoolOptions.SQL)
 const AddSourceStore = AddSourceStoreSQL as string
+const AddDeviceStore = AddDeviceStoreSQL as string
 
 export const useAddSourceStore = defineStore('AddSource', {
   state: () => ({
@@ -25,6 +27,7 @@ export const useAddSourceStore = defineStore('AddSource', {
   actions: {
     async RefreshSSID() {
       await SQLPool.query(AddSourceStore)
+      await SQLPool.query(AddDeviceStore)
       const _SSID = await SQLPool.execute('SELECT SSID  FROM `sources_list` WHERE nuclide_name = \'tmp\'', [])
       const _device_id = await SQLPool.execute('SELECT device_id  FROM `device_list` WHERE wiz_ip = \'tmp\'', [])
       this.SSID = _SSID[0][0]['SSID']
@@ -50,7 +53,7 @@ export const useAddSourceStore = defineStore('AddSource', {
           this.device_id]) as Promise<[SQLCallback, any]>
     },
     async Add_cupboard_list() {
-      return await SQLPool.execute('INSERT INTO cupboard_list (cupbox_id, SSID, device_id) VALUES (?,?,?)', [this.cupbox_id, this.SSID, this.device_id]) as Promise<[SQLCallback, any]>
+      return await SQLPool.execute('INSERT INTO cupboard_list (cupbox_id, device_id) VALUES (?,?)', [this.cupbox_id,  this.device_id]) as Promise<[SQLCallback, any]>
     },
     async Remove_sources_list() {
       return await SQLPool.execute('DELETE FROM sources_list WHERE SSID=? and nuclide = ?', [this.SSID, this.sources_list_data.nuclide]) as Promise<[SQLCallback, any]>

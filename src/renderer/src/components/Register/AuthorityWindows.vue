@@ -5,8 +5,18 @@
             rounded="0">
     <v-card-text>
       <v-select
+        v-model="authority.value.value as string"
+        :error-messages="authority.errorMessage.value"
         label="账户类型"
         v-if="useUserDataStore().UserData.authority=='root'"
+        :items="['管理员','普通用户','访客']"
+        variant="outlined"
+      ></v-select>
+      <v-select
+        v-model="authority.value.value as string"
+        :error-messages="authority.errorMessage.value"
+        label="账户类型"
+        v-else-if="useTmpSafeCodeStore().SafeAuthority"
         :items="['管理员','普通用户','访客']"
         variant="outlined"
       ></v-select>
@@ -35,6 +45,7 @@
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate'
 import { useUserDataStore } from '../../store/useUserDataStore'
+import { useTmpSafeCodeStore } from '../../store/useTmpSafeCodeStore'
 
 const { handleSubmit } = useForm({
   validationSchema: {

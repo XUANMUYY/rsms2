@@ -11,6 +11,7 @@
           :append-inner-icon="password_visible ? 'mdi-eye-off' : 'mdi-eye'"
           :type="password_visible ? 'text' : 'password'"
           density="compact"
+          spellcheck ="false"
           placeholder="请输入密码"
           :loading="loading"
           prepend-inner-icon="mdi-lock-outline"
@@ -21,6 +22,7 @@
         <v-text-field
           v-model="password_second.value.value"
           :counter="18"
+          spellcheck ="false"
           :error-messages="password_second.errorMessage.value"
           :append-inner-icon="password_second_visible ? 'mdi-eye-off' : 'mdi-eye'"
           :type="password_second_visible ? 'text' : 'password'"

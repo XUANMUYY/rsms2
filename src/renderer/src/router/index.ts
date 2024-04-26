@@ -114,7 +114,25 @@ const routes = [
       layout: 'UserListManage'
     },
     component: () => import('@/views/pages/UserListManage.vue')
-  }
+  },
+  {
+    path: '/SourcesListManage',
+    name: 'SourcesListManage',
+    meta: {
+      requiresAuth: true,
+      layout: 'SourcesListManage'
+    },
+    component: () => import('@/views/pages/SourcesListManage.vue')
+  },
+  {
+    path: '/DeviceListManage',
+    name: 'DeviceListManage',
+    meta: {
+      requiresAuth: true,
+      layout: 'DeviceListManage'
+    },
+    component: () => import('@/views/pages/DeviceListManage.vue')
+  },
 ]
 
 const router = createRouter({
