@@ -54,6 +54,8 @@ const empty:CupBoxSource = {
   nuclide_quality: 0,
   nuclide_id:0,
   nuclide_rate: '',
+  wiz_ip:"",
+  wiz_port:0,
   nuclide_type: '',
   cupbox_id:'0',
   device_id: "0000",

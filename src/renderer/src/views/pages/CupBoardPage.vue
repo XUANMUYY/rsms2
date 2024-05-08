@@ -7,7 +7,7 @@
       show-select
     >
       <template v-slot:header>
-        <v-card class="px-2 bg-grey-lighten-3" elevation="0" height="90">
+        <v-card class="px-2 bg-grey-lighten-3" color="miniBG" height="90">
           <v-container>
             <v-row>
               <v-col cols="2">
@@ -18,7 +18,7 @@
                   hide-details
                   placeholder="Search"
                   prepend-inner-icon="mdi-magnify"
-                  style="max-width: 300px;"
+                  style="max-width: 300px;height: 60px"
                   variant="outlined"
                 ></v-text-field>
               </v-col>
@@ -28,7 +28,7 @@
                   label="待取"
                   clearable
                   :items=UserPass
-                  style="max-width: 300px;"
+                  style="max-width: 300px;height: 60px"
                   variant="outlined"
                   v-model="UserPassSearch"
                 ></v-select>
@@ -39,19 +39,25 @@
                   label="待还"
                   clearable
                   :items=UserOut
-                  style="max-width: 300px;"
+                  style="max-width: 300px;height: 60px"
                   variant="outlined"
                   v-model="UserOutSearch"
                 ></v-select>
               </v-col>
               <v-col cols="1">
-                <v-btn variant="outlined" :loading="loading" @click="LoadCardNo">
+                <v-btn variant="outlined" height="55px" :loading="loading" @click="LoadCardNo">
                   刷卡
+                </v-btn>
+              </v-col>
+              <v-col cols="1" v-if="useUserDataStore().UserData.authority=='root'">
+                <v-btn variant="outlined" height="55px" :loading="loading" @click="Scheduler.monitorDrawer = true">
+                  监视
                 </v-btn>
               </v-col>
             </v-row>
           </v-container>
         </v-card>
+        <monitor-scheduler></monitor-scheduler>
       </template>
 
       <template v-slot:default="{ items }">
@@ -116,12 +122,15 @@
 <script lang="ts" setup>
 import CupBoard from "../../components/cupBoard.vue";
 import { CupBoardArray } from '../../type'
-import { Ref } from 'vue'
+import { onMounted, Ref, watch } from 'vue'
 import { useUserDataStore } from '../../store/useUserDataStore'
 import { useLotusCardDriverStore } from '../../store/useLotusCardDriverStore'
 import { useSystemInfoStore } from '../../store/useSystemInfoStore'
 import { useCupBoardStore } from '../../store/useCupBoardStore'
+import { useSystemSettingStore } from '../../store/useSystemSettingStore'
+import { useSchedulerStore } from '../../store/useSchedulerStore'
 
+const Scheduler = useSchedulerStore()
 
 useSystemInfoStore().GetSystemInfo().then((info)=>{
   CupBoardNumber.value = info.cupboard_num
@@ -202,6 +211,15 @@ function LoadCardNo(){
     }
   },500)
 }
+
+onMounted(()=>{
+  if(useSystemSettingStore().SystemSetting['源柜通讯设置']['仅启用源柜页面'].value){
+    useSystemSettingStore().ShowLeftDrawer=false
+    watch(()=>useUserDataStore().UserData.authority,(now,_pre)=>{
+      if(now=='root') useSystemSettingStore().ShowLeftDrawer=true
+    },{ once: true })
+  }
+})
 </script>
 
 <style scoped>

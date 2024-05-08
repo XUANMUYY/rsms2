@@ -133,6 +133,24 @@ const routes = [
     },
     component: () => import('@/views/pages/DeviceListManage.vue')
   },
+  {
+    path: '/CupboardListManage',
+    name: 'CupboardListManage',
+    meta: {
+      requiresAuth: true,
+      layout: 'CupboardListManage'
+    },
+    component: () => import('@/views/pages/CupboardListManage.vue')
+  },
+  {
+    path: '/DeviceListView',
+    name: 'DeviceListView',
+    meta: {
+      requiresAuth: true,
+      layout: 'DeviceListView'
+    },
+    component: () => import('@/views/pages/DeviceListView.vue')
+  }
 ]
 
 const router = createRouter({

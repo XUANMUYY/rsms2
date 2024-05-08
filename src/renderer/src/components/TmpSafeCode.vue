@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { useTmpSafeCodeStore } from '../store/useTmpSafeCodeStore'
+import router from '../router'
 const SafeCode = ref("")
 
 const finished = () => {
@@ -25,6 +26,7 @@ const finished = () => {
       useTmpSafeCodeStore().SafeAuthority = true
       useTmpSafeCodeStore().SafeCodeDialog = false
       useTmpSafeCodeStore().ChangeCode()
+      router.replace('/SystemSetting')
     }else{
       SafeCode.value = ""
       useTmpSafeCodeStore().SafeAuthority = false

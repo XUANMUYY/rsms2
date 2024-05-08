@@ -10,6 +10,7 @@ const MySQL:MySQLSetting = await window.api.readJSON(path + '/plugins/SQLSetting
 
 export const useSystemSettingStore = defineStore('SystemSetting', {
   state: () => ({
+    ShowLeftDrawer:true,
     SystemSetting:SystemSetting,
     Router_Array:Router_Array,
     Router_Array_Setting:Router_Array_Setting,
@@ -40,12 +41,15 @@ export const useSystemSettingStore = defineStore('SystemSetting', {
 
     },
     updateSwitch(key, subKey, event) {
-      this.SystemSetting[key][subKey]['value'] = event.target.value
+      this.SystemSetting[key][subKey]['value'] = event.target.checked
     },
     updateSelect(key, subKey, event) {
       this.SystemSetting[key][subKey]['value'] = event
     },
-    updateText(key, event) {
+    updateText(key, subKey,event) {
+      this.SystemSetting[key][subKey]['value'] = event.target.value
+    },
+    updateSQLText(key, event) {
       this.MySQL.SQL[key] = event.target.value
     }
   },

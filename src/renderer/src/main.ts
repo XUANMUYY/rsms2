@@ -10,9 +10,10 @@ import { registerPlugins } from '@/plugins'
 // Components
 import App from './App.vue'
 import EChart from 'vue-echarts'
-import "echarts"
+import 'echarts'
 import { VCalendar } from 'vuetify/labs/VCalendar'
 import FullCalendar from '@fullcalendar/vue3'
+import VueStatusIndicator from './components/VueStatusIndicator/VueStatusIndicator.vue'
 
 // Composables
 import { createApp } from 'vue'
@@ -24,4 +25,5 @@ registerPlugins(app)
 app.component('v-chart', EChart)
    .component('VCalendar', VCalendar)
    .component('FullCalendar', FullCalendar)
+   .component('v-status', VueStatusIndicator)
 app.mount('#app')

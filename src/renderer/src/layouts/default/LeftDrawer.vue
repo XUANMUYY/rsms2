@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer expand-on-hover rail location="left">
+  <v-navigation-drawer v-if="useSystemSettingStore().ShowLeftDrawer" expand-on-hover rail location="left">
     <UserInfoCard></UserInfoCard>
     <v-divider></v-divider>
     <v-list density="compact" nav>

@@ -163,6 +163,22 @@
    "color": "#546E7A",
    "type": "web",
    "index": 7
+  },
+  {
+   "title": "设置",
+   "to": "/SystemSetting",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 13
+  },
+  {
+   "title": "测试",
+   "to": "/Tmp",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 14
   }
  ],
  "all": [
@@ -263,12 +279,28 @@
    "index": 12
   },
   {
+   "title": "设备查看",
+   "to": "/DeviceListView",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 13
+  },
+  {
+   "title": "源柜管理",
+   "to": "/CupboardListManage",
+   "icon": "mdi-star",
+   "color": "#546E7A",
+   "type": "web",
+   "index": 14
+  },
+  {
    "title": "设置",
    "to": "/SystemSetting",
    "icon": "mdi-star",
    "color": "#546E7A",
    "type": "web",
-   "index": 13
+   "index": 15
   },
   {
    "title": "测试",
@@ -276,7 +308,7 @@
    "icon": "mdi-star",
    "color": "#546E7A",
    "type": "web",
-   "index": 14
+   "index": 16
   },
   {
    "title": "退出",
@@ -284,7 +316,7 @@
    "icon": "mdi-star",
    "color": "#546E7A",
    "type": "function",
-   "index": 15
+   "index": 17
   }
  ]
 }

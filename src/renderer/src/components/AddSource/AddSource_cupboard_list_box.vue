@@ -50,6 +50,8 @@ const empty:CupBoxSource = {
   SourceStatus: 'OUT',
   nuclide_energy: [],
   nuclide_index: 0,
+  wiz_ip:"",
+  wiz_port:0,
   nuclide_name: '',
   nuclide_quality: 0,
   nuclide_id:0,

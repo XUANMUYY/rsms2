@@ -1,14 +1,20 @@
 <template>
+  <v-select
+    v-model="CupBoxID"
+    :items="useCounterSQLStore().availableChannel"
+    @click="updateEcharts"
+  >
+  </v-select>
   <v-chart style="height: 400px;" :option="option" @click=""></v-chart>
-  <v-btn @click="EChart()">
-    加载
-  </v-btn>
 </template>
 
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
-import { useTCPConnectStore } from '../../store/useTCPConnectStore'
-const moment = require('moment')
+import { ref, Ref, watch } from 'vue'
+import { useCounterSQLStore } from '../../store/useCounterSQLStore'
+
+const data: Ref<any[]> = ref([])
+const CupBoxID = ref('')
+const option = ref(EchartsOption(data.value))
 
 function EchartsOption(data,type?:'CountRate'|'ADCPulse'){
   const Empty = {}
@@ -26,7 +32,7 @@ function EchartsOption(data,type?:'CountRate'|'ADCPulse'){
       type: 'time',
       axisTick: {
         alignWithLabel: true
-      }
+      },
     },
     yAxis: {},
     toolbox: {
@@ -144,34 +150,17 @@ function EchartsOption(data,type?:'CountRate'|'ADCPulse'){
   }
 }
 
-let data: Ref<any[]> = ref([])
-let option = ref(EchartsOption(data.value))
-
-function EChart(){
-  useTCPConnectStore().TCPConnect('192.168.132.55', 5000, '1')
-  useTCPConnectStore().TCPConnect('192.168.132.2', 1347, '2')
-  useTCPConnectStore().TCPListenCMD('1')
-  useTCPConnectStore().TCPListen('2')
-  useTCPConnectStore().TCPSendCMD('1', [
-    '12 34 EB 0E 00 89 00 01 00 00 AB CD',
-    '12 34 00 00 00 00 00 00 00 00 AB CD',
-    '12 34 01 01 01 00 00 00 00 00 AB CD',
-    '12 34 02 01 01 00 00 00 00 00 AB CD',
-    '12 34 07 02 01 00 00 00 00 00 AB CD'
-  ])
-  useTCPConnectStore().TCPSend('2', ['hello\n', 'world\n'])
-  useTCPConnectStore().$subscribe((_arg, _state) => {
-    if (useTCPConnectStore().TCPGetResultCMD('1').CountRateStatus) {
-      data.value.push([moment.unix(useTCPConnectStore().TCPGetResultCMD('1').TimeStamp).format('YYYY-MM-DD hh:mm:ss').toString(), useTCPConnectStore().TCPGetResultCMD('1').CountRate])
-      option.value = EchartsOption(data.value,'CountRate')
+option.value = EchartsOption(data.value,'CountRate')
+const updateEcharts = ()=>{
+  watch(CupBoxID,(_now,_pre)=>{
+    if(_now!=''){
+      option.value = EchartsOption(useCounterSQLStore().CupBoxCount[useCounterSQLStore().CupBoxCount.findIndex((item)=>item.CupBoxID==CupBoxID.value)].CountBuff,'CountRate')
+      watch(()=>useCounterSQLStore().CupBoxCount[useCounterSQLStore().CupBoxCount.findIndex((item)=>item.CupBoxID==CupBoxID.value)].CountBuff,()=>{
+        option.value = EchartsOption(useCounterSQLStore().CupBoxCount[useCounterSQLStore().CupBoxCount.findIndex((item)=>item.CupBoxID==CupBoxID.value)].CountBuff,'CountRate')
+      })
     }
-    if (useTCPConnectStore().TCPGetResultCMD('1').ADCPulseStatus) {
-      data.value.push([useTCPConnectStore().TCPGetResultCMD('1').Index, useTCPConnectStore().TCPGetResultCMD('1').Ch])
-      option.value = EchartsOption(data.value,'ADCPulse')
-    }
-  })
+  },{once:true})
 }
-
 </script>
 
 <style scoped>

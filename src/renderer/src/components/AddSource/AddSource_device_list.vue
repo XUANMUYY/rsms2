@@ -142,6 +142,7 @@ function Submit(){
     }
     useBoardTCPStore().CreatSocket(0, '192.168.0.100', 5000)
     loading.value = true
+    useAddSourceStore().CanClose = false
     const InitCallback = useBoardTCPStore().InitBoard(0,Ip.value,Port.value,timeStamp.value)
     InitCallback.then((resolve)=>{
       if(resolve){
@@ -201,6 +202,7 @@ function Submit(){
       wiz_port: 0,
     }
     loading.value = true
+    useAddSourceStore().CanClose = false
     const Callback = useAddSourceStore().Update_device_list()
     Callback.then((resolve)=>{
       if(resolve[0].affectedRows==1){

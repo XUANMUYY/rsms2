@@ -2,6 +2,24 @@
 import { defineStore } from 'pinia'
 //Plugins
 let edge = require('electron-edge-js')
+const _path = await window.api.getPath();
+let CreatSocket = edge.func({
+  assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+  typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+  methodName: 'CreatSocket'
+})
+
+let GetCount = edge.func({
+  assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+  typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+  methodName: 'GetCount'
+})
+
+let DropSocket = edge.func({
+  assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
+  typeName: 'BoardTCPHandle4._8.TcpClientHandler',
+  methodName: 'DropSocket'
+})
 
 export const useBoardTCPStore = defineStore('BoardTCP', {
   state: () => ({
@@ -10,29 +28,15 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
   actions: {
     CreatSocket(this:any,index:number,ipAddress:string,port:number){
       let CallBack:boolean = false
-      window.api.getPath().then((_path)=>{
-        let CreatSocket = edge.func({
-          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
-          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
-          methodName: 'CreatSocket'
-        })
-        CreatSocket({index:index,ipAddress:ipAddress,port:port}, function (_error,_CallBack) {
-          CallBack = _CallBack
-        })
+      CreatSocket({index:index,ipAddress:ipAddress,port:port}, function (_error,_CallBack) {
+        CallBack = _CallBack
       })
       return CallBack
     },
     DropSocket(this:any,index:number){
       let CallBack:boolean = false
-      window.api.getPath().then((_path)=>{
-        let DropSocket = edge.func({
-          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
-          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
-          methodName: 'DropSocket'
-        })
-        DropSocket({index:index}, function (_error,_CallBack) {
-          CallBack = _CallBack
-        })
+      DropSocket({index:index}, function (_error,_CallBack) {
+        CallBack = _CallBack
       })
       return CallBack
     },
@@ -140,14 +144,8 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
         })
       }
     },
-    async GetCount(this:any,index:number){
+    async GetCount(this:any,index:number):Promise<number[]|string|null>{
       try {
-        const _path = await window.api.getPath();
-        let GetCount = edge.func({
-          assemblyFile: _path + '/plugins/BoardTCPHandle4.8.dll',
-          typeName: 'BoardTCPHandle4._8.TcpClientHandler',
-          methodName: 'GetCount'
-        })
         return new Promise((resolve, reject) => {
           GetCount({ index: index }, function(_error, _CallBack) {
             if (_error) {

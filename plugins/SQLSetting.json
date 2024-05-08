@@ -1,7 +1,7 @@
 {
  "INIT_SQL": {
-  "host": "b45345v443.zicp.fun",
-  "port": "59837",
+  "host": "localhost",
+  "port": 3306,
   "user": "root",
   "password": "23912345",
   "waitForConnections": true,
@@ -14,8 +14,8 @@
   "multipleStatements": true
  },
  "SQL": {
-  "host": "b45345v443.zicp.fun",
-  "port": "59837",
+  "host": "localhost",
+  "port": 3306,
   "user": "root",
   "database": "sources_system",
   "password": "23912345",
@@ -42,5 +42,20 @@
   "enableKeepAlive": "bool",
   "keepAliveInitialDelay": "number",
   "multipleStatements": "bool"
+ },
+ "SQL_Backup": {
+  "host": "b45345v443.zicp.fun",
+  "port": 59837,
+  "user": "root",
+  "database": "sources_system",
+  "password": "23912345",
+  "waitForConnections": true,
+  "connectionLimit": 100,
+  "maxIdle": 10,
+  "idleTimeout": 60000,
+  "queueLimit": 5,
+  "enableKeepAlive": false,
+  "keepAliveInitialDelay": 0,
+  "multipleStatements": true
  }
 }

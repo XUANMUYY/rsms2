@@ -15,6 +15,24 @@
             @click="()=>{useAddDeviceStore().OpenAddDevice=true;useAddDeviceStore().RefreshDeviceID()}">
             添加设备
           </v-btn>
+          <v-btn
+            class="mx-4"
+            variant="outlined"
+            @click="router.replace('/SourcesListManage')">
+            放射源数据库管理
+          </v-btn>
+          <v-btn
+            class="mx-4"
+            variant="outlined"
+            @click="router.replace('/DeviceListManage')">
+            下位机设备数据库管理
+          </v-btn>
+          <v-btn
+            class="mx-4"
+            variant="outlined"
+            @click="router.replace('/CupboardListManage')">
+            源柜设备数据库管理
+          </v-btn>
 
         </v-col>
       </v-row>
@@ -28,6 +46,7 @@
 import { useAddSourceStore } from '../../store/useAddSourceStore'
 import AddSource from '../../components/AddSource/AddSource.vue'
 import { useAddDeviceStore } from '../../store/useAddDeviceStore'
+import router from '../../router'
 </script>
 
 <style>

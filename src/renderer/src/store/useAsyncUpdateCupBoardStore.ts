@@ -10,6 +10,8 @@ const SQLPool = await require('mysql2/promise').createPool(PoolOptions.SQL)
 const empty: CupBoxSource = {
   SourceStatus: 'OUT',
   nuclide_energy: [],
+  wiz_ip:"",
+  wiz_port:0,
   nuclide_index: 0,
   nuclide_name: '',
   nuclide_quality: 0,

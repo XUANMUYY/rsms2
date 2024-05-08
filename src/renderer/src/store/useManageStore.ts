@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { SQLCallback, SQLJson, UserData, SourcesArray,DeviceArray } from '../type'
+import { SQLCallback, SQLJson, UserData, SourcesArray, DeviceArray, CupboardArray } from '../type'
 import ManageGetDeviceListSQL from '../sql/ManageGetDeviceList.sql?raw'
 
 const path = await window.api.getPath()
@@ -65,9 +65,21 @@ export const useManageStore = defineStore('Manage', {
         return res
       })
     },
+    async ManageGetDeviceListAll() {
+      return SQLPool.execute("select dl.* from device_list dl where wiz_ip!='tmp'", []).then((resolve: any) => {
+        return resolve[0] as unknown as DeviceArray[]
+      })
+    },
     async ChangeDevice(device_id: string, DeviceArray: DeviceArray) {
-      await SQLPool.execute('update cupboard_list set device_id=? where cupbox_id=?', [device_id,DeviceArray.cupbox_id])
       return SQLPool.execute('update device_list set SSID=?,wiz_ip=?,wiz_port=? where device_id=?', [DeviceArray.SSID,DeviceArray.wiz_ip,DeviceArray.wiz_port,device_id]) as Promise<[SQLCallback, any]>
-    }
+    },
+    async ManageGetCupboardList() {
+      return SQLPool.execute('select cl.* from cupboard_list cl', []).then((resolve: any) => {
+        return resolve[0] as unknown as CupboardArray[]
+      })
+    },
+    async ChangeCupboard(cupbox_id: string, CupboardArray: CupboardArray) {
+      return SQLPool.execute('update cupboard_list set device_id=? where cupbox_id=?', [CupboardArray.device_id, cupbox_id]) as Promise<[SQLCallback, any]>
+    },
   }
 })

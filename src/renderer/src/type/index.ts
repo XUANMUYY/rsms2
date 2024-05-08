@@ -137,6 +137,11 @@ export declare interface Cupboard_List_Data {
   SSID: string,
 }
 
+export declare interface CupboardArray {
+  cupbox_id: string,
+  device_id: string,
+}
+
 export declare interface UserApply {
   SSID: string,
   user: string,
@@ -303,6 +308,7 @@ export declare interface Router_Array{
 export declare interface MySQLSetting{
   INIT_SQL: DatabaseConfig;
   SQL: DatabaseConfig;
+  SQL_Backup: DatabaseConfig;
   SQLSetting: {
     host: string;
     port: number;

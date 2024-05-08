@@ -1,7 +1,7 @@
 <template>
   <v-card width="100%" height="auto" style="padding: 20px" flat>
-    <v-card width="100%" height="auto" >
-      <v-container class="bg-grey-lighten-3">
+    <v-card color="miniBG" width="100%" height="auto" >
+      <v-container  >
         <v-row no-gutters>
           <v-col cols="5">
             <div v-for="(cupBoxIndex,i) in cupBoardArray.cupBoxLeftArray" :key="i" style="margin: 10px">
@@ -16,6 +16,7 @@
                     <v-col cols="12">
                       <v-card elevation="0"
                               flat
+                              color="miniBG"
                               class="bg-grey-lighten-3">
                         <template v-slot:title>
                           <h4 class="text-h4 align-content-center">{{ `柜 ` +  cupBoardArray.cupBoardIndex.toString() }}</h4>

@@ -114,6 +114,7 @@ function Submit(){
   }
   useBoardTCPStore().CreatSocket(0, '192.168.0.100', 5000)
   loading.value = true
+  useAddDeviceStore().CanClose = false
   const InitCallback = useBoardTCPStore().InitBoard(0,Ip.value,Port.value,timeStamp.value)
   InitCallback.then((resolve)=>{
     if(resolve){
@@ -134,6 +135,7 @@ function Submit(){
             setTimeout(()=>{
               color.value = "primary"
               BtnTips.value = "Next"
+              useAddDeviceStore().CanClose = true
             },2000)
           })
         }
@@ -145,6 +147,7 @@ function Submit(){
         setTimeout(()=>{
           color.value = "primary"
           BtnTips.value = "Next"
+          useAddDeviceStore().CanClose = true
         },2000)
       })
     }
@@ -155,6 +158,7 @@ function Submit(){
     }
     setTimeout(()=>{
       color.value = "primary"
+      useAddDeviceStore().CanClose = true
       BtnTips.value = "Next"
     },2000)
   })

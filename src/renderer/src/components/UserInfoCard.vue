@@ -11,7 +11,7 @@
         :subtitle="authority_text[useUserDataStore().UserData.authority]"
       >
         <template v-slot:actions>
-          <v-btn v-if="useUserDataStore().UserStatus=='Login'" @click="useUserDataStore().Clear();router.replace({ path: '/DashBoard' })">登出</v-btn>
+          <v-btn v-if="useUserDataStore().UserStatus=='Login'" @click="()=>{useUserDataStore().Clear();router.replace({ path:useSystemSettingStore().SystemSetting['源柜通讯设置']['仅启用源柜页面'].value? '/CupBoard':'/DashBoard' })}">登出</v-btn>
           <v-btn v-else @click="useUserDataStore().Login = true">登入</v-btn>
         </template>
       </v-card>
@@ -36,6 +36,7 @@ import { useUserDataStore } from '../store/useUserDataStore'
 import Login from './Login.vue'
 import Register from './Register/Register.vue'
 import router from '../router'
+import { useSystemSettingStore } from '../store/useSystemSettingStore'
 
 const authority_text = {
   default:"访客",

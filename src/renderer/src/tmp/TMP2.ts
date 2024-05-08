@@ -36,8 +36,7 @@ export const useSchedulerStore = defineStore('Scheduler', {
     queue0count: Array.from({ length: SchedulerMax }, () => 0) as number[],
     queue0status: Array.from({ length: SchedulerMax }, () => false) as boolean[],
     queue0recorder: Array.from({ length: SchedulerMax }, () => 0) as number[],
-    queue0failed0recorder: Array.from({ length: SchedulerMax }, () => 0) as number[],
-    queue0cache: Array.from({ length: SchedulerMax }, () => [null,false,null]) as any[][],    //0:Value;1:result
+    queue0cache: Array.from({ length: SchedulerMax }, () => null) as any[],
     queue0enable: Array.from({ length: SchedulerMax }, () => true) as boolean[]
   }),
   actions: {
@@ -61,40 +60,34 @@ export const useSchedulerStore = defineStore('Scheduler', {
           for (let executeID = 0; executeID < 12; executeID++) {
             if (this.queue0enable[executeID]) (!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve() || this.queue0count[executeID]--)
           }
-        } else {
-          await new Promise(resolve => setTimeout(resolve, 20))
         }
+        await new Promise(resolve => setTimeout(resolve, 20))
       }
+      // if (Math.max(...this.queue0count)) {
+      //   for (let executeID = 0; executeID < 12; executeID++) {
+      //     if (this.queue0enable[executeID]) (!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve() || this.queue0count[executeID]--)
+      //   }
+      // }
     },
     async executeTask(FUNCTION:Function, Value: any, executeID:number, _Option: OPTION) {
-      const cache0index = this.queue0cache[0].findIndex((cache:any) =>{return CheckObject(cache,Value,[])})    //查询输入缓存器
-      this.queue0cache[0][executeID] = (cache0index!=-1)?null : Value;    //注册输入缓存器，如果cache0index=-1,即并行队列无冲突事件，则注册输入，否则不注册，并进行冲突输出重定向
-      (cache0index != -1) && (this.queue0cache[1][cache0index] = true)    //注册输出需求缓存器
-
+      const cache0index = this.queue0cache.findIndex((cache:any) =>{return CheckObject(cache,Value,[])})    //查询缓存器
+      this.queue0cache[executeID] = cache0index==-1?Value:null    //注册缓存器
       this.queue0status[executeID] = true   //注册状态位
 
-      const res = cache0index==-1 ? ( await FUNCTION(Value,executeID) ):( "CACHE IN " + cache0index as unknown as number )    //是否执行缓存跳过
+      let res:any = null
+      try{
+        res = cache0index==-1 ? ( await FUNCTION(Value,executeID) ):( "CACHE IN " + cache0index as unknown as number )    //是否执行缓存跳过
+      }catch (error){
+        console.log(error)
+      }
 
-      this.queue0cache[0][executeID] = null
+      this.queue0cache[executeID] = null
       this.queue0status[executeID] = false
 
       this.queue0recorder[executeID]++    //注册记录器
 
       // if(this.queue0enable[executeID])(!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve()||this.queue0count[executeID]--)
 
-      if(cache0index != -1) {
-        for(let tick=0;tick<50;tick++){
-          if(!this.queue0cache[1][executeID]){
-            return this.queue0cache[2][executeID]
-          }else{
-            await new Promise(resolve => {setTimeout(resolve, 10)});
-          }
-        }
-        this.queue0failed0recorder[executeID]++
-      }   //输出等待器
-
-      this.queue0cache[2][executeID] = this.queue0cache[1][executeID]?res:"Failed Cache";   //注册输出缓存器
-      this.queue0cache[1][executeID] = false
       return res
     }
 

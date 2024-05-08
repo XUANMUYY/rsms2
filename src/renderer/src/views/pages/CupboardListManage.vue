@@ -4,7 +4,7 @@
     <v-data-table
       height="860px"
       :headers="headers"
-      :items="DeviceArray"
+      :items="CupboardArray"
       :sort-by="[{ key: 'nuclide', order: 'desc' }]">
       <template v-slot:top>
         <v-toolbar flat>
@@ -20,44 +20,22 @@
             max-width="500px">
             <v-card>
               <v-card-title>
-                <span class="text-h5">{{`设备编号:`+ chooseItem.device_id}}</span>
+                <span class="text-h5">{{`柜门编号:`+  chooseItem.cupbox_id}}</span>
               </v-card-title>
+
               <v-card-text>
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
                       v-model="chooseItem.device_id"
                       variant="outlined"
-                      spellcheck="false"
-                      disabled
+                      spellcheck ="false"
                       label="设备编号">
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="8">
-                    <v-text-field
-                      v-model="chooseItem.wiz_ip"
-                      variant="outlined"
-                      label="IP地址">
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-text-field
-                      v-model="chooseItem.wiz_port"
-                      variant="outlined"
-                      spellcheck="false"
-                      label="端口">
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="chooseItem.SSID"
-                      variant="outlined"
-                      spellcheck="false"
-                      label="绑定源SSID">
                     </v-text-field>
                   </v-col>
                 </v-row>
               </v-card-text>
+
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
@@ -70,7 +48,7 @@
                   :loading="saveLoading"
                   color="blue-darken-1"
                   variant="text"
-                  @click="saveDeviceData">
+                  @click="saveCupboardData">
                   {{ saveTips }}
                 </v-btn>
               </v-card-actions>
@@ -93,26 +71,26 @@
 
 <script lang="ts" setup>
 import { useManageStore } from '../../store/useManageStore'
+// import { toRaw } from "@vue/reactivity"
 import { Ref } from 'vue'
-import { DeviceArray } from '../../type'
+import { CupboardArray } from '../../type'
 
 const headers:any = [
   {
-    title: '设备编号',
+    title: '柜门编号',
     align: 'start',
-    key: 'device_id'
+    sortable: false,
+    key: 'cupbox_id'
   },
-  { title: 'IP地址', key: 'wiz_ip' },
-  { title: '端口', key: 'wiz_port' },
-  { title: '绑定源', key: 'SSID' },
+  { title: '设备编号', key: 'device_id' },
   { title: '操作', key: 'actions', sortable: false }
 ]
 
-const DeviceArray:Ref<DeviceArray[]> = ref([])
+const CupboardArray:Ref<CupboardArray[]> = ref([])
 const dialog = ref(false)
 const saveLoading = ref(false)
 const saveTips = ref("保存")
-const chooseItem:Ref<DeviceArray> = ref({} as DeviceArray)
+const chooseItem:Ref<CupboardArray> = ref({} as CupboardArray)
 
 const editItem = async(item) => {
   chooseItem.value = Object.assign({}, item)
@@ -120,20 +98,20 @@ const editItem = async(item) => {
 }
 const cancel = () => {
   dialog.value = false
-  chooseItem.value = {} as DeviceArray
+  chooseItem.value = {} as CupboardArray
 }
-const saveDeviceData = () => {
+const saveCupboardData = () => {
   saveLoading.value = true
   setTimeout(() => {
-    useManageStore().ChangeDevice(chooseItem.value.device_id, chooseItem.value)
+    useManageStore().ChangeCupboard(chooseItem.value.cupbox_id, chooseItem.value)
       .then(() => {
-        useManageStore().ManageGetDeviceListAll()
+        useManageStore().ManageGetCupboardList()
           .then((resolve) => {
-            DeviceArray.value = resolve
+            CupboardArray.value = resolve
           })
           .then(() => {
-            const check = DeviceArray.value.find((item) => {
-              return item.device_id == chooseItem.value.device_id
+            const check = CupboardArray.value.find((item) => {
+              return item.cupbox_id == chooseItem.value.cupbox_id
             })
             if (CheckObject(check!, chooseItem.value, [''])) {
               saveLoading.value = false
@@ -153,8 +131,8 @@ const saveDeviceData = () => {
   }, 500)
 }
 
-useManageStore().ManageGetDeviceListAll().then((resolve) => {
-  DeviceArray.value = resolve
+useManageStore().ManageGetCupboardList().then((resolve) => {
+  CupboardArray.value = resolve
 })
 
 const CheckObject = (objectA: object, objectB: object, filter: string[]): boolean => {

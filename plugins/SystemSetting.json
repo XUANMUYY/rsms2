@@ -1,30 +1,89 @@
 {
- "SA": {
-  "ALA": {
+ "源柜通讯设置": {
+  "title": {
+   "title": "源柜通讯设置",
+   "type": "title",
+   "tips": "",
+   "value": true
+  },
+  "启用调度": {
+   "title": "启用调度",
    "type": "switch",
+   "tips": "",
+   "value": true
+  },
+  "仅启用源柜页面": {
+   "title": "仅启用源柜页面",
+   "type": "switch",
+   "tips": "",
    "value": false
   },
-  "ALB": {
-   "type": "switch",
-   "value": false
-  },
-  "ALS": {
+  "调度器最大并行队列数": {
+   "title": "调度器最大并行队列数",
    "type": "select",
-   "value": "B",
+   "tips": "需重启",
+   "value": "12",
    "option": [
-    "A",
-    "B",
-    "C"
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
    ]
+  },
+  "调度器最短扫描时间": {
+   "title": "调度器最短扫描时间",
+   "type": "text",
+   "tips": "~ms",
+   "value": "20"
+  },
+  "单次调度最大超时时间": {
+   "title": "单次调度最大超时时间",
+   "type": "text",
+   "tips": "~ms",
+   "value": "500"
+  },
+  "调度器队列累计下限": {
+   "title": "调度器队列累计下限",
+   "type": "text",
+   "tips": "",
+   "value": "2"
+  },
+  "调度器队列累计上限": {
+   "title": "调度器队列累计上限",
+   "type": "text",
+   "tips": "",
+   "value": "500"
+  },
+  "请求调度最短时间": {
+   "title": "请求调度最短时间",
+   "type": "text",
+   "tips": "~ms",
+   "value": "500"
   }
  },
  "系统设置": {
+  "title": {
+   "title": "系统设置",
+   "type": "title",
+   "tips": "",
+   "value": true
+  },
   "BLA": {
    "type": "switch",
+   "tips": "",
    "value": true
   },
   "主题设置": {
    "type": "select",
+   "tips": "",
    "value": "light",
    "option": [
     "light",
@@ -32,18 +91,27 @@
    ]
   },
   "页面权限设置": {
+   "tips": "",
    "type": "Router_Array",
    "value": true
   }
  },
  "数据库设置": {
+  "title": {
+   "title": "数据库设置",
+   "type": "title",
+   "tips": "",
+   "value": true
+  },
   "数据库": {
+   "tips": "",
    "type": "SQLSetting",
    "value": true
   },
-  "CLB": {
+  "使用本地数据库": {
+   "tips": "",
    "type": "switch",
-   "value": "true"
+   "value": true
   }
  }
 }

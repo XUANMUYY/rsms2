@@ -1,7 +1,7 @@
 <template>
   <v-card style="padding: 20px" height="1000px">
     <v-expansion-panels variant="accordion">
-      <v-expansion-panel v-for="(value, key) in useSystemSettingStore().SystemSetting" :key="key" :title="key as unknown as string">
+      <v-expansion-panel v-for="(value, key) in useSystemSettingStore().SystemSetting" :key="key" :title="value['title']['title'] as unknown as string">
         <template v-slot:text>
           <v-card elevation="0" >
             <v-card-text>
@@ -104,25 +104,27 @@
                               <v-col cols="3">
                                 <v-text-field
                                   v-model="useSystemSettingStore().MySQL.INIT_SQL.host"
-                                  @change="useSystemSettingStore().updateText('host', $event)"
+                                  @change="useSystemSettingStore().updateSQLText('host', $event)"
                                   hide-details="auto"
                                   label="HOST"
+                                  :disabled="useSystemSettingStore().SystemSetting['数据库设置']['使用本地数据库']['value']"
                                   variant="outlined"
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="3">
                                 <v-text-field
                                   v-model="useSystemSettingStore().MySQL.INIT_SQL.port"
-                                  @change="useSystemSettingStore().updateText('port', $event)"
+                                  @change="useSystemSettingStore().updateSQLText('port', $event)"
                                   hide-details="auto"
                                   label="HOST"
+                                  :disabled="useSystemSettingStore().SystemSetting['数据库设置']['使用本地数据库']['value']"
                                   variant="outlined"
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="3">
                                 <v-text-field
                                   v-model="useSystemSettingStore().MySQL.INIT_SQL.user"
-                                  @change="useSystemSettingStore().updateText('user', $event)"
+                                  @change="useSystemSettingStore().updateSQLText('user', $event)"
                                   hide-details="auto"
                                   label="USER"
                                   variant="outlined"
@@ -131,7 +133,7 @@
                               <v-col cols="3">
                                 <v-text-field
                                   v-model="useSystemSettingStore().MySQL.INIT_SQL.password"
-                                  @change="useSystemSettingStore().updateText('password', $event)"
+                                  @change="useSystemSettingStore().updateSQLText('password', $event)"
                                   hide-details="auto"
                                   label="PASSWORD"
                                   variant="outlined"
@@ -142,10 +144,27 @@
                         </v-expansion-panel>
                       </v-expansion-panels>
                     </div>
-                    <div v-else class="d-flex py-3 justify-space-between" style="height: 60px">
+                    <div v-else-if="subKey as unknown as string =='使用本地数据库'" class="d-flex py-3 justify-space-between" style="height: 60px">
                       <v-list-item density="compact" class="text-h7">
                         <v-list-item-title >
                           {{ subKey }}
+                        </v-list-item-title>
+                      </v-list-item>
+
+                      <v-list-item v-if="subValue['type']==='switch'" density="compact">
+                        <v-switch
+                          :model-value="subValue['value']"
+                          color="green"
+                          inset
+                          @change="($event)=>{useSystemSettingStore().MySQL.INIT_SQL.host=$event.target.checked?'localhost':useSystemSettingStore().MySQL.SQL_Backup.host;useSystemSettingStore().MySQL.INIT_SQL.port=$event.target.checked?3306:useSystemSettingStore().MySQL.SQL_Backup.port;useSystemSettingStore().MySQL.SQL.host=$event.target.checked?'localhost':useSystemSettingStore().MySQL.SQL_Backup.host;useSystemSettingStore().MySQL.SQL.port=$event.target.checked?3306:useSystemSettingStore().MySQL.SQL_Backup.port;useSystemSettingStore().updateSwitch(key, subKey, $event)}"
+                          hide-details
+                        ></v-switch>
+                      </v-list-item>
+                    </div>
+                    <div v-else-if="subValue['type']!='title'" class="d-flex py-3 justify-space-between" style="height: 60px">
+                      <v-list-item density="compact" class="text-h7">
+                        <v-list-item-title >
+                          {{ subKey }} {{subValue['tips']==''?subValue['tips']:`(`+subValue['tips']+`)`}}
                         </v-list-item-title>
                       </v-list-item>
 
@@ -165,6 +184,14 @@
                           variant="outlined"
                           @update:model-value="useSystemSettingStore().updateSelect(key, subKey, $event)"
                         ></v-select>
+                      </v-list-item>
+                      <v-list-item v-if="subValue['type']==='text'" density="compact">
+                        <v-text-field
+                          :model-value="subValue['value']"
+                          hide-details="auto"
+                          variant="outlined"
+                          @change="useSystemSettingStore().updateText(key, subKey, $event)"
+                        ></v-text-field>
                       </v-list-item>
                     </div>
                   </v-col>

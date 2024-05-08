@@ -1,8 +1,9 @@
 // Utilities
 import { defineStore } from 'pinia'
+import { useSystemSettingStore } from './useSystemSettingStore'
 //Plugins
 
-const SchedulerMax:number = 12
+const SchedulerMax:number = useSystemSettingStore().SystemSetting['源柜通讯设置']['调度器最大并行队列数'].value
 declare interface OPTION {
   delay?: number,
   id?: number,
@@ -27,18 +28,36 @@ const CheckObject = (objectA: object, objectB: object, filter: string[]): boolea
   }
   return Correct == 1
 }
+const monitorFunction = async <T>(func: (...args: any[]) => Promise<T>, timeout: number, ...args: any[]): Promise<T|string|null> => {
+  let timeoutId: NodeJS.Timeout;
+
+  const timeoutPromise = new Promise<T|string|null>((resolve) => {
+    timeoutId = setTimeout(() => {
+      resolve("MonitorTimeOut");
+    }, timeout)
+  });
+
+  return Promise.race([
+    func(...args),
+    timeoutPromise
+  ])
+    .then((result) => {
+    clearTimeout(timeoutId);
+    return result;
+  })
+}
 
 export const useSchedulerStore = defineStore('Scheduler', {
   state: () => ({
+    monitorDrawer:false,
     max: SchedulerMax,
     count: 0 as number,
     queue0: Array.from({ length: SchedulerMax }, () => []) as any[][],
     queue0count: Array.from({ length: SchedulerMax }, () => 0) as number[],
     queue0status: Array.from({ length: SchedulerMax }, () => false) as boolean[],
     queue0recorder: Array.from({ length: SchedulerMax }, () => 0) as number[],
-    queue0failed0recorder: Array.from({ length: SchedulerMax }, () => 0) as number[],
-    queue0cache: Array.from({ length: SchedulerMax }, () => [null,false,null]) as any[][],    //0:Value;1:result
-    queue0enable: Array.from({ length: SchedulerMax }, () => true) as boolean[]
+    queue0cache: Array.from({ length: SchedulerMax }, () => null) as any[],
+    queue0enable: Array.from({ length: SchedulerMax }, () => false) as boolean[]
   }),
   actions: {
     async add(FUNCTION:Function, Value: any, Option: OPTION):Promise<number[]|string|null> {
@@ -46,6 +65,14 @@ export const useSchedulerStore = defineStore('Scheduler', {
       const executeID = this.queue0count.findIndex((count) => count == Math.min(...this.queue0count))
       if (executeID == -1) return "executeID ERROR"
       this.queue0count[executeID]++
+      //复用器
+      if(this.queue0enable.findIndex(enable=>enable)!=-1) {
+        this.queue0enable[executeID] = true
+      }
+      else {
+        this.queue0enable[executeID] = true
+        this.start()
+      }
       //阻塞器
       await new Promise(resolve => {
         Option.hasOwnProperty('seize') && Option.seize!.enabled ? this.queue0[executeID].splice(0,0,{ resolve: resolve, option: Option }):this.queue0[executeID].push({ resolve: resolve, option: Option })
@@ -56,45 +83,41 @@ export const useSchedulerStore = defineStore('Scheduler', {
       return await this.executeTask(FUNCTION, Value, executeID, Option)
     },
     async start() {
-      while (true) {
+      while (this.queue0enable.findIndex(enable=>enable)!=-1) {
         if (Math.max(...this.queue0count)) {
           for (let executeID = 0; executeID < 12; executeID++) {
             if (this.queue0enable[executeID]) (!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve() || this.queue0count[executeID]--)
+            if (!this.queue0status[executeID] && this.queue0count[executeID]==0){this.queue0enable[executeID]=false}
           }
-        } else {
-          await new Promise(resolve => setTimeout(resolve, 20))
         }
+        await new Promise(resolve => setTimeout(resolve, useSystemSettingStore().SystemSetting['源柜通讯设置']['调度器最短扫描时间'].value))
       }
+      // if (Math.max(...this.queue0count)) {
+      //   for (let executeID = 0; executeID < 12; executeID++) {
+      //     if (this.queue0enable[executeID]) (!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve() || this.queue0count[executeID]--)
+      //   }
+      // }
     },
-    async executeTask(FUNCTION:Function, Value: any, executeID:number, _Option: OPTION) {
-      const cache0index = this.queue0cache[0].findIndex((cache:any) =>{return CheckObject(cache,Value,[])})    //查询输入缓存器
-      this.queue0cache[0][executeID] = (cache0index!=-1)?null : Value;    //注册输入缓存器，如果cache0index=-1,即并行队列无冲突事件，则注册输入，否则不注册，并进行冲突输出重定向
-      (cache0index != -1) && (this.queue0cache[1][cache0index] = true)    //注册输出需求缓存器
-
+    async executeTask(FUNCTION, Value: any, executeID:number, _Option: OPTION) {
+      const cache0index = this.queue0cache.findIndex((cache:any) =>{return CheckObject(cache,Value,[])})    //查询缓存器
+      this.queue0cache[executeID] = cache0index==-1?Value:null    //注册缓存器
       this.queue0status[executeID] = true   //注册状态位
 
-      const res = cache0index==-1 ? ( await FUNCTION(Value,executeID) ):( "CACHE IN " + cache0index as unknown as number )    //是否执行缓存跳过
+      let res:any = null
+      try{
+        res = cache0index==-1 ? ( await monitorFunction(FUNCTION,useSystemSettingStore().SystemSetting['源柜通讯设置']['单次调度最大超时时间'].value,Value,executeID) ):( "CACHE IN " + cache0index as unknown as number )    //是否执行缓存跳过
+      }catch (error){
+        console.log(error)
+      }
 
-      this.queue0cache[0][executeID] = null
+      this.queue0cache[executeID] = null
       this.queue0status[executeID] = false
 
       this.queue0recorder[executeID]++    //注册记录器
 
       // if(this.queue0enable[executeID])(!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve()||this.queue0count[executeID]--)
 
-      if(cache0index != -1) {
-        for(let tick=0;tick<50;tick++){
-          if(!this.queue0cache[1][executeID]){
-            return this.queue0cache[2][executeID]
-          }else{
-            await new Promise(resolve => {setTimeout(resolve, 10)});
-          }
-        }
-        this.queue0failed0recorder[executeID]++
-      }   //输出等待器
 
-      this.queue0cache[2][executeID] = this.queue0cache[1][executeID]?res:"Failed Cache";   //注册输出缓存器
-      this.queue0cache[1][executeID] = false
       return res
     }
 
