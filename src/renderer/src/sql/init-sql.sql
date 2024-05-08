@@ -68,7 +68,7 @@ BEGIN
             cupbox_id varchar(8) not null
                 primary key,
             device_id int        not null
-                key
+                unique
         );
 
         create table if not exists apply_list

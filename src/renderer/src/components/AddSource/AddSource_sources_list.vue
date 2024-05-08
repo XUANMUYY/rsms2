@@ -94,6 +94,18 @@
               ></v-select>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="5">
+              <v-switch
+                v-model="useAddSourceStore().BandDevice"
+                label="暂不绑定设备"
+                inset
+                color="red"
+                spellcheck ="false"
+                variant="outlined"
+              ></v-switch>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card-text>
 
@@ -169,9 +181,15 @@ const submit = handleSubmit(values => {
       useSourceArrayStore().UpdateSourceArray()
       setTimeout(()=>{
         if(useSourceArrayStore().SourceArray.find((_source)=>{return _source.SSID==useAddSourceStore().SSID&&_source.nuclide_name!='tmp'})!=undefined){
-          loading.value = false
-          useAddSourceStore().CanClose = false
-          useAddSourceStore().step = 2
+          if(useAddSourceStore().BandDevice){
+            loading.value = false
+            useAddSourceStore().CanClose = true
+            useAddSourceStore().step = 4
+          }else{
+            loading.value = false
+            useAddSourceStore().CanClose = false
+            useAddSourceStore().step = 2
+          }
         }else {
           tips.value = "failed"
           loading.value = false

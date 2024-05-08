@@ -22,7 +22,6 @@ declare module 'vue' {
     CupBoard: typeof import('./src/components/cupBoard.vue')['default']
     CupBox: typeof import('./src/components/cupBox.vue')['default']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
-    FindWhoUsing: typeof import('./src/components/FindWhoUsing.vue')['default']
     FindWhoUsingSource: typeof import('./src/components/FindWhoUsingSource.vue')['default']
     Loading: typeof import('./src/components/Loading.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']

@@ -22,10 +22,21 @@ export const useSourceArrayStore = defineStore('SourceArray', {
       }
     },
     getBind(SSID:any){
+      const bindEmpty =   {
+        device_id:"未绑定",
+        wiz_ip:"未绑定",
+        wiz_port:"未绑定",
+        cupbox_id:"未绑定"}
+
       return new Promise<SourceBind>((resolve, _reject) => {
         SQLPool.execute("select dl.*,cl.* from device_list dl join cupboard_list cl on dl.device_id=cl.device_id where dl.SSID=?",[SSID])
           .then((res:any)=>{
-            resolve (res[0][0] as SourceBind)
+            const SourceBind = res[0][0] as unknown as SourceBind == undefined?{}:res[0][0] as unknown as SourceBind
+            const allGet = Object.keys(SourceBind)
+            allGet.forEach((key:string) => {
+              bindEmpty[key] = allGet[key]
+            })
+            resolve (bindEmpty)
           })
       })
     },

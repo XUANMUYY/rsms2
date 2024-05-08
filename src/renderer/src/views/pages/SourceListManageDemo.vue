@@ -6,7 +6,7 @@
           <v-btn
             class="mx-4"
             variant="outlined"
-            @click="useAddSourceStore().OpenAddSource = true;useAddSourceStore().RefreshSSID()">
+            @click="useAddSourceStore().OpenAddSource = true;useAddSourceStore().RefreshSSID();">
             添加源与设备
           </v-btn>
           <v-btn
@@ -15,6 +15,7 @@
             @click="()=>{useAddDeviceStore().OpenAddDevice=true;useAddDeviceStore().RefreshDeviceID()}">
             添加设备
           </v-btn>
+
         </v-col>
       </v-row>
     </v-container>

@@ -212,6 +212,8 @@ export declare interface CupBoxSource {
   cupbox_id: string,
   SSID: string,
   device_id: string,
+  wiz_ip:string,
+  wiz_port:number,
   nuclide: string,
   nuclide_id: number,
   nuclide_index: number,

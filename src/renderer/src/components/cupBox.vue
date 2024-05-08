@@ -59,7 +59,9 @@
     </v-row>
   </v-card>
 
-  <v-card v-else :loading = "BoxLoading" variant="outlined" style="border-width: 2px;" v-bind:style="{borderColor:Color[SourcesInfo.SourceStatus]}" class="mx-auto" width="auto" height="100px">
+  <v-card v-else :loading = "BoxLoading" variant="outlined" style="border-width: 2px;" v-bind:style="{borderColor:Color[SourcesInfo.SourceStatus]}" class="mx-auto" width="auto" height="100px"
+          @click="()=>{if(SourcesInfo.wiz_ip!='')GetCount(SourcesInfo.wiz_ip)}"
+  >
     <v-row no-gutters>
       <v-col cols="6">
         <v-card class="mx-auto" flat width="auto" height="100px" prepend-icon="mdi-box"
@@ -78,6 +80,12 @@
       <v-col cols="6">
         <v-card class="mx-auto" width="auto" height="100px" flat
                 elevation="0">
+          <v-card-text v-if="SourcesInfo.nuclide_quality!=0&&SourcesInfo.nuclide_quality!=undefined">
+            {{callback[1]}}
+          </v-card-text>
+          <v-card-text v-if="SourcesInfo.device_id!='0000'">
+            {{moment.unix(callback[0]).format('hh:mm:ss')}}
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -91,6 +99,7 @@ import { useAsyncUpdateCupBoardStore } from '../store/useAsyncUpdateCupBoardStor
 import { useCupBoardStore } from '../store/useCupBoardStore'
 import { useUserDataStore } from '../store/useUserDataStore'
 import { useSystemInfoStore } from '../store/useSystemInfoStore'
+import { useBoardTCPStore } from '../store/useBoardTCPStore'
 const moment = require('moment')
 const Props = defineProps<{
   cupBoxIndex:string,
@@ -100,6 +109,8 @@ const empty:CupBoxSource = {
   nuclide_energy: [],
   nuclide_index: 0,
   nuclide_name: '',
+  wiz_ip:"",
+  wiz_port:0,
   nuclide_quality: 0,
   nuclide_id:0,
   nuclide_rate: '',
@@ -116,6 +127,7 @@ const Color:{ [KEY:string]: string} = {
   'PROCESS-PASS': '#00B0FF',
   'OUT': '#546E7A',
 }
+const callback = ref([0,0])
 
 const SourcesInfo:Ref<CupBoxSource> = ref(empty)
 const UserInfo:Ref<CupBoxUserInfo> = ref({} as CupBoxUserInfo)
@@ -285,6 +297,31 @@ function BackOpenBox(apply_id:string,SSID:string){
       })
     },500)
   })
+}
+
+const GetCount = (ip:string) => {
+  for (let i=0;i<1200;i++)
+  {
+    setTimeout(()=>{
+      useBoardTCPStore().CreatSocket(SourcesInfo.value.cupbox_id as unknown as number - 101, ip, 5000)
+      useBoardTCPStore().GetCount(SourcesInfo.value.cupbox_id as unknown as number - 101)
+        .then((res: any) => {
+          try{
+            callback.value[0] = res[0]
+            callback.value[1] = res[1]
+            console.log(res)
+            return res
+          }catch(err){
+            console.log(err)
+            return [0,0]
+          }
+        })
+        .then((_res) => {
+          useBoardTCPStore().DropSocket(SourcesInfo.value.cupbox_id as unknown as number - 101)
+          return _res
+        })
+    },1000 + i * 1000)
+  }
 }
 </script>
 

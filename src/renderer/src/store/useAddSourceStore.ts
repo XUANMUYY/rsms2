@@ -15,13 +15,15 @@ export const useAddSourceStore = defineStore('AddSource', {
   state: () => ({
     OpenAddSource: false as boolean,
     step: 0,
-    CanClose: true,
-    SSID: '' as string,
+    CanClose: false,
+    SSID: '0' as string,
     device_id: '' as string,
     cupbox_id: '' as string,
     sources_list_data: {} as Source_List_Data,
     device_list_data: {} as Device_List_Data,
-    cupboard_list_data: {} as Cupboard_List_Data
+    cupboard_list_data: {} as Cupboard_List_Data,
+    BandDevice:false as boolean,
+    BandOldDevice:false as boolean,
   }),
   getters: {},
   actions: {
@@ -50,6 +52,12 @@ export const useAddSourceStore = defineStore('AddSource', {
         [this.device_list_data.wiz_ip,
           this.device_list_data.wiz_port,
           this.SSID,
+          this.device_id]) as Promise<[SQLCallback, any]>
+    },
+    async Update_device_list() {
+      //noinspection JSUnresolvedVariable
+      return await SQLPool.execute('update device_list set  SSID = ? where device_id = ?',
+        [this.SSID,
           this.device_id]) as Promise<[SQLCallback, any]>
     },
     async Add_cupboard_list() {

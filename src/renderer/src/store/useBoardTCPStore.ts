@@ -161,8 +161,8 @@ export const useBoardTCPStore = defineStore('BoardTCP', {
         console.error('Error:', error);
         return new Promise((resolve, _reject) => {
           setTimeout(() => {
-            resolve(false)
-          }, 1000);
+            resolve([0,0])
+          }, 100);
         })
       }
     },

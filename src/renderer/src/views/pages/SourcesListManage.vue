@@ -118,7 +118,6 @@
                       item-title="title"
                       item-value="value"
                       persistent-hint
-                      @change="console.log($event)"
                       label="设备绑定"
                       :items="DeviceArrayItem"
                     ></v-select>

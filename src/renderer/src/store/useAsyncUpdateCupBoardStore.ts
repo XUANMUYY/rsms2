@@ -31,7 +31,7 @@ export const useAsyncUpdateCupBoardStore = defineStore('AsyncUpdateCupBoard', {
       let Callback = empty
 
       return new Promise<{CallBack:CupBoxSource,Status:boolean}>((resolve, _reject) => {
-        SQLPool.execute('select cl.cupbox_id,cl.device_id,dl.SSID from cupboard_list cl join device_list dl on dl.device_id=cl.device_id where cl.cupbox_id=?', [CupBoxIndex])
+        SQLPool.execute('select cl.cupbox_id,cl.device_id,dl.* from cupboard_list cl join device_list dl on dl.device_id=cl.device_id where cl.cupbox_id=?', [CupBoxIndex])
           .then((res:any) => {
           if (res[0].length != 0) {
             Callback = res[0][0] as CupBoxSource
