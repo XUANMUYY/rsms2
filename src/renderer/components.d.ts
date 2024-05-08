@@ -21,7 +21,6 @@ declare module 'vue' {
     CardWindows: typeof import('./src/components/Register/CardWindows.vue')['default']
     CupBoard: typeof import('./src/components/cupBoard.vue')['default']
     CupBox: typeof import('./src/components/cupBox.vue')['default']
-    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     FindWhoUsingSource: typeof import('./src/components/FindWhoUsingSource.vue')['default']
     Loading: typeof import('./src/components/Loading.vue')['default']
     Login: typeof import('./src/components/Login.vue')['default']
