@@ -6,10 +6,10 @@
   <v-btn :loading="loading" @click="tmpC">
     获取计数{{ moment.unix(CallBack[0]).format('hh:mm:ss') }},计数率{{ CallBack[1] }}CPS
   </v-btn>
-  <v-btn :loading="loading" @click="tmpD">测试D</v-btn>
-  <v-btn :loading="loading" @click="tmpE">测试E</v-btn>
-  <v-btn :loading="loading" @click="tmpF">调度器</v-btn>
-  <v-btn :loading="loading" @click="tmpG">调度器抢占</v-btn>
+  <v-btn :loading="loading" @click="tmpD">调度器状态</v-btn>
+  <v-btn :loading="loading" @click="tmpE">调度器启动</v-btn>
+  <v-btn :loading="loading" @click="tmpF">添加调度</v-btn>
+  <v-btn :loading="loading" @click="tmpG">轮询</v-btn>
   <v-btn @click=" $i18n.locale=$i18n.locale=='en'?'zhHans':'en' ">
     切换语言 {{ $t('tmp.hello') }}
   </v-btn>
@@ -32,73 +32,13 @@ import router from '../../router'
 import { useBoardTCPStore } from '../../store/useBoardTCPStore'
 import { useTmpSafeCodeStore } from '../../store/useTmpSafeCodeStore'
 import { useAddDeviceStore } from '../../store/useAddDeviceStore'
+import { useSchedulerStore } from '../../store/useSchedulerStore'
 
 const loading = ref(false)
 const ip = ref('192.168.0.100')
 const back = ref('')
 const CallBack = ref([0, 0])
 const moment = require('moment')
-
-class Scheduler {
-  max: number
-  count: number
-  queue0: any[][]
-  queue0count: number[]
-  queue0status: boolean[]
-  queue0recorder: number[]
-  queue0cache: any[]
-
-  constructor(max: number) {
-    this.max = max
-    this.count = 0
-    this.queue0 = Array.from({ length: max }, () => [])
-    this.queue0count = Array.from({ length: max }, () => 0)
-    this.queue0status = Array.from({ length: max }, () => false)
-    this.queue0recorder = Array.from({ length: max }, () => 0)
-    this.queue0cache = Array.from({ length: max }, () => {})
-  }
-
-  async add(FUNCTION:Function, Value: any, Option: OPTION) {
-    const executeID = this.queue0count.findIndex((count) => count == Math.min(...this.queue0count))
-    this.queue0count[executeID]++
-    await new Promise(resolve => this.queue0[executeID].push({ resolve: resolve, id: Option.id }))
-
-    return await this.executeTask(FUNCTION, Value, executeID, Option)
-  }
-
-  start() {
-    if (Math.max(...this.queue0count)) {
-      for (let executeID = 0; executeID < 12; executeID++) {
-        (!this.queue0status[executeID]) && this.queue0[executeID].length && (this.queue0[executeID].shift().resolve()||this.queue0count[executeID]--)
-      }
-    }
-  }
-
-  async executeTask(FUNCTION:Function, Value: any, executeID:number, _Option: OPTION) {
-    if(this.queue0cache.findIndex((cache:any) => cache == cache==Value)==-1){
-      this.queue0cache[executeID] = Value
-      this.queue0status[executeID] = true
-
-      const res = await FUNCTION(Value)
-
-      this.queue0status[executeID] = false
-      this.queue0recorder[executeID]++
-
-      this.start()
-
-      return res
-    }
-    return "CACHE"
-  }
-}
-
-declare interface OPTION {
-  level: number,
-  id: number
-}
-
-
-const scheduler = new Scheduler(12)
 
 const code = ref('')
 
@@ -147,15 +87,17 @@ function tmpC() {
 }
 
 function tmpD() {
-  console.log(scheduler.queue0recorder)
+  useSchedulerStore().queue0enable[3]=false
+  console.log(useSchedulerStore().queue0)
+  console.log(useSchedulerStore().queue0count)
 }
 
 function tmpE() {
-  console.log(scheduler.queue0)
-  console.log(scheduler.queue0count)
-  scheduler.start()
-  console.log(scheduler.queue0)
-  console.log(scheduler.queue0count)
+  console.log(useSchedulerStore().queue0)
+  console.log(useSchedulerStore().queue0count)
+  useSchedulerStore().start()
+  console.log(useSchedulerStore().queue0)
+  console.log(useSchedulerStore().queue0count)
 }
 
 function tmpF() {
@@ -163,20 +105,20 @@ function tmpF() {
     return new Promise(resolve => {
       setTimeout(()=>{
         resolve(Value.ip)
-      },Math.random()*5000)
+      },Math.random()*1000)
     })
   }
 
 
-  for (let i = 0; i < 120; i++) {
-    const res = scheduler.add(
+  for (let i = 0; i < 1200; i++) {
+    const res = useSchedulerStore().add(
       Function,
       {
-        ip: i as unknown as string,
+        ip: Math.random()*100,
         port: 5000
       },
       {
-        level: 0,
+        delay: 1000,
         id: i
       })
     res.then((r) => {
